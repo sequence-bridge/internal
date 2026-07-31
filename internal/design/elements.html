@@ -1,0 +1,338 @@
+<!--
+  Fill this file with the smallest UI primitives such as buttons, inputs, labels, badges, chips, checkboxes, radios, selects, toggles, links, icons, and other atomic elements.
+  Pull all colors and design values from ./tokens.json.
+  Keep this file focused on single-purpose elements, not composed components or full sections.
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Elements — Design system</title>
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+
+  <!--
+    @theme mirrors design/tokens.json. When tokens change, update this block
+    in elements.html, components.html, and sections.html.
+  -->
+  <style type="text/tailwindcss">
+    @theme {
+      /* Palette ramps (raw vocabulary) */
+      --color-violet-50:  #f4f1ff;
+      --color-violet-100: #e9e0ff;
+      --color-violet-200: #d6c5ff;
+      --color-violet-300: #b8a0ff;
+      --color-violet-400: #9c7eff;
+      --color-violet-500: #7c5cff;
+      --color-violet-600: #6a4cf0;
+      --color-violet-700: #5639d0;
+      --color-violet-800: #422aa3;
+      --color-violet-900: #2f1e75;
+      --color-violet-950: #1a0f45;
+
+      --color-teal-50:  #f0fdfa;
+      --color-teal-100: #ccfbf1;
+      --color-teal-200: #99f6e4;
+      --color-teal-300: #5eead4;
+      --color-teal-400: #2dd4bf;
+      --color-teal-500: #14b8a6;
+      --color-teal-600: #0d9488;
+      --color-teal-700: #0f766e;
+      --color-teal-800: #115e59;
+      --color-teal-900: #134e4a;
+      --color-teal-950: #042f2e;
+
+      --color-amber-50:  #fffbeb;
+      --color-amber-100: #fef3c7;
+      --color-amber-200: #fde68a;
+      --color-amber-300: #fcd34d;
+      --color-amber-400: #fbbf24;
+      --color-amber-500: #f59e0b;
+      --color-amber-600: #d97706;
+      --color-amber-700: #b45309;
+      --color-amber-800: #92400e;
+      --color-amber-900: #78350f;
+      --color-amber-950: #451a03;
+
+      /* Semantic colors (consume these in components) */
+      --color-bg:               #0b0d10;
+      --color-surface:          #16181d;
+      --color-surface-elevated: #1d2026;
+      --color-fg:               #e8eaed;
+      --color-fg-muted:         #9aa0a6;
+      --color-fg-inverse:       #0b0d10;
+
+      --color-primary:         var(--color-violet-500);
+      --color-primary-hover:   var(--color-violet-600);
+      --color-secondary:       var(--color-teal-500);
+      --color-secondary-hover: var(--color-teal-600);
+      --color-tertiary:        var(--color-amber-500);
+      --color-tertiary-hover:  var(--color-amber-600);
+
+      --color-accent:  #22d3ee;
+      --color-border:  #2a2e36;
+      --color-success: #22c55e;
+      --color-warning: #f59e0b;
+      --color-danger:  #ef4444;
+      --color-info:    #3b82f6;
+
+      --font-display: Inter, ui-sans-serif, system-ui, sans-serif;
+      --font-body:    Inter, ui-sans-serif, system-ui, sans-serif;
+      --font-mono:    JetBrains Mono, ui-monospace, SFMono-Regular, monospace;
+
+      --text-xs:  12px;
+      --text-sm:  14px;
+      --text-md:  16px;
+      --text-lg:  18px;
+      --text-xl:  24px;
+      --text-2xl: 32px;
+      --text-3xl: 48px;
+      --text-4xl: 64px;
+
+      --spacing: 4px;
+
+      --radius-sm:   4px;
+      --radius-md:   8px;
+      --radius-lg:   12px;
+      --radius-full: 9999px;
+
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.5);
+      --shadow-lg: 0 12px 32px rgba(0,0,0,0.6);
+
+      --ease-standard:   cubic-bezier(0.2, 0.8, 0.2, 1);
+      --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+      --ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
+    }
+  </style>
+
+  <!-- Page chrome only — specimens use Tailwind utilities. -->
+  <style>
+    html, body { background: var(--color-bg); color: var(--color-fg); }
+    body { font-family: var(--font-body); font-size: var(--text-md); }
+    main { max-width: 960px; margin: 0 auto; padding: 48px 24px 96px; }
+    header.page h1 { font-size: var(--text-3xl); font-weight: 700; letter-spacing: -0.02em; }
+    header.page .lede { color: var(--color-fg-muted); margin-top: 8px; max-width: 56ch; }
+    nav.pages { display: flex; gap: 12px; margin-top: 24px; font-size: var(--text-sm); }
+    nav.pages a { color: var(--color-fg-muted); padding: 6px 10px; border-radius: var(--radius-sm); }
+    nav.pages a[aria-current] { background: var(--color-surface); color: var(--color-fg); }
+    nav.pages a:hover { color: var(--color-fg); }
+    section.spec { border-top: 1px solid var(--color-border); padding: 40px 0; }
+    section.spec > h2 { font-size: var(--text-xl); font-weight: 600; letter-spacing: -0.01em; }
+    section.spec > .desc { color: var(--color-fg-muted); font-size: var(--text-sm); margin-top: 4px; }
+    .specimen { padding: 24px 0; display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+    .specimen.stack { flex-direction: column; align-items: stretch; gap: 8px; }
+    .note { color: var(--color-fg-muted); font-size: var(--text-sm); padding: 12px 16px; border-left: 2px solid var(--color-border); background: var(--color-surface); border-radius: var(--radius-sm); }
+    code { font-family: var(--font-mono); font-size: 0.9em; background: var(--color-surface-elevated); padding: 1px 6px; border-radius: var(--radius-sm); }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="page">
+      <h1>Elements</h1>
+      <p class="lede">Atoms — single-purpose primitives, rendered with the project's tokens. Edit this file as the design system grows; flip checkboxes in <code>design.md</code> as you add specimens.</p>
+      <nav class="pages">
+        <a href="./elements.html" aria-current="page">elements</a>
+        <a href="./components.html">components</a>
+        <a href="./sections.html">sections</a>
+      </nav>
+    </header>
+
+    <section class="spec" id="palette">
+      <h2>Palette</h2>
+      <p class="desc">Raw color ramps — the vocabulary. Components should consume <em>semantic</em> tokens (<code>bg-primary</code>, <code>bg-secondary</code>, <code>bg-tertiary</code>); the rings mark which step each semantic role is anchored on.</p>
+      <div class="specimen stack" style="gap: 24px;">
+        <div>
+          <div class="text-sm font-medium mb-2">violet <span class="text-fg-muted text-xs">— primary</span></div>
+          <div class="grid grid-cols-11 gap-1 text-center text-xs">
+            <div><div class="h-12 rounded-sm bg-violet-50"></div><div class="mt-1 text-fg-muted">50</div></div>
+            <div><div class="h-12 rounded-sm bg-violet-100"></div><div class="mt-1 text-fg-muted">100</div></div>
+            <div><div class="h-12 rounded-sm bg-violet-200"></div><div class="mt-1 text-fg-muted">200</div></div>
+            <div><div class="h-12 rounded-sm bg-violet-300"></div><div class="mt-1 text-fg-muted">300</div></div>
+            <div><div class="h-12 rounded-sm bg-violet-400"></div><div class="mt-1 text-fg-muted">400</div></div>
+            <div><div class="h-12 rounded-sm bg-violet-500 ring-2 ring-fg/40 ring-offset-2 ring-offset-bg"></div><div class="mt-1">500</div></div>
+            <div><div class="h-12 rounded-sm bg-violet-600 ring-2 ring-fg/20 ring-offset-2 ring-offset-bg"></div><div class="mt-1 text-fg-muted">600</div></div>
+            <div><div class="h-12 rounded-sm bg-violet-700"></div><div class="mt-1 text-fg-muted">700</div></div>
+            <div><div class="h-12 rounded-sm bg-violet-800"></div><div class="mt-1 text-fg-muted">800</div></div>
+            <div><div class="h-12 rounded-sm bg-violet-900"></div><div class="mt-1 text-fg-muted">900</div></div>
+            <div><div class="h-12 rounded-sm bg-violet-950"></div><div class="mt-1 text-fg-muted">950</div></div>
+          </div>
+          <p class="text-xs text-fg-muted mt-2">500 → <code>primary</code>, 600 → <code>primary-hover</code></p>
+        </div>
+
+        <div>
+          <div class="text-sm font-medium mb-2">teal <span class="text-fg-muted text-xs">— secondary</span></div>
+          <div class="grid grid-cols-11 gap-1 text-center text-xs">
+            <div><div class="h-12 rounded-sm bg-teal-50"></div><div class="mt-1 text-fg-muted">50</div></div>
+            <div><div class="h-12 rounded-sm bg-teal-100"></div><div class="mt-1 text-fg-muted">100</div></div>
+            <div><div class="h-12 rounded-sm bg-teal-200"></div><div class="mt-1 text-fg-muted">200</div></div>
+            <div><div class="h-12 rounded-sm bg-teal-300"></div><div class="mt-1 text-fg-muted">300</div></div>
+            <div><div class="h-12 rounded-sm bg-teal-400"></div><div class="mt-1 text-fg-muted">400</div></div>
+            <div><div class="h-12 rounded-sm bg-teal-500 ring-2 ring-fg/40 ring-offset-2 ring-offset-bg"></div><div class="mt-1">500</div></div>
+            <div><div class="h-12 rounded-sm bg-teal-600 ring-2 ring-fg/20 ring-offset-2 ring-offset-bg"></div><div class="mt-1 text-fg-muted">600</div></div>
+            <div><div class="h-12 rounded-sm bg-teal-700"></div><div class="mt-1 text-fg-muted">700</div></div>
+            <div><div class="h-12 rounded-sm bg-teal-800"></div><div class="mt-1 text-fg-muted">800</div></div>
+            <div><div class="h-12 rounded-sm bg-teal-900"></div><div class="mt-1 text-fg-muted">900</div></div>
+            <div><div class="h-12 rounded-sm bg-teal-950"></div><div class="mt-1 text-fg-muted">950</div></div>
+          </div>
+          <p class="text-xs text-fg-muted mt-2">500 → <code>secondary</code>, 600 → <code>secondary-hover</code></p>
+        </div>
+
+        <div>
+          <div class="text-sm font-medium mb-2">amber <span class="text-fg-muted text-xs">— tertiary</span></div>
+          <div class="grid grid-cols-11 gap-1 text-center text-xs">
+            <div><div class="h-12 rounded-sm bg-amber-50"></div><div class="mt-1 text-fg-muted">50</div></div>
+            <div><div class="h-12 rounded-sm bg-amber-100"></div><div class="mt-1 text-fg-muted">100</div></div>
+            <div><div class="h-12 rounded-sm bg-amber-200"></div><div class="mt-1 text-fg-muted">200</div></div>
+            <div><div class="h-12 rounded-sm bg-amber-300"></div><div class="mt-1 text-fg-muted">300</div></div>
+            <div><div class="h-12 rounded-sm bg-amber-400"></div><div class="mt-1 text-fg-muted">400</div></div>
+            <div><div class="h-12 rounded-sm bg-amber-500 ring-2 ring-fg/40 ring-offset-2 ring-offset-bg"></div><div class="mt-1">500</div></div>
+            <div><div class="h-12 rounded-sm bg-amber-600 ring-2 ring-fg/20 ring-offset-2 ring-offset-bg"></div><div class="mt-1 text-fg-muted">600</div></div>
+            <div><div class="h-12 rounded-sm bg-amber-700"></div><div class="mt-1 text-fg-muted">700</div></div>
+            <div><div class="h-12 rounded-sm bg-amber-800"></div><div class="mt-1 text-fg-muted">800</div></div>
+            <div><div class="h-12 rounded-sm bg-amber-900"></div><div class="mt-1 text-fg-muted">900</div></div>
+            <div><div class="h-12 rounded-sm bg-amber-950"></div><div class="mt-1 text-fg-muted">950</div></div>
+          </div>
+          <p class="text-xs text-fg-muted mt-2">500 → <code>tertiary</code>, 600 → <code>tertiary-hover</code></p>
+        </div>
+      </div>
+      <p class="note">Reach into the palette directly only for charts, custom tints, or one-offs that don't justify a new semantic token. Otherwise, use <code>bg-primary</code>, <code>bg-secondary</code>, <code>bg-tertiary</code>.</p>
+    </section>
+
+    <section class="spec" id="typography">
+      <h2>Typography</h2>
+      <p class="desc">Display / body / mono families, plus the size scale.</p>
+      <div class="specimen stack">
+        <h1 class="text-4xl font-bold tracking-tight">The quick brown fox — h1</h1>
+        <h2 class="text-3xl font-semibold tracking-tight">The quick brown fox — h2</h2>
+        <h3 class="text-2xl font-semibold">The quick brown fox — h3</h3>
+        <h4 class="text-xl font-medium">The quick brown fox — h4</h4>
+        <p class="text-md">Body — the quick brown fox jumps over the lazy dog.</p>
+        <p class="text-sm text-fg-muted">Small / muted — secondary text.</p>
+        <p class="font-mono text-sm">mono — const x = await fetch('/api')</p>
+        <p>
+          Press <kbd class="px-1.5 py-0.5 text-xs font-mono bg-surface-elevated border border-border rounded-sm">⌘K</kbd>
+          to open the command palette.
+        </p>
+        <ul class="list-disc pl-6 text-md space-y-1">
+          <li>List item one</li>
+          <li>List item two</li>
+        </ul>
+        <blockquote class="border-l-2 border-border pl-4 text-fg-muted italic">"A design system is a record of decisions, not a UI kit." — paraphrased</blockquote>
+      </div>
+      <p class="note">Display family currently the same as body. Decide whether to differentiate.</p>
+    </section>
+
+    <section class="spec" id="buttons">
+      <h2>Buttons</h2>
+      <p class="desc">Two axes: style hierarchy (primary / outline / ghost / destructive) and brand color (primary / secondary / tertiary). Hover to see interaction states.</p>
+
+      <div class="text-xs uppercase tracking-wider text-fg-muted mt-2">Style hierarchy</div>
+      <div class="specimen">
+        <button class="px-4 py-2 rounded-md bg-primary text-fg-inverse font-medium hover:bg-primary-hover transition-colors">Primary</button>
+        <button class="px-4 py-2 rounded-md bg-surface-elevated text-fg border border-border font-medium hover:border-fg-muted transition-colors">Outline</button>
+        <button class="px-4 py-2 rounded-md text-fg font-medium hover:bg-surface-elevated transition-colors">Ghost</button>
+        <button class="px-4 py-2 rounded-md bg-danger text-fg-inverse font-medium hover:opacity-90 transition-opacity">Destructive</button>
+        <button class="px-4 py-2 rounded-md bg-primary text-fg-inverse font-medium opacity-50 cursor-not-allowed" disabled>Disabled</button>
+        <button class="px-3 py-1.5 text-sm rounded-md bg-primary text-fg-inverse font-medium hover:bg-primary-hover transition-colors">Small</button>
+        <button class="px-5 py-2.5 text-lg rounded-md bg-primary text-fg-inverse font-medium hover:bg-primary-hover transition-colors">Large</button>
+      </div>
+
+      <div class="text-xs uppercase tracking-wider text-fg-muted mt-4">Brand colors</div>
+      <div class="specimen">
+        <button class="px-4 py-2 rounded-md bg-primary text-fg-inverse font-medium hover:bg-primary-hover transition-colors">Primary</button>
+        <button class="px-4 py-2 rounded-md bg-secondary text-fg-inverse font-medium hover:bg-secondary-hover transition-colors">Secondary</button>
+        <button class="px-4 py-2 rounded-md bg-tertiary text-fg-inverse font-medium hover:bg-tertiary-hover transition-colors">Tertiary</button>
+      </div>
+
+      <p class="note">States to capture: default, hover, active, focus, disabled, loading. Loading and focus-visible states not yet rendered.</p>
+    </section>
+
+    <section class="spec" id="links">
+      <h2>Links</h2>
+      <div class="specimen">
+        <a href="#" class="text-primary underline-offset-4 hover:underline">Default link</a>
+        <a href="#" class="text-primary inline-flex items-center gap-1 hover:gap-1.5 transition-all">Link with arrow →</a>
+        <a href="#" class="text-fg-muted hover:text-fg transition-colors">Muted link</a>
+      </div>
+    </section>
+
+    <section class="spec" id="inputs">
+      <h2>Inputs</h2>
+      <p class="desc">Text input pattern with label, help, error, disabled. Plus textarea and select.</p>
+      <div class="specimen stack" style="max-width: 360px;">
+        <label class="flex flex-col gap-1.5">
+          <span class="text-sm font-medium">Email</span>
+          <input type="email" class="px-3 py-2 rounded-md bg-surface border border-border focus:border-primary focus:outline-none transition-colors" placeholder="you@example.com" />
+          <span class="text-xs text-fg-muted">We'll never share your email.</span>
+        </label>
+
+        <label class="flex flex-col gap-1.5">
+          <span class="text-sm font-medium">Password</span>
+          <input type="password" class="px-3 py-2 rounded-md bg-surface border border-danger focus:outline-none" value="bad" />
+          <span class="text-xs text-danger">Must be at least 12 characters.</span>
+        </label>
+
+        <label class="flex flex-col gap-1.5">
+          <span class="text-sm font-medium">API key (read-only)</span>
+          <input type="text" class="px-3 py-2 rounded-md bg-surface border border-border opacity-50 cursor-not-allowed" value="sk-•••••••••••••" disabled />
+        </label>
+
+        <label class="flex flex-col gap-1.5">
+          <span class="text-sm font-medium">Notes</span>
+          <textarea class="px-3 py-2 rounded-md bg-surface border border-border focus:border-primary focus:outline-none min-h-24 transition-colors" placeholder="Optional..."></textarea>
+        </label>
+
+        <label class="flex flex-col gap-1.5">
+          <span class="text-sm font-medium">Plan</span>
+          <select class="px-3 py-2 rounded-md bg-surface border border-border focus:border-primary focus:outline-none transition-colors">
+            <option>Free</option><option>Pro</option><option>Team</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section class="spec" id="choice">
+      <h2>Choice</h2>
+      <p class="desc">Checkbox, radio, switch.</p>
+      <div class="specimen stack">
+        <label class="inline-flex items-center gap-2 cursor-pointer"><input type="checkbox" class="accent-primary w-4 h-4" checked /> Subscribe to updates</label>
+        <label class="inline-flex items-center gap-2 cursor-pointer"><input type="radio" name="r" class="accent-primary w-4 h-4" checked /> Option A</label>
+        <label class="inline-flex items-center gap-2 cursor-pointer"><input type="radio" name="r" class="accent-primary w-4 h-4" /> Option B</label>
+        <label class="inline-flex items-center gap-2 cursor-pointer">
+          <span class="relative inline-block w-9 h-5">
+            <input type="checkbox" class="peer sr-only" checked />
+            <span class="absolute inset-0 rounded-full bg-border peer-checked:bg-primary transition-colors"></span>
+            <span class="absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-fg transition-transform peer-checked:translate-x-4"></span>
+          </span>
+          Switch — toggled
+        </label>
+      </div>
+    </section>
+
+    <section class="spec" id="display">
+      <h2>Display atoms</h2>
+      <p class="desc">Badges, tags, avatars, dividers, skeletons.</p>
+      <div class="specimen">
+        <span class="px-2 py-0.5 rounded-full bg-primary/15 text-primary text-xs font-medium">badge</span>
+        <span class="px-2 py-0.5 rounded-full bg-success/15 text-success text-xs font-medium">success</span>
+        <span class="px-2 py-0.5 rounded-full bg-warning/15 text-warning text-xs font-medium">warning</span>
+        <span class="px-2 py-0.5 rounded-full bg-danger/15 text-danger text-xs font-medium">danger</span>
+        <span class="px-2.5 py-1 rounded-md bg-surface-elevated text-xs font-mono">tag</span>
+      </div>
+      <div class="specimen">
+        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-primary text-fg-inverse text-xs font-medium">A</span>
+        <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary text-fg-inverse text-sm font-medium">AB</span>
+        <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary text-fg-inverse text-md font-medium">CD</span>
+      </div>
+      <div class="specimen stack">
+        <hr class="border-border w-full" />
+        <div class="h-3 w-48 rounded-sm bg-surface-elevated animate-pulse"></div>
+        <div class="h-3 w-72 rounded-sm bg-surface-elevated animate-pulse"></div>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>
