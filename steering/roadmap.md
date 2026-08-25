@@ -6,12 +6,9 @@ To start work on an item, ask the `internal-scaffolding` skill to spec it ΓÇö
 
 When a month wraps, run the archive command (e.g., "archive 2026-07") to move every `- [x]` item under that heading into `internal/releases/roadmap-log.md`. Unchecked items stay where they are; the heading is removed only if everything moved.
 
-## 2026-07
-- [ ]
-
-
 ## 2026-08
-- [ ] 
+- [x] create a repo internal within an organization on github
+- [ ] check the netlify build for the internal repo
 
 ## Backlog
 - [ ]
