@@ -11,32 +11,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 <style>
-  :root {
-    --navy: #0D1B2A;
-    --navy-mid: #162236;
-    --navy-light: #1E3050;
-    --cream: #F5F0E8;
-    --cream-dim: #E8E2D4;
-    --amber: #D4A843;
-    --amber-dim: #9E7A2A;
-    --coral: #C9614F;
-    --coral-dim: #9E4A3A;
-    --sage: #5B8A6F;
-    --muted: #8899AA;
-    --border: rgba(255,255,255,0.07);
-  }
+  :root{ --paper:var(--bg); --paper-edge:var(--bg); --sheet:var(--panel); --navy:var(--ink); --navy-mid:var(--panel); --navy-light:var(--panel); --cream:var(--panel); --cream-dim:var(--muted); --amber:var(--accent); --amber-dim:var(--accent); --coral:#a94c40; --coral-dim:#a94c40; --sage:var(--accent); --muted:var(--muted); --border:var(--rule); --accent:var(--accent); --accent-bright:var(--accent); --brass:#9a7833; --brass-soft:#b79a55; --oxblood:#8a3a30; }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { font-size: 16px; }
-  body {
-    background: var(--navy);
-    color: var(--cream);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    line-height: 1.65;
-    min-height: 100vh;
-    padding: 0 0 80px;
-  }
+  body{ /* base from shared.css */ }
 
   /* ── Header ── */
   .masthead {
@@ -446,7 +425,7 @@
   }
 
   @media print {
-    body { background: white; color: #111; }
+    body{ /* base from shared.css */ }
     .back-button { display: none; }
     .phase, .context-bar, .corrections, .shared-decisions, .curriculum { border-color: #ddd !important; background: #fff !important; }
   }

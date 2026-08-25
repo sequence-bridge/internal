@@ -12,40 +12,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <script>document.documentElement.className = document.documentElement.className.replace('no-js','js');</script>
 <style>
-  :root{
-    --paper:#f4efe4;
-    --paper-edge:#ebe3d3;
-    --sheet:#fbf8f1;
-    --ink:#1d1b16;
-    --ink-soft:#534d41;
-    --ink-faint:#857c6b;
-    --rule:#ddd3bf;
-    --rule-strong:#c8bca2;
-    --accent:#1f4a40;       /* fiduciary deep green */
-    --accent-bright:#2c6a5b;
-    --brass:#9a7833;        /* muted gold */
-    --brass-soft:#b79a55;
-    --oxblood:#8a3a30;      /* draft stamp */
-    --shadow:rgba(34,28,16,.18);
-    --maxw:860px;
-  }
+  :root{ --paper:var(--bg); --paper-edge:var(--bg); --sheet:var(--panel); --navy:var(--ink); --navy-mid:var(--panel); --navy-light:var(--panel); --cream:var(--panel); --cream-dim:var(--muted); --amber:var(--accent); --amber-dim:var(--accent); --coral:#a94c40; --coral-dim:#a94c40; --sage:var(--accent); --muted:var(--muted); --border:var(--rule); --accent:var(--accent); --accent-bright:var(--accent); --brass:#9a7833; --brass-soft:#b79a55; --oxblood:#8a3a30; }
 
   *{box-sizing:border-box;}
   html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
-  body{
-    margin:0;
-    font-family:"Newsreader", Georgia, "Times New Roman", serif;
-    font-optical-sizing:auto;
-    color:var(--ink);
-    line-height:1.62;
-    font-size:18px;
-    background:
-      radial-gradient(120% 80% at 50% -10%, #fbf6ec 0%, var(--paper) 45%, var(--paper-edge) 100%);
-    background-attachment:fixed;
-  }
+  body{ /* base from shared.css */ }
   /* paper grain */
-  body::before{
-    content:"";
+  /* removed grain */
+  /*";
     position:fixed; inset:0; z-index:0; pointer-events:none;
     opacity:.5; mix-blend-mode:multiply;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
@@ -281,7 +255,7 @@
   /* ---- Print / Save as PDF ---- */
   @media print{
     :root{ --sheet:#fff; }
-    body{ background:#fff; font-size:11.5pt; line-height:1.45; }
+    body{ /* base from shared.css */ }
     body::before, .toolbar, .back-button{ display:none !important; }
     .wrap{ padding:0; }
     .sheet{
