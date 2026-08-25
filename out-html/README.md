@@ -25,9 +25,11 @@ There's no build step (`netlify.toml` just publishes the folder as-is), so a pag
 
 ## Deploy
 
-This folder is its own git repo, pushed to `https://github.com/h-garcia/go-agency` (`main` branch). Netlify is connected to that GitHub repo and auto-builds on every push — there's no Netlify CLI or local site link (`.netlify/` is gitignored and unused here).
+This folder is **not** a separate repo — it deploys as part of `https://github.com/sequence-bridge/internal` (`main` branch, repo root is `internal/`). Netlify is connected to that repo with `publish = "out-html"` (`internal/netlify.toml:3`) and auto-builds on every push — there's no Netlify CLI or local site link (`.netlify/` is gitignored).
 
-So "deploy" just means:
+The old standalone repo `h-garcia/go-agency` (`out-html/.git` with `publish = "."`) was collapsed into `sequence-bridge/internal` on 2026-08-25. If you still see `out-html/.git` locally, delete it.
+
+So "deploy" just means (from `internal/`):
 
 ```
 git add -A
@@ -39,5 +41,5 @@ Netlify picks it up within a minute or two of the push landing on `main`.
 
 ## Notes
 
-- `raw/` and `out/` (the markdown sources) live one level up, outside this repo — this folder only holds the rendered HTML.
+- `out/` (the markdown sources) lives alongside this folder at `internal/out/` — this folder only holds the rendered HTML.
 - Keep filenames date-prefixed and matched to their markdown source so it's obvious what's stale if the source changes.
