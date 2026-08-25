@@ -1,0 +1,113 @@
+/* shared.css — single clean style for out-html/
+   Loaded by index.html (href="shared.css") and every deliverable (href="../shared.css").
+   Keep this file as the source of truth. Do not add per-page <style> blocks except
+   for content that truly cannot be expressed here (diagrams, interactive quiz).
+   Variables are neutral/minimal; accent is deep green for a clean, non-decorative look.
+*/
+:root{
+  --bg:#f2f2f0;
+  --panel:#ffffff;
+  --ink:#1a1a19;
+  --ink-soft:#53534f;
+  --ink-faint:#8a8a86;
+  --muted:#63645f;
+  --rule:#e8e8e3;
+  --rule-strong:#dcdcd7;
+  --accent:#1f4a40;
+  --accent-soft:#e6efec;
+  --shadow:rgba(0,0,0,.08);
+  --max:1120px;
+  --max-doc:860px;
+  --sans:ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --serif:Cambria, Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --mono:ui-monospace, "Cascadia Mono", "SF Mono", Consolas, Menlo, monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:var(--sans);
+  color:var(--ink);
+  line-height:1.6;
+  font-size:17px;
+  background:var(--bg);
+  -webkit-font-smoothing:antialiased;
+}
+a{color:var(--accent);text-underline-offset:3px}
+a:hover{color:#12302a}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+
+/* ── Back button — canonical, fixed top-left, pill — overrides per-page inline */
+.back-button{
+  position:fixed !important;top:18px !important;left:18px !important;z-index:50 !important;
+  display:inline-flex !important;align-items:center;gap:.4rem;
+  font-family:var(--mono) !important;font-size:.72rem !important;font-weight:600 !important;
+  letter-spacing:.08em !important;text-transform:uppercase !important;text-decoration:none !important;
+  color:var(--ink) !important;background:var(--panel) !important;
+  border:1px solid var(--rule-strong) !important;border-radius:999px !important;
+  padding:.5rem .9rem !important;box-shadow:0 6px 18px rgba(0,0,0,.12) !important;
+}
+.back-button:hover{color:var(--accent) !important;border-color:var(--accent) !important}
+.btn{
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--panel);background:var(--accent);border:1px solid var(--accent);
+  border-radius:2px;padding:10px 16px;cursor:pointer;box-shadow:0 6px 18px var(--shadow);
+}
+.btn:hover{background:#163a33}
+
+/* ── Index layout (out-html/index.html) ── */
+.wrap{max-width:var(--max);margin:0 auto;padding:56px 20px 90px}
+.sheet{
+  background:var(--panel);border:1px solid var(--rule-strong);
+  box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 20px 40px -24px var(--shadow);
+  padding:56px clamp(28px,6vw,76px) 48px;overflow:hidden;
+}
+.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin:0 0 16px}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(32px,5vw,48px);line-height:1.05;letter-spacing:-.015em;margin:0}
+.lede{font-size:17px;color:var(--muted);max-width:60ch;margin:12px 0 0;line-height:1.5}
+.intro{text-align:center;max-width:680px;margin:0 auto}
+.intro .kicker{margin-bottom:12px}
+.initiative-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:40px}
+.initiative-card{display:flex;flex-direction:column;padding:28px;border:1px solid var(--rule-strong);background:var(--panel);border-top:4px solid var(--accent)}
+.initiative-card.productized{border-top-color:var(--accent)}
+.initiative-card.ria{border-top-color:#9a7833}
+.card-eyebrow{margin:0 0 10px;font:600 10px/1.2 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint)}
+.card-title{margin:0;font-family:var(--serif);font-size:clamp(26px,3vw,34px);font-weight:600;line-height:1.05;color:var(--accent)}
+.productized .card-title{color:var(--accent)}
+.card-summary{margin:10px 0 18px;color:var(--muted);font-size:15px;line-height:1.5;min-height:0}
+.card-stats{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:20px}
+.card-stat{padding:12px 0}
+.card-stat + .card-stat{padding-left:16px;border-left:1px solid var(--rule)}
+.stat-value{display:block;font:600 24px/1 var(--serif);color:var(--accent)}
+.stat-label{display:block;margin-top:4px;color:var(--ink-faint);font:600 9px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.included-label{margin:0 0 8px;color:var(--ink-faint);font:600 9px/1.2 var(--mono);letter-spacing:.16em;text-transform:uppercase}
+.document-list{list-style:none;margin:0;padding:0}
+.document-list li{border-top:1px solid var(--rule)}
+.document-list a{display:block;padding:11px 0;color:var(--ink);text-decoration:none;transition:color .15s, padding-left .15s}
+.document-list a:hover{color:var(--accent);padding-left:4px}
+.document-list strong{display:block;font-family:var(--serif);font-size:17px;font-weight:600;line-height:1.2}
+.document-list span{display:block;margin-top:3px;color:var(--ink-faint);font:10px/1.3 var(--mono)}
+.foot{margin-top:36px;padding-top:16px;border-top:2px solid var(--rule-strong);font-size:13px;color:var(--ink-faint)}
+
+/* ── Deliverable base (applies when per-page inline is removed; otherwise overridden) ── */
+.hero{margin-bottom:8px}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px 24px;margin:16px 0}
+.meta dt{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 4px}
+.meta dd{margin:0;font-size:15px}
+.section{margin:36px 0 0}
+.section h2{display:flex;align-items:baseline;gap:12px;font-family:var(--serif);font-weight:600;font-size:22px;margin:0 0 12px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+.section h2 .num{font-family:var(--mono);font-size:12px;color:var(--accent)}
+.callout{margin:16px 0;padding:14px 18px;border-left:3px solid var(--accent);background:var(--accent-soft);font-size:15px}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:15px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+thead th{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--panel);background:var(--accent)}
+
+/* ── Responsive / print ── */
+@media(max-width:760px){.initiative-grid{grid-template-columns:1fr}.wrap{padding:32px 14px 56px}.sheet{padding:32px 22px}}
+@media print{
+  :root{--bg:#fff}
+  body{background:#fff}
+  .back-button{display:none !important}
+  .wrap{padding:0}.sheet{box-shadow:none;border:none}
+  a{color:var(--ink);text-decoration:none}
+}

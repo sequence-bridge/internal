@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sequence Bridge — product flows</title>
+<link rel="stylesheet" href="../shared.css" />
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
 <style>
   *, *::before, *::after { box-sizing: border-box; }
   body { margin: 0; }
@@ -203,8 +205,21 @@
   }
   .theme-toggle:hover { border-color: var(--accent); color: var(--ink); }
   .theme-toggle__icon { font-size: 0.95em; line-height: 1; }
+
+  .back-button{
+    position:fixed; top:18px; left:18px; z-index:10;
+    display:inline-flex; align-items:center; gap:0.4rem;
+    font-family:var(--sans); font-size:0.72rem; font-weight:600;
+    letter-spacing:0.08em; text-transform:uppercase; text-decoration:none;
+    color:var(--ink); background:var(--surface);
+    border:1px solid var(--rule); border-radius:999px;
+    padding:0.5rem 0.9rem; box-shadow:0 6px 18px rgba(0,0,0,.12);
+  }
+  .back-button:hover{ color:var(--accent); }
+  @media print{ .back-button{ display:none !important; } }
 </style>
 
+<a class="back-button" href="../index.html">&larr; Back to Index</a>
 <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false">
   <span class="theme-toggle__icon" aria-hidden="true">☀</span>
   <span id="themeToggleLabel">Light</span>
@@ -561,3 +576,4 @@
 
 </body>
 </html>
+

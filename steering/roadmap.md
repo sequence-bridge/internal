@@ -8,7 +8,10 @@ When a month wraps, run the archive command (e.g., "archive 2026-07") to move ev
 
 ## 2026-08
 - [x] create a repo internal within an organization on github
-- [ ] check the netlify build for the internal repo
+- [x] check the netlify build for the internal repo
+- [ ] create a claude.md
+- [ ] create a logo exploration with 20 versions based on direction 3 from the design system options file. 
+
 
 ## Backlog
 - [ ]

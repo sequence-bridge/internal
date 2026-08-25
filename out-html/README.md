@@ -7,6 +7,7 @@ This folder is a self-contained static site, deployed to Netlify. It holds the H
 ```
 out-html/
 ├── index.html              # landing page, links every deliverable below
+├── shared.css              # single clean style — linked by every page
 ├── favicon.svg
 ├── netlify.toml             # publish = "." — no build step
 ├── ria/                     # Riamatic deliverables
@@ -17,11 +18,11 @@ out-html/
 
 Per the standing instruction (`~/.claude/instructions/llm-wiki.md`): whenever a markdown deliverable in `out/` is requested as HTML,
 
-1. Create `out-html/<venture>/<YYYY-MM-DD>-<slug>.html`, matching the markdown filename but with `.html`.
+1. Create `out-html/<venture>/<YYYY-MM-DD>-<slug>.html`, matching the markdown filename but with `.html`. Include `<link rel="stylesheet" href="../shared.css" />` + `<link rel="icon" href="../favicon.svg" />` in `<head>` and a back button `<a class="back-button" href="../index.html">&larr; Back to Index</a>` as the first element in `<body>` — see `internal/AGENTS.MD:68`.
 2. Add a `<li><a href="...">` entry for it under the right venture card in `index.html`, and bump that card's "Working documents" stat count.
 3. Commit and push — see Deploy below.
 
-There's no build step (`netlify.toml` just publishes the folder as-is), so a page only needs to be valid, self-contained HTML.
+There's no build step (`netlify.toml` just publishes the folder as-is), so a page only needs to be valid HTML that links `shared.css` — all pages share one stylesheet for a clean, consistent look.
 
 ## Deploy
 
