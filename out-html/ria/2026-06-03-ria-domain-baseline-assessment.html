@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RIA Domain Baseline Assessment — Riamatic</title>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<meta name="description" content="A self-scored baseline diagnostic for Hector & Cynthia: 58 questions across RIA fundamentals, compliance, workflows, tech stack, and AI/competitive landscape — with explanations after every answer and a per-section gap map." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script>document.documentElement.className = document.documentElement.className.replace('no-js','js');</script>
+<style>
+  :root{
+    --paper:#f4efe4;
+    --paper-edge:#ebe3d3;
+    --sheet:#fbf8f1;
+    --ink:#1d1b16;
+    --ink-soft:#534d41;
+    --ink-faint:#857c6b;
+    --rule:#ddd3bf;
+    --rule-strong:#c8bca2;
+    --accent:#1f4a40;       /* fiduciary deep green */
+    --accent-bright:#2c6a5b;
+    --brass:#9a7833;        /* muted gold */
+    --brass-soft:#b79a55;
+    --oxblood:#8a3a30;
+    --amber:#c77a33;
+    --green-ink:#235e3f;
+    --shadow:rgba(34,28,16,.18);
+    --maxw:880px;
+  }
+
+  *{box-sizing:border-box;}
+  html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+  body{
+    margin:0;
+    font-family:"Newsreader", Georgia, "Times New Roman", serif;
+    font-optical-sizing:auto;
+    color:var(--ink);
+    line-height:1.62;
+    font-size:18px;
+    background:
+      radial-gradient(120% 80% at 50% -10%, #fbf6ec 0%, var(--paper) 45%, var(--paper-edge) 100%);
+    background-attachment:fixed;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    opacity:.5; mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+  }
+
+  /* top progress + pill */
+  #progressbar{ position:fixed; top:0; left:0; height:4px; width:0; z-index:60;
+    background:linear-gradient(90deg, var(--accent) 0%, var(--accent-bright) 55%, var(--brass) 100%);
+    transition:width .35s cubic-bezier(.2,.7,.2,1); }
+  .pill{ position:fixed; bottom:18px; left:18px; z-index:55;
+    font-family:"JetBrains Mono", ui-monospace, monospace; font-size:11.5px; letter-spacing:.06em;
+    color:var(--ink); background:var(--sheet); border:1px solid var(--rule-strong); border-radius:30px;
+    padding:9px 15px; cursor:pointer; box-shadow:0 6px 18px var(--shadow);
+    transition:transform .18s ease, box-shadow .18s ease; }
+  .pill:hover{ transform:translateY(-2px); box-shadow:0 10px 24px var(--shadow); }
+  .pill b{ color:var(--accent); font-weight:500; }
+
+  .toolbar{ position:fixed; top:18px; right:18px; z-index:50; display:flex; gap:10px; }
+  .back-button{ position:fixed; top:18px; left:18px; z-index:50; display:inline-block; text-decoration:none; }
+  .btn{
+    font-family:"JetBrains Mono", ui-monospace, monospace;
+    font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--sheet); background:var(--accent);
+    border:1px solid var(--accent); border-radius:2px;
+    padding:10px 16px; cursor:pointer;
+    box-shadow:0 6px 18px var(--shadow);
+    transition:transform .18s ease, background .18s ease, box-shadow .18s ease;
+  }
+  .btn:hover{ background:var(--accent-bright); transform:translateY(-2px); box-shadow:0 10px 24px var(--shadow); }
+  .btn:active{ transform:translateY(0); }
+  .btn.ghost{ color:var(--accent); background:transparent; }
+  .btn.ghost:hover{ background:rgba(31,74,64,.08); color:var(--accent); }
+
+  .wrap{ position:relative; z-index:1; padding:56px 20px 90px; }
+  .sheet{
+    position:relative;
+    max-width:var(--maxw); margin:0 auto;
+    background:linear-gradient(var(--sheet),var(--sheet)) padding-box;
+    border:1px solid var(--rule-strong);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.6) inset,
+      0 30px 60px -24px var(--shadow),
+      0 8px 24px -16px var(--shadow);
+    padding:84px clamp(28px,7vw,96px) 72px;
+    overflow:hidden;
+  }
+  .sheet::before{
+    content:""; position:absolute; top:0; left:0; right:0; height:6px;
+    background:linear-gradient(90deg, var(--accent) 0%, var(--accent-bright) 50%, var(--brass) 100%);
+  }
+
+  .stamp{
+    position:absolute; top:96px; right:clamp(18px,5vw,70px);
+    transform:rotate(-11deg);
+    border:2.5px solid var(--brass); color:var(--brass);
+    font-family:"JetBrains Mono", monospace; font-weight:500;
+    font-size:13px; letter-spacing:.22em; text-transform:uppercase;
+    padding:8px 14px 7px; border-radius:4px;
+    opacity:.7; pointer-events:none; line-height:1.1; text-align:center;
+    box-shadow:0 0 0 2px rgba(154,120,51,.08);
+  }
+  .stamp small{ display:block; font-size:9px; letter-spacing:.18em; opacity:.85; margin-top:3px; }
+
+  .kicker{
+    font-family:"JetBrains Mono", monospace;
+    font-size:11.5px; letter-spacing:.34em; text-transform:uppercase;
+    color:var(--brass); margin:0 0 22px;
+  }
+  h1{
+    font-family:"Fraunces", serif; font-weight:500;
+    font-size:clamp(32px,6vw,56px); line-height:1.04;
+    letter-spacing:-.012em; margin:0 0 6px; color:var(--ink);
+  }
+  h1 .li{ display:block; font-style:italic; font-weight:400; color:var(--accent); font-size:.52em; margin-top:8px; letter-spacing:0;}
+  .lede{ font-style:italic; font-size:19px; color:var(--ink-soft); max-width:62ch; margin:18px 0 0; }
+  .rule-double{ height:0; border:0; margin:30px 0 26px; border-top:2px solid var(--rule-strong); box-shadow:0 4px 0 -2.5px var(--rule); }
+  .meta{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:18px 28px; margin:0 0 6px; }
+  .meta dt{ font-family:"JetBrains Mono", monospace; font-size:10.5px; letter-spacing:.2em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 4px; }
+  .meta dd{ margin:0; font-size:16px; color:var(--ink); }
+
+  .section{ margin:46px 0 0; }
+  .section h2, .qsection > h2{
+    display:flex; align-items:baseline; gap:16px;
+    font-family:"Fraunces",serif; font-weight:500;
+    font-size:25px; letter-spacing:-.01em; line-height:1.2;
+    margin:0 0 14px; padding-bottom:12px;
+    border-bottom:1px solid var(--rule); color:var(--ink);
+  }
+  .section h2 .num, .qsection > h2 .num{ font-family:"JetBrains Mono", monospace; font-weight:500; font-size:14px; color:var(--accent); letter-spacing:.04em; flex:0 0 auto; transform:translateY(-2px); }
+  .qsection > h2 .chip{ margin-left:auto; font-family:"JetBrains Mono",monospace; font-weight:400; font-size:12px; letter-spacing:.04em; color:var(--ink-faint); white-space:nowrap; transform:translateY(-2px); }
+  .section p{ margin:0 0 14px; }
+  .section ul, .section ol{ margin:0 0 14px; padding-left:1.3em; }
+  .section li{ margin:0 0 8px; }
+  strong{ font-weight:600; color:var(--ink); }
+  em{ color:var(--ink-soft); }
+  a{ color:var(--accent); text-underline-offset:3px; text-decoration-color:var(--brass-soft); }
+  code, .mono{ font-family:"JetBrains Mono", monospace; font-size:.86em; }
+
+  /* callouts */
+  .callout{ margin:20px 0; padding:18px 22px; border-left:3px solid var(--accent); background:rgba(31,74,64,.05); font-size:16px; }
+  .callout.warn{ border-left-color:var(--oxblood); background:rgba(138,58,48,.06); }
+  .callout.brass{ border-left-color:var(--brass); background:rgba(154,120,51,.07); }
+  .callout .c-tag{ font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:6px; }
+  .callout.warn .c-tag{ color:var(--oxblood); }
+  .callout.brass .c-tag{ color:#7a5e1f; }
+  .callout p:last-child{ margin-bottom:0; }
+
+  /* quiz */
+  .qsection{ margin:50px 0 0; }
+  .qcard{
+    border:1px solid var(--rule); border-left:3px solid var(--rule-strong);
+    background:rgba(255,255,255,.35); padding:20px 22px 18px; margin:18px 0;
+    border-radius:2px; transition:border-color .25s ease;
+  }
+  .qcard.ans-ok{ border-left-color:var(--green-ink); }
+  .qcard.ans-no{ border-left-color:var(--oxblood); }
+  .qnum{ font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--brass); margin:0 0 7px; }
+  .qtext{ font-weight:500; font-size:18px; line-height:1.45; margin:0 0 14px; color:var(--ink); }
+  .opts{ display:grid; gap:9px; }
+  .opt{
+    font-family:inherit; font-size:16px; line-height:1.4; text-align:left; width:100%;
+    display:flex; align-items:flex-start; gap:11px;
+    padding:12px 15px; border:1px solid var(--rule-strong); background:var(--sheet);
+    border-radius:3px; cursor:pointer; color:var(--ink);
+    transition:border-color .15s ease, background .15s ease, transform .12s ease;
+  }
+  .opt:hover:not(:disabled){ border-color:var(--accent); background:rgba(31,74,64,.05); }
+  .opt:active:not(:disabled){ transform:translateY(1px); }
+  .opt:disabled{ cursor:default; }
+  .opt .key{ font-family:"JetBrains Mono",monospace; font-size:13px; font-weight:500; color:var(--brass); flex:0 0 auto; padding-top:1px; }
+  .opt .mark{ margin-left:auto; font-family:"JetBrains Mono",monospace; font-size:14px; flex:0 0 auto; opacity:0; }
+  .opt.correct{ border-color:var(--green-ink); background:rgba(31,74,64,.12); }
+  .opt.correct .key{ color:var(--green-ink); }
+  .opt.correct .mark{ color:var(--green-ink); opacity:1; }
+  .opt.wrong{ border-color:var(--oxblood); background:rgba(138,58,48,.08); }
+  .opt.wrong .key{ color:var(--oxblood); }
+  .opt.wrong .mark{ color:var(--oxblood); opacity:1; }
+  .opt.dim{ opacity:.62; }
+
+  .expl{ margin-top:14px; border-left:3px solid var(--brass); background:rgba(154,120,51,.07); padding:13px 17px; font-size:15.5px; line-height:1.55; }
+  .expl[hidden]{ display:none; }
+  .verdict{ font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; margin:0 0 7px; }
+  .verdict.ok{ color:var(--green-ink); }
+  .verdict.no{ color:var(--oxblood); }
+  .expl p{ margin:0; }
+
+  /* scorecard */
+  #results{ scroll-margin-top:24px; }
+  .sc-overall{ display:flex; align-items:baseline; gap:16px; flex-wrap:wrap; margin:6px 0 22px; }
+  .sc-overall .big{ font-family:"Fraunces",serif; font-weight:500; font-size:52px; line-height:1; color:var(--accent); }
+  .sc-overall .of{ font-family:"JetBrains Mono",monospace; font-size:13px; color:var(--ink-faint); letter-spacing:.04em; }
+  .sc-status{ font-style:italic; color:var(--ink-soft); }
+  .barrow{ margin:0 0 16px; }
+  .barrow .blabel{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; margin:0 0 5px; }
+  .barrow .bname{ font-weight:500; }
+  .barrow .bval{ font-family:"JetBrains Mono",monospace; font-size:13px; color:var(--ink-soft); white-space:nowrap; }
+  .bar{ height:11px; background:var(--rule); border-radius:6px; overflow:hidden; border:1px solid var(--rule-strong); }
+  .bar > i{ display:block; height:100%; width:0; border-radius:6px 0 0 6px; transition:width .5s cubic-bezier(.2,.7,.2,1); }
+  .b-hi{ background:var(--accent-bright); }
+  .b-mid{ background:var(--brass-soft); }
+  .b-lo{ background:var(--amber); }
+  .b-vlo{ background:var(--oxblood); }
+  .tag{ font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.06em; padding:2px 7px; border-radius:3px; display:inline-block; margin-left:6px; vertical-align:1px; }
+  .tag.strong{ color:var(--green-ink); background:rgba(31,74,64,.12); }
+  .tag.focus{ color:var(--oxblood); background:rgba(138,58,48,.1); }
+
+  .doc-foot{
+    margin-top:54px; padding-top:20px; border-top:2px solid var(--rule-strong);
+    font-size:13px; color:var(--ink-faint); font-style:italic;
+    display:flex; flex-wrap:wrap; gap:6px 18px; justify-content:space-between; align-items:baseline;
+  }
+  .doc-foot .tags{ font-family:"JetBrains Mono",monospace; font-style:normal; font-size:10px; letter-spacing:.1em; }
+
+  .js .reveal{ opacity:0; transform:translateY(14px); }
+  .js .reveal.in{ opacity:1; transform:none; transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+  .js .hero > *{ opacity:0; transform:translateY(16px); animation:rise .8s cubic-bezier(.2,.7,.2,1) forwards; }
+  .js .hero > *:nth-child(1){ animation-delay:.05s; }
+  .js .hero > *:nth-child(2){ animation-delay:.16s; }
+  .js .hero > *:nth-child(3){ animation-delay:.27s; }
+  .js .hero > *:nth-child(4){ animation-delay:.38s; }
+  .js .stamp{ opacity:0; animation:stampIn .6s ease .9s forwards; }
+  @keyframes rise{ to{ opacity:1; transform:none; } }
+  @keyframes stampIn{ from{ opacity:0; transform:rotate(-11deg) scale(1.25);} to{ opacity:.7; transform:rotate(-11deg) scale(1);} }
+
+  @media (prefers-reduced-motion:reduce){
+    .js .reveal, .js .hero > *, .js .stamp{ opacity:1 !important; transform:none !important; animation:none !important; }
+    html{ scroll-behavior:auto; }
+    #progressbar, .bar > i{ transition:none; }
+  }
+  @media (max-width:600px){
+    body{ font-size:17px; }
+    .stamp{ top:auto; bottom:64px; }
+    .opt{ font-size:15px; }
+    .pill{ font-size:11px; padding:8px 12px; }
+  }
+
+  @media print{
+    :root{ --sheet:#fff; }
+    body{ background:#fff; font-size:11pt; line-height:1.45; }
+    body::before, .toolbar, .back-button, #progressbar, .pill{ display:none !important; }
+    .wrap{ padding:0; }
+    .sheet{ box-shadow:none; border:none; max-width:none; padding:0 6mm; }
+    .sheet::before{ display:none; }
+    .stamp{ position:fixed; top:8mm; right:10mm; opacity:.55; }
+    h1{ font-size:24pt; }
+    .qcard, .callout, .barrow, .qsection{ break-inside:avoid; }
+    .qsection > h2{ break-after:avoid; }
+    .opt.correct, .opt.wrong, .bar > i, .tag, thead th{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    a{ color:var(--ink); text-decoration:none; }
+    @page{ margin:15mm 13mm; }
+  }
+</style>
+</head>
+<body>
+  <div id="progressbar"></div>
+  <button class="pill" id="pill" onclick="document.getElementById('results').scrollIntoView()">Answered <b id="pillCount">0</b> / 58</button>
+
+  <a class="btn back-button" href="../index.html">&larr; Back to Index</a>
+  <div class="toolbar">
+    <button class="btn ghost" onclick="resetQuiz()">Reset</button>
+    <button class="btn" onclick="window.print()">Print / Save PDF</button>
+  </div>
+
+  <div class="wrap">
+  <main class="sheet" role="document">
+
+    <div class="stamp">Diagnostic<small>Baseline · H2 2026</small></div>
+
+    <header class="hero">
+      <p class="kicker">Riamatic · Founder Domain-Learning</p>
+      <h1>RIA Domain<span class="li">Baseline Knowledge Assessment</span></h1>
+      <p class="lede">A self-scored diagnostic for Hector &amp; Cynthia — not a test to pass, but a map of where you already stand and where to point the 2026 H2 deep-dive. Answer honestly; every question explains itself afterward, right or wrong.</p>
+      <hr class="rule-double" />
+      <dl class="meta">
+        <div><dt>Date</dt><dd>3 June 2026</dd></div>
+        <div><dt>For</dt><dd>Hector &amp; Cynthia</dd></div>
+        <div><dt>Format</dt><dd>58 questions · 5 areas</dd></div>
+        <div><dt>Output</dt><dd>Per-section gap map</dd></div>
+      </dl>
+    </header>
+
+    <section class="section reveal">
+      <h2><span class="num">§ 00</span> How to use this</h2>
+      <p>Work top to bottom. Pick the single best answer for each question — <strong>it locks once you click</strong>, so don't second-guess; a guessed-and-wrong answer is a more useful signal than a careful look-up. The explanation appears immediately whether you were right or wrong, so you learn either way.</p>
+      <div class="callout brass">
+        <span class="c-tag">Reading your score</span>
+        <p>The number at the end matters less than the <strong>shape</strong>. The scorecard breaks results out by topic area — any section you score <strong>at or below 60%</strong> is flagged as a priority for the 2026 H2 study plan. Each of you should take it separately; comparing the two gap maps tells you how to divide the learning.</p>
+      </div>
+      <noscript><div class="callout warn"><span class="c-tag">JavaScript required</span><p>This assessment is interactive and needs JavaScript enabled to score answers and reveal explanations. Please open it in a normal browser.</p></div></noscript>
+    </section>
+
+    <div id="quiz"></div>
+
+    <section class="section reveal" id="results">
+      <h2><span class="num">§ 06</span> Your scorecard &amp; gap map</h2>
+      <div id="scorebody">
+        <p class="sc-status">Answer the questions above and your results will build here — overall score, a bar per topic area, and the sections to prioritize in the 2026 H2 study plan.</p>
+      </div>
+    </section>
+
+    <footer class="doc-foot">
+      <span>Riamatic · RIA Domain Baseline Assessment · 3 June 2026 — diagnostic, not legal/compliance advice; verify all regulatory specifics against primary SEC sources.</span>
+      <span class="tags">ria · compliance · diagnostic · domain-learning</span>
+    </footer>
+
+  </main>
+  </div>
+
+  <script>
+  /* ---------- Question bank ---------- */
+  const QUIZ = [
+    {
+      sec: "RIA Fundamentals & Market Structure",
+      items: [
+        { q:`What is the defining legal standard an RIA owes its clients?`,
+          a:[`A suitability standard`, `A fiduciary duty`, `Best execution only`, `Caveat emptor (buyer beware)`], c:1,
+          e:`RIAs are <strong>fiduciaries</strong> under the Investment Advisers Act of 1940 — they must act in the client's best interest, put client interests ahead of their own, and fully disclose conflicts. This contrasts with broker-dealers' historical "suitability" standard and is the bedrock of the agency's compliance-first positioning.` },
+        { q:`At roughly what AUM does an adviser generally have to register with the SEC instead of a state regulator?`,
+          a:[`$25M`, `$50M`, `$100M`, `$1B`], c:2,
+          e:`The general line is <strong>$100M</strong> in regulatory AUM. Below it, advisers register with their state(s); there's a $25M–$100M "mid-sized adviser" band and a buffer (register at $110M, can stay until below $90M). The agency's Tier-1 target ($100M–$500M) sits just over the SEC line.` },
+        { q:`Approximately how many SEC-registered RIAs are there in the US (per the wiki primer)?`,
+          a:[`~1,500`, `~5,000`, `~15,000`, `~150,000`], c:2,
+          e:`Roughly <strong>15,000 SEC-registered</strong> plus ~17,000 state-registered RIAs. About 68.5% of SEC-registered firms manage under $1B AUM — the under-tooled small-firm majority the agency targets.` },
+        { q:`Which is the agency's PRIMARY (Tier 1) target sub-segment?`,
+          a:[`Mega-firms with $5B+ AUM`, `Small SEC-registered RIAs, $100M–$500M AUM`, `FL & TX state-registered RIAs, $50M–$80M`, `Single-family offices`], c:1,
+          e:`Tier 1 = <strong>small SEC-registered RIAs, $100M–$500M AUM</strong> (the founder is still the buyer; under-tooled vs. larger peers; ~5,000+ firms). FL/TX state-registered $50M–$80M is the Tier-2 secondary segment; SFOs are the Offering #3 target.` },
+        { q:`What is the core reason small RIAs are a good fit for productized AI services?`,
+          a:[`They have large IT departments to integrate tools`, `Repetitive, document-heavy workflows plus heavy regulation create high ROI and a moat`, `They are unregulated and can adopt anything`, `They prefer fully custom bespoke builds`], c:1,
+          e:`Repetitive workflows drive high ROI per automation, and heavy regulation creates a moat for compliance-grade tooling. Small firms are under-tooled and the founder is the buyer. Note RIAs are <em>heavily</em> regulated (not unregulated), and the thesis is productized, not bespoke.` },
+        { q:`Who is the typical buyer at a 3–25 person RIA?`,
+          a:[`A procurement committee`, `The founder / principal (sometimes the CCO wearing an ops hat)`, `The custodian`, `The SEC`], c:1,
+          e:`The <strong>founder / managing partner / principal</strong> decides personally — weeks not quarters, references-driven, allergic to long contracts. This shapes the GTM motion: personal selling and reference customers, not enterprise procurement.` },
+        { q:`What historically distinguishes an RIA from a broker-dealer?`,
+          a:[`RIAs can't manage portfolios`, `Broker-dealers owe a fiduciary duty; RIAs owe only suitability`, `RIAs owe a fiduciary duty; broker-dealers historically owed a suitability standard (now Reg BI)`, `There is no difference`], c:2,
+          e:`RIAs are fiduciaries under the 1940 Act. Broker-dealers historically operated under "suitability"; since 2020, <strong>Regulation Best Interest (Reg BI)</strong> raised the B-D standard — but it still isn't the full fiduciary duty an RIA owes.` },
+        { q:`Which statute is the core law governing investment advisers?`,
+          a:[`Securities Act of 1933`, `Investment Advisers Act of 1940`, `Sarbanes-Oxley Act of 2002`, `Dodd-Frank Act of 2010`], c:1,
+          e:`The <strong>Investment Advisers Act of 1940</strong> is the governing statute; SEC rules like 206(4)-7 and 206(4)-1 are promulgated under it. Dodd-Frank (2010) did adjust the $100M registration threshold, but the foundational law is the 1940 Act.` },
+        { q:`"Discretionary authority" for an RIA means the adviser can:`,
+          a:[`Only trade after the client approves each transaction`, `Execute trades in the client's account without per-trade approval`, `Hold the client's cash directly`, `Ignore the fiduciary duty`], c:1,
+          e:`Discretion = authority to make and execute investment decisions <strong>without case-by-case client consent</strong>. It raises the fiduciary and compliance stakes (and can implicate custody). Non-discretionary advisers need client sign-off per trade.` },
+        { q:`How is the agency positioned relative to enterprise platforms like Addepar and Black Diamond?`,
+          a:[`Compete head-on for $1B+ firms`, `Serve the under-tooled SMB segment those platforms skip`, `Resell Addepar to small firms`, `Replace the custodians`], c:1,
+          e:`Enterprise platforms target $1B+ firms and <strong>skip the SMB segment</strong>. The agency serves small, under-tooled RIAs with productized AI — complementary to, not competing with, the enterprise platforms.` }
+      ]
+    },
+    {
+      sec: "Compliance & Regulation",
+      items: [
+        { q:`Rule 206(4)-7 — the "Compliance Rule" — requires an RIA to:`,
+          a:[`Guarantee investment returns`, `Adopt written compliance policies/procedures, designate a CCO, and review them at least annually`, `Register every employee with FINRA`, `Self-custody all client assets`], c:1,
+          e:`206(4)-7 requires <strong>written policies and procedures</strong> reasonably designed to prevent violations, a designated <strong>Chief Compliance Officer (CCO)</strong>, and at least an annual review. Applied to AI, the SEC expects written AI policies, vendor diligence, and human oversight of material AI decisions — the basis of the agency's Governance Kit.` },
+        { q:`The annual "206(4)-7 review" is best described as:`,
+          a:[`A tax filing`, `A mandatory annual review of the adequacy and effectiveness of the firm's compliance program`, `An on-site SEC exam that happens every year`, `A client satisfaction survey`], c:1,
+          e:`The Compliance Rule requires firms to review their policies and procedures <strong>at least annually</strong> for adequacy and effectiveness — an internal (usually documented) review. It is distinct from an SEC examination, which is not annual for most firms.` },
+        { q:`Rule 206(4)-1 — the "Marketing Rule" — primarily governs:`,
+          a:[`Custody of client funds`, `Advertisements and compensated testimonials/endorsements, including performance claims`, `Trade settlement timing`, `Employee personal trading`], c:1,
+          e:`The modernized Marketing Rule (compliance date Nov 2022) governs adviser <strong>advertising</strong> — testimonials, endorsements, third-party ratings, and performance ads — requiring claims to be fair, balanced, and substantiated. This is why client-facing AI deliverables need an advisor-review gate.` },
+        { q:`Under the Marketing Rule, an AI-drafted quarterly performance narrative emailed to clients is:`,
+          a:[`Exempt because AI wrote it`, `An advertisement subject to substantiation and review requirements`, `Only regulated if performance is negative`, `Governed by the Custody Rule`], c:1,
+          e:`Client-facing performance communications are <strong>advertisements</strong> regardless of whether a human or AI drafted them — claims must be substantiated and the firm stays responsible. Hence Offering #2's mandatory advisor-review gate for client-facing work; internal-only tools don't trigger the Marketing Rule.` },
+        { q:`Form ADV Part 2A is commonly known as the:`,
+          a:[`"Brochure" — plain-English disclosure of the firm's services, fees, and conflicts`, `Custody attestation`, `Annual tax return`, `Trade blotter`], c:0,
+          e:`Part 1A is check-the-box regulatory data (filed via IARD); <strong>Part 2A is the "brochure"</strong> — narrative disclosure of business, fees, and conflicts; Part 2B is the "brochure supplement." Material AI use affecting advice or client communications should be disclosed in Part 2A.` },
+        { q:`Form ADV Part 2B (the "brochure supplement") discloses:`,
+          a:[`The firm's audited financials`, `The background and qualifications of the individual advisory personnel serving the client`, `The custodian's internal controls`, `Marketing testimonials`], c:1,
+          e:`Part 2B covers the education, business experience, and disciplinary history of the <strong>specific individuals</strong> who provide advice to a client. Part 2A is the firm-level brochure.` },
+        { q:`Regulation S-P deals with:`,
+          a:[`Short-sale reporting`, `Consumer privacy, safeguarding customer information, and breach incident-response/notification`, `Proxy voting`, `Soft-dollar arrangements`], c:1,
+          e:`<strong>Reg S-P</strong> governs the privacy of consumer financial information and safeguarding of customer records. The 2024 amendments add an incident-response program and customer breach-notification duties. It's the agency's first content-marketing hook.` },
+        { q:`The Reg S-P compliance deadline for smaller RIAs (under $1.5B AUM) is:`,
+          a:[`January 1, 2026`, `June 3, 2026`, `December 31, 2026`, `There is no deadline`], c:1,
+          e:`Larger entities had Dec 3, 2025; <strong>smaller entities (&lt;$1.5B AUM) must comply by June 3, 2026</strong>. The agency plans its first lead magnet — a Reg S-P + AI compliance checklist — around this date, published early for SEO/authority even though launch is 2027.` },
+        { q:`KYC/AML obligations for financial firms stem largely from:`,
+          a:[`The Bank Secrecy Act (BSA) and related AML rules`, `The Marketing Rule`, `Reg S-P`, `The Custody Rule`], c:0,
+          e:`Know-Your-Customer / Customer Identification and Anti-Money-Laundering screening trace to the <strong>BSA</strong> framework. AML/KYC has mature, well-established automation patterns — making it a tractable, low-compliance-risk AI use case (offered as a paid add-on to Offering #1).` },
+        { q:`The SEC "Custody Rule" (206(4)-2) is most concerned with:`,
+          a:[`Marketing performance`, `Safeguarding client assets — qualified custodians, account statements, and surprise exams when an adviser has custody`, `AI disclosure`, `Employee training`], c:1,
+          e:`The Custody Rule protects client assets when an adviser is deemed to have <strong>custody</strong> — requiring qualified custodians, account statements, and often a surprise independent exam. Most small RIAs use third-party custodians (Schwab, Fidelity) to limit custody complications.` },
+        { q:`In the 2026 SEC Examination Priorities, artificial intelligence is:`,
+          a:[`Not mentioned`, `Explicitly flagged across fraud, AML, back-office, trading, portfolio management, and disclosures`, `Banned for advisers`, `Only relevant to broker-dealers`], c:1,
+          e:`AI is <strong>explicitly flagged</strong> across fraud detection, AML, back-office, trading, portfolio management, and customer service — and the SEC scrutinizes whether AI-use disclosures match reality. This raises the bar for credible vendors and underpins the agency's governance moat.` },
+        { q:`"AI-washing" refers to:`,
+          a:[`Cleaning training data`, `Making false or exaggerated claims about a firm's use of AI`, `Using AI to launder money`, `Deleting AI audit logs`], c:1,
+          e:`AI-washing = <strong>overstating AI capabilities or usage</strong> in disclosures or marketing. The SEC has brought enforcement actions for it, so Form ADV and Marketing Rule statements about AI must be accurate — a reason the Governance Kit includes Form ADV AI-disclosure guidance.` },
+        { q:`Applied to AI, Rule 206(4)-7 leads the SEC to expect firms to:`,
+          a:[`Let AI make material decisions autonomously`, `Maintain written AI policies, vendor due diligence, and human oversight of material AI decisions`, `Avoid documenting AI use`, `Outsource compliance entirely to the AI vendor`], c:1,
+          e:`The expectation is <strong>governance</strong>: written policies, vendor diligence, validation/testing, and a human-in-the-loop for material decisions. The firm — not the vendor — stays responsible. This is exactly what the bundled AI Governance Kit delivers.` },
+        { q:`Which AI use case carries the HIGHEST compliance complexity for an RIA?`,
+          a:[`An internal pre-meeting brief never sent to clients`, `Back-office invoice data extraction`, `Autonomous trading / portfolio-management AI`, `KYC document collection`], c:2,
+          e:`<strong>Autonomous trading/portfolio AI</strong> is "Very High" complexity and out of scope for the first offerings. The compliance footprint rises as AI moves from internal/back-office (Low) → client-facing communications (Medium–High, Marketing Rule) → advice/trading (High–Very High).` },
+        { q:`The CCO (Chief Compliance Officer) at a small RIA is:`,
+          a:[`Always an outside law firm`, `A required designated role under 206(4)-7, often a principal wearing multiple hats at small firms`, `Appointed by the custodian`, `Optional`], c:1,
+          e:`206(4)-7 requires a <strong>designated CCO</strong> who administers the compliance program. At 3–25 person firms the founder or an ops lead often is the CCO — which is why the agency's dashboards and audit logs are designed "CCO-facing."` },
+        { q:`The adviser "books and records" (recordkeeping) requirements come from:`,
+          a:[`Rule 204-2 under the Advisers Act`, `The Marketing Rule`, `Reg S-P`, `The Securities Act of 1933`], c:0,
+          e:`<strong>Rule 204-2</strong> specifies which records advisers must keep and for how long (generally 5 years, first 2 readily accessible). Communications, advertisements, and increasingly AI-related records fall under it — a reason the agency emphasizes audit-trail infrastructure.` },
+        { q:`Which is TRUE about a purely internal AI tool (e.g., a pre-meeting brief never sent to clients)?`,
+          a:[`It triggers the Marketing Rule`, `The Marketing Rule generally does not attach, because nothing is distributed to clients`, `It is illegal`, `It requires SEC pre-approval`], c:1,
+          e:`The Marketing Rule attaches to advertisements/communications to clients or prospects. Purely internal tools (Offering #2 <strong>Track B</strong>) distribute nothing externally, so they can run end-to-end automated with lower compliance friction — the key insight behind the two-track design.` },
+        { q:`The agency's launch-time compliance philosophy is:`,
+          a:[`Build exhaustive compliance infrastructure before any sale`, `"Lean compliance v1" — basic audit log and lean policy templates, deepened with customer feedback`, `Ignore compliance until audited`, `Outsource all compliance to the SEC`], c:1,
+          e:`The principle is <strong>lean compliance v1</strong> at launch (basic audit log, lean policy templates, leverage the client's existing CCO/counsel), then deepen with customer feedback. The agency stays proficient; the client owns legal counsel.` }
+      ]
+    },
+    {
+      sec: "RIA Workflows & Operations",
+      items: [
+        { q:`In client onboarding, "KYC/CIP" stands for:`,
+          a:[`Know-Your-Custodian / Compliance Information Protocol`, `Know-Your-Customer / Customer Identification Program`, `Keep-Your-Cash / Client Investment Plan`, `Key-Yield-Calc / Cost Inflation Projection`], c:1,
+          e:`KYC = Know Your Customer; <strong>CIP = Customer Identification Program</strong> (verifying identity, collecting ID/address/source-of-funds). It's the front door of onboarding and a Low–Medium compliance, high-ROI automation target (Offering #1).` },
+        { q:`"ACAT" (ACATS) refers to:`,
+          a:[`Automated Clearing for Annual Taxes`, `The Automated Customer Account Transfer system for moving accounts between firms`, `A risk-tolerance questionnaire`, `An AML watchlist`], c:1,
+          e:`ACATS = <strong>Automated Customer Account Transfer Service</strong>, used to transfer client accounts/assets between firms/custodians. Onboarding includes ACAT transfer-in initiation and tracking; offboarding handles ACAT-out.` },
+        { q:`A "NIGO" item is:`,
+          a:[`A high-net-worth client tier`, `Paperwork that is "Not In Good Order" — incomplete or incorrect and must be fixed`, `A type of ETF`, `A custodian fee`], c:1,
+          e:`<strong>NIGO = Not In Good Order</strong> — forms rejected for missing signatures, data, or errors. NIGO exception resolution is a recurring custodial-ops pain point; cutting NIGO rates is a concrete automation ROI story.` },
+        { q:`"Householding" in RIA fee billing means:`,
+          a:[`Cleaning the office`, `Aggregating related accounts (e.g., a family's) to apply tiered fee schedules across combined assets`, `Storing records on-premise`, `A type of trust`], c:1,
+          e:`Householding <strong>groups related accounts</strong> so tiered advisory fees are calculated on combined AUM (often lowering the blended rate). It makes quarterly fee calculation error-prone — a strong-ROI billing-automation target.` },
+        { q:`Advisory fees at most RIAs are typically:`,
+          a:[`Hourly only`, `A percentage of AUM, often billed quarterly on tiered schedules`, `Commission per trade`, `A flat $5,000 for every client`], c:1,
+          e:`The dominant model is <strong>AUM-based fees</strong> (e.g., ~1%/yr), usually billed quarterly on tiered schedules. Fee calculation, reconciliation against custodian-deducted fees, and exceptions are repetitive, low-compliance work — clean automation ROI.` },
+        { q:`An "IPS" (Investment Policy Statement) is:`,
+          a:[`A marketing brochure`, `A document setting a client's objectives, risk tolerance, constraints, and target allocation`, `An SEC filing`, `A custodian statement`], c:1,
+          e:`The <strong>IPS</strong> codifies goals, risk tolerance, time horizon, constraints, and target asset allocation — guiding portfolio management and documenting suitability. Drafting it is part of onboarding and the client lifecycle.` },
+        { q:`"Rebalancing" a portfolio means:`,
+          a:[`Withdrawing all cash`, `Trading to bring holdings back to target allocations after market drift`, `Switching custodians`, `Filing Form ADV`], c:1,
+          e:`As asset values drift from target weights over time, <strong>rebalancing</strong> trades back toward targets (and can harvest tax losses). Rebalancing prep / drift detection / advisor-approved trade lists are middle-office automation candidates — but autonomous trading is out of scope.` },
+        { q:`"RMD" refers to:`,
+          a:[`Risk Management Disclosure`, `Required Minimum Distribution — mandatory withdrawals from certain retirement accounts after a set age`, `Rapid Money Deposit`, `Registered Market Dealer`], c:1,
+          e:`<strong>RMDs</strong> are IRS-mandated minimum annual withdrawals from tax-deferred retirement accounts (e.g., traditional IRAs) once the holder reaches the threshold age. RMD calculation/tracking is seasonal and deadline-driven — a good small-scope "wedge" automation.` },
+        { q:`"Reconciliation" in RIA operations primarily means:`,
+          a:[`Apologizing to clients`, `Matching the firm's records against custodian data to catch breaks/discrepancies`, `Rebalancing portfolios`, `Filing taxes`], c:1,
+          e:`Daily custodian-feed <strong>reconciliation</strong> matches positions, transactions, and cost basis between the firm's portfolio system and the custodian, resolving "breaks." It's constant but diffuse pain — automatable, though the single-ROI narrative is harder.` },
+        { q:`A "qualified custodian" (e.g., Schwab, Fidelity, Pershing) is the entity that:`,
+          a:[`Audits the SEC`, `Holds client assets and produces account statements`, `Writes the firm's compliance manual`, `Sets advisory fees`], c:1,
+          e:`Most small RIAs don't self-custody; a <strong>qualified custodian</strong> holds the assets and sends statements, which limits the adviser's custody obligations. Custodial paperwork pre-fill (Schwab/Fidelity/Pershing/Altruist) is part of Offering #1.` },
+        { q:`Why does the agency frame "advisor prep" deliverables (e.g., annual-review prep) as lower-compliance?`,
+          a:[`They're never written down`, `They support the advisor internally rather than being distributed to clients as advice or marketing`, `The SEC exempts all planning`, `They're done by the custodian`], c:1,
+          e:`Financial-planning support is Medium footprint, but Low <strong>when framed as advisor prep</strong> — internal preparation the advisor reviews and owns, not client-facing advice or marketing. The internal-vs-client-facing framing is the compliance pivot the agency exploits.` },
+        { q:`Which workflow cluster did the wiki flag as the cleanest ROI and strongest Offering #4 candidate?`,
+          a:[`Firm administration (bookkeeping, vendor mgmt)`, `Billing & fee operations`, `Autonomous trading`, `Client-facing Q&A bots`], c:1,
+          e:`<strong>Billing & fee operations</strong> was flagged as the cleanest ROI proof with universal pain and Low compliance — the strongest Offering #4 candidate (alongside compliance-ops). Firm admin is low-value/generic; trading and client Q&A bots are high-compliance.` }
+      ]
+    },
+    {
+      sec: "Tech-Stack Landscape",
+      items: [
+        { q:`Which set are major RIA/brokerage CUSTODIANS?`,
+          a:[`Schwab, Fidelity, Pershing, Altruist`, `Salesforce, HubSpot, Pipedrive, Zoho`, `eMoney, RightCapital, MoneyGuidePro`, `Addepar, Orion, Black Diamond`], c:0,
+          e:`<strong>Custodians</strong> hold assets and clear trades: Schwab (now incl. TD Ameritrade), Fidelity, Pershing (BNY), and Altruist (a newer custodian aimed at smaller RIAs). The other lists are CRMs, financial-planning tools, and portfolio/performance platforms.` },
+        { q:`Addepar, Orion, and Black Diamond are primarily:`,
+          a:[`Custodians`, `Portfolio management / performance-reporting platforms`, `Financial-planning software`, `CRMs`], c:1,
+          e:`These are <strong>portfolio accounting and performance-reporting</strong> platforms (Orion is broader wealthtech). Addepar/Black Diamond skew to larger firms and skip the SMB segment — part of why small RIAs are under-tooled.` },
+        { q:`eMoney, RightCapital, and MoneyGuidePro are:`,
+          a:[`Custodians`, `Financial-planning software`, `AML vendors`, `Document-extraction tools`], c:1,
+          e:`These are the leading <strong>financial-planning / scenario-modeling</strong> tools. The agency's Offering #2 projections/scenarios and planning support map to these — typically as advisor-prep inputs, not autonomous client advice.` },
+        { q:`Redtail and Wealthbox are examples of:`,
+          a:[`Custodians`, `CRMs (client relationship management) widely used by RIAs`, `Portfolio accounting systems`, `Planning tools`], c:1,
+          e:`Redtail and Wealthbox are popular advisor <strong>CRMs</strong>. CRM data hygiene and "meeting-notes → action-item extraction" are Low-compliance automation targets, and the CRM is often the system of record onboarding agents read from and write to.` },
+        { q:`In the agency's build-vs-partner stance, K1x and Asseta are platforms to:`,
+          a:[`Replace as custodians`, `Partner-integrate (K1x for K-1/1099 extraction; Asseta for family-office GL)`, `Attack as competitors`, `Use as AML vendors`], c:1,
+          e:`Offering #3 is <strong>partner-first</strong> — integrate/orchestrate over K1x (K-1, 1099, W-8/W-9 extraction) and Asseta (family-office general ledger) rather than rebuild, and selectively build where unique value exists (cash forecasting, capital-call prediction).` },
+        { q:`The agency's planned technical architecture is best described as:`,
+          a:[`A monolithic desktop app`, `An agency-built web app + Claude integration + Zapier/n8n + platform partnerships`, `Pure spreadsheets`, `An on-prem mainframe`], c:1,
+          e:`The architecture = an <strong>agency web app</strong> (status dashboard, audit log, CCO/advisor views) + a <strong>Claude integration layer</strong> + <strong>Zapier/n8n</strong> for orchestration + partner integrations (K1x, AML/KYC vendors). Productized, not bespoke.` },
+        { q:`Zapier and n8n are used in the stack as:`,
+          a:[`Custodians`, `Workflow-automation / orchestration engines that connect apps and steps`, `Compliance auditors`, `Portfolio managers`], c:1,
+          e:`Zapier (hosted) and n8n (open-source/self-hostable) are <strong>workflow-automation</strong> tools that wire together triggers, app integrations, and AI steps — the "glue" orchestrating the agent bundles across the web app, Claude, CRM, and custodian systems.` },
+        { q:`The AML/KYC screening vendors shortlisted for the Offering #1 add-on include:`,
+          a:[`Schwab and Fidelity`, `ComplyAdvantage and LexisNexis Bridger`, `eMoney and RightCapital`, `Addepar and Orion`], c:1,
+          e:`The AML screening integration (a ~$1k–$2k/mo paid add-on) would use vendors like <strong>ComplyAdvantage</strong> or <strong>LexisNexis Bridger</strong>. AML has mature compliance patterns, making it a tractable add-on rather than a from-scratch build.` },
+        { q:`Why does the agency mark up and bill AI token costs separately from the subscription?`,
+          a:[`To hide costs from clients`, `For usage transparency — passing through/marking up variable model costs rather than burying them`, `Because the SEC requires it`, `Tokens are free`], c:1,
+          e:`Pricing is a monthly subscription (lead offer ~$5k/mo for ~3 agents/workflows) with <strong>tokens billed separately</strong> for usage transparency. This decouples predictable platform value from variable per-usage model spend.` }
+      ]
+    },
+    {
+      sec: "AI in Wealth Mgmt & Competitive Scan",
+      items: [
+        { q:`Per the cited research, what share of advisor firms have adopted AI internally but lack formal output validation?`,
+          a:[`~40% adopted, ~44% with no validation`, `~5% adopted, ~1% with no validation`, `~90% adopted, ~0% with no validation`, `None have adopted AI`], c:0,
+          e:`About <strong>40% have implemented AI internally, but ~44% have no formal output validation</strong>. These "anxious early adopters" have conceded they need AI but lack a safe path — so the agency leads its pitch with governance even when selling automation.` },
+        { q:`The "advisor-review gate" in Offering #2 exists to:`,
+          a:[`Slow clients down`, `Ensure no AI-drafted client-facing deliverable reaches a client without advisor approval`, `Replace the advisor with AI`, `Avoid paying token costs`], c:1,
+          e:`Client-facing deliverables (Track A) require <strong>mandatory advisor review</strong> — the safety pattern under the Marketing Rule, keeping a human accountable for substantiation. Track B (internal tools) has no gate because nothing is distributed to clients.` },
+        { q:`In the competitive scan, Betterment is best characterized as:`,
+          a:[`A custodian with no advisor business`, `A fintech whose advisor-platform / custody business overlaps with the agency's RIA offerings`, `An AML vendor`, `The SEC's enforcement arm`], c:1,
+          e:`Betterment runs both a direct robo-advisor and an <strong>advisor-facing platform/custody</strong> business (Betterment Advisor Solutions), which overlaps/competes with parts of the agency's RIA tooling — worth tracking as the market evolves.` },
+        { q:`Why is "client-facing AI" generally MORE constrained than "back-office AI" for RIAs?`,
+          a:[`Back-office work is illegal`, `Client-facing AI implicates the Marketing Rule and the advice/fiduciary line; back-office/internal AI usually doesn't`, `Clients dislike automation`, `Back-office AI is more expensive`], c:1,
+          e:`Client-facing communications can be advertisements (Marketing Rule) or cross into advice (fiduciary line), demanding review, disclaimers, and substantiation. Back-office and internal-prep AI carries a <strong>Low footprint</strong> — which is why the first offerings concentrate there.` },
+        { q:`The agency's chosen go-to-market motion for first customers is:`,
+          a:[`Network/partner referrals only`, `Cold outbound + content marketing (outreach starts Q1 2027; content cadence starts in 2026)`, `Paid TV advertising`, `Waiting for inbound from the SEC`], c:1,
+          e:`GTM = <strong>cold outbound + content marketing</strong> (not network referrals). 2026 H2 builds authority via content (first piece: a Reg S-P / AI compliance checklist tied to the June 3, 2026 deadline); cold outreach begins Q1 2027 targeting 3 reference customers.` },
+        { q:`Cited 2025 research linked hybrid AI+human models in wealth management to:`,
+          a:[`Lower client retention`, `Higher client retention (~32%) and higher advisor productivity (~27%)`, `No measurable effect`, `Higher regulatory fines`], c:1,
+          e:`Hybrid AI+human models were associated with ~<strong>32% higher client retention</strong> and ~27% higher advisor productivity. This supports Offering #2's value story — but retention attribution takes 2–4 quarters, which is why the sharper-ROI Offering #1 launches first.` },
+        { q:`The agency's flagship service line, "AI for Business," is best described as:`,
+          a:[`Selling raw API access`, `Productized agent/workflow bundles for firms that bought into AI but lack a clear use case`, `Bespoke hourly consulting`, `Reselling ChatGPT licenses`], c:1,
+          e:`"AI for Business" — agents and workflow automations — is the <strong>flagship line</strong>, aimed at firms that have adopted AI without a clear use case. It's productized (not bespoke/hourly), the core differentiator of the whole agency model.` },
+        { q:`Why does the agency lead with a monthly subscription rather than hourly billing?`,
+          a:[`Hourly billing is illegal for consultancies`, `Subscription fits productized, recurring value and gives predictable pricing (~$5k/mo for ~3 agents)`, `Clients prefer unpredictable bills`, `The SEC mandates subscriptions`], c:1,
+          e:`The lead offer is a <strong>monthly subscription</strong> (~$5k for ~3 agents/workflows), with setup+outcome and %-of-ROI as alternatives — not hourly. Subscription suits productized, recurring value and gives the founder-buyer predictable pricing; tokens are billed separately.` },
+        { q:`Small RIAs and family offices are called "under-tooled" partly because:`,
+          a:[`They have banned all software`, `Many still run on spreadsheets while enterprise platforms target only $1B+ firms`, `They use too many advanced tools`, `Regulators forbid them from buying software`], c:1,
+          e:`Roughly 65% of family offices still run on <strong>spreadsheets</strong>, and small RIAs aren't far behind; enterprise platforms (Addepar, Black Diamond) target $1B+ firms and skip the SMB segment. That tooling gap is the white space the agency targets.` }
+      ]
+    }
+  ];
+
+  /* ---------- State + rendering ---------- */
+  const SEC_LABELS = ["§ 01","§ 02","§ 03","§ 04","§ 05"];
+  let TOTAL = 0;
+  QUIZ.forEach(s => TOTAL += s.items.length);
+  document.querySelector('#pill').innerHTML = 'Answered <b id="pillCount">0</b> / ' + TOTAL;
+
+  // per-section running tally
+  const tally = QUIZ.map(s => ({ total:s.items.length, answered:0, correct:0 }));
+  let answeredTotal = 0, correctTotal = 0;
+
+  function buildQuiz(){
+    const root = document.getElementById('quiz');
+    let html = '';
+    QUIZ.forEach((sec, si) => {
+      html += '<section class="qsection reveal" data-si="'+si+'">';
+      html += '<h2><span class="num">'+SEC_LABELS[si]+'</span> '+esc(sec.sec)+
+              ' <span class="chip" id="chip-'+si+'">0 / '+sec.items.length+'</span></h2>';
+      sec.items.forEach((it, qi) => {
+        const gnum = globalNum(si, qi);
+        html += '<div class="qcard" data-si="'+si+'" data-qi="'+qi+'" data-correct="'+it.c+'">';
+        html += '<p class="qnum">Question '+gnum+'</p>';
+        html += '<p class="qtext">'+it.q+'</p>';
+        html += '<div class="opts">';
+        it.a.forEach((opt, oi) => {
+          html += '<button class="opt" data-si="'+si+'" data-qi="'+qi+'" data-oi="'+oi+'">'+
+                  '<span class="key">'+'ABCD'[oi]+'</span>'+
+                  '<span class="otext">'+opt+'</span>'+
+                  '<span class="mark"></span></button>';
+        });
+        html += '</div>';
+        html += '<div class="expl" hidden><p class="verdict"></p><p class="etext">'+it.e+'</p></div>';
+        html += '</div>';
+      });
+      html += '</section>';
+    });
+    root.innerHTML = html;
+    root.addEventListener('click', onClick);
+  }
+
+  function globalNum(si, qi){
+    let n = 0;
+    for(let i=0;i<si;i++) n += QUIZ[i].items.length;
+    return n + qi + 1;
+  }
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  function onClick(e){
+    const btn = e.target.closest('.opt');
+    if(!btn) return;
+    const card = btn.closest('.qcard');
+    if(card.classList.contains('done')) return; // locked
+    const si = +card.dataset.si, qi = +card.dataset.qi;
+    const correct = +card.dataset.correct;
+    const chosen = +btn.dataset.oi;
+    const isOk = chosen === correct;
+
+    card.classList.add('done', isOk ? 'ans-ok' : 'ans-no');
+    const opts = card.querySelectorAll('.opt');
+    opts.forEach(o => {
+      o.disabled = true;
+      const oi = +o.dataset.oi;
+      if(oi === correct){ o.classList.add('correct'); o.querySelector('.mark').textContent = '✓'; }
+      else if(oi === chosen){ o.classList.add('wrong'); o.querySelector('.mark').textContent = '✗'; }
+      else { o.classList.add('dim'); }
+    });
+    const expl = card.querySelector('.expl');
+    const verdict = expl.querySelector('.verdict');
+    if(isOk){ verdict.textContent = 'Correct'; verdict.className = 'verdict ok'; }
+    else { verdict.textContent = 'Not quite — the answer is ' + 'ABCD'[correct]; verdict.className = 'verdict no'; }
+    expl.hidden = false;
+
+    // tally
+    tally[si].answered++;
+    answeredTotal++;
+    if(isOk){ tally[si].correct++; correctTotal++; }
+    document.getElementById('chip-'+si).textContent = tally[si].answered + ' / ' + tally[si].total;
+
+    updateProgress();
+    renderResults();
+  }
+
+  function updateProgress(){
+    const pct = Math.round((answeredTotal / TOTAL) * 100);
+    document.getElementById('progressbar').style.width = pct + '%';
+    const pc = document.getElementById('pillCount');
+    if(pc) pc.textContent = answeredTotal;
+  }
+
+  function band(pct){
+    if(pct >= 80) return 'b-hi';
+    if(pct >= 60) return 'b-mid';
+    if(pct >= 40) return 'b-lo';
+    return 'b-vlo';
+  }
+
+  function renderResults(){
+    const body = document.getElementById('scorebody');
+    const overallPct = answeredTotal ? Math.round((correctTotal / answeredTotal) * 100) : 0;
+    const complete = answeredTotal === TOTAL;
+
+    let html = '';
+    html += '<div class="sc-overall">';
+    html += '<span class="big">'+overallPct+'%</span>';
+    html += '<span class="of">'+correctTotal+' / '+answeredTotal+' correct'+(complete?'':' so far')+'</span>';
+    html += '</div>';
+    html += '<p class="sc-status">'+(complete
+        ? 'All '+TOTAL+' answered. The bars below are your gap map — prioritize the flagged sections in the 2026 H2 study plan.'
+        : 'In progress — '+(TOTAL-answeredTotal)+' question'+((TOTAL-answeredTotal)===1?'':'s')+' left. Results update as you go.')+'</p>';
+
+    QUIZ.forEach((sec, si) => {
+      const t = tally[si];
+      const pct = t.answered ? Math.round((t.correct / t.answered) * 100) : 0;
+      const fillPct = Math.round((t.correct / t.total) * 100); // bar relative to full section
+      let tagHtml = '';
+      if(t.answered === t.total){
+        if(pct >= 80) tagHtml = '<span class="tag strong">strong</span>';
+        else if(pct <= 60) tagHtml = '<span class="tag focus">focus first</span>';
+      }
+      html += '<div class="barrow">';
+      html += '<div class="blabel"><span class="bname">'+esc(sec.sec)+tagHtml+'</span>'+
+              '<span class="bval">'+t.correct+' / '+t.total+(t.answered<t.total?' · '+(t.total-t.answered)+' left':'')+'</span></div>';
+      html += '<div class="bar"><i class="'+band(pct)+'" style="width:'+fillPct+'%"></i></div>';
+      html += '</div>';
+    });
+
+    // priority callout
+    if(complete){
+      const focus = [];
+      const strong = [];
+      QUIZ.forEach((sec, si) => {
+        const pct = Math.round((tally[si].correct / tally[si].total) * 100);
+        if(pct <= 60) focus.push(sec.sec);
+        else if(pct >= 80) strong.push(sec.sec);
+      });
+      if(focus.length){
+        html += '<div class="callout warn"><span class="c-tag">Priority study areas (≤ 60%)</span><p>Point the 2026 H2 deep-dive here first: <strong>'+focus.map(esc).join('</strong>, <strong>')+'</strong>.</p></div>';
+      } else {
+        html += '<div class="callout"><span class="c-tag">No red flags</span><p>No section landed at or below 60% — a solid baseline across the board. Use the lowest bars above to fine-tune where to go deeper.</p></div>';
+      }
+      if(strong.length){
+        html += '<div class="callout brass"><span class="c-tag">Already strong (≥ 80%)</span><p>'+strong.map(esc).join(', ')+' — lighter touch needed; the other founder may want to focus here if their gap map differs.</p></div>';
+      }
+      html += '<p class="sc-status" style="margin-top:18px;">Take it again any time with the <strong>Reset</strong> button (top right), or <strong>Print / Save PDF</strong> to keep this gap map alongside the study plan.</p>';
+    }
+
+    body.innerHTML = html;
+    observeReveals();
+  }
+
+  function resetQuiz(){
+    tally.forEach(t => { t.answered = 0; t.correct = 0; });
+    answeredTotal = 0; correctTotal = 0;
+    document.getElementById('progressbar').style.width = '0%';
+    const pc = document.getElementById('pillCount'); if(pc) pc.textContent = '0';
+    buildQuiz();
+    document.getElementById('scorebody').innerHTML =
+      '<p class="sc-status">Answer the questions above and your results will build here — overall score, a bar per topic area, and the sections to prioritize in the 2026 H2 study plan.</p>';
+    observeReveals();
+    document.querySelector('.hero').scrollIntoView();
+  }
+
+  /* ---------- reveal animation ---------- */
+  let io = null;
+  function observeReveals(){
+    const els = document.querySelectorAll('.reveal:not(.in)');
+    if(!('IntersectionObserver' in window)){
+      els.forEach(el => el.classList.add('in'));
+      return;
+    }
+    if(!io){
+      io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+        });
+      }, { threshold:0.06, rootMargin:'0px 0px -6% 0px' });
+    }
+    els.forEach(el => io.observe(el));
+  }
+
+  /* ---------- init ---------- */
+  buildQuiz();
+  updateProgress();
+  renderResults();
+  observeReveals();
+  </script>
+</body>
+</html>

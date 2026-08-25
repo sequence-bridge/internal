@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RIA Roadmap — Riamatic</title>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<meta name="description" content="Committed single-path roadmap for Riamatic: now (mid-2026) through Q1 2027 go-to-market." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --navy: #0D1B2A;
+    --navy-mid: #162236;
+    --navy-light: #1E3050;
+    --cream: #F5F0E8;
+    --cream-dim: #E8E2D4;
+    --amber: #D4A843;
+    --amber-dim: #9E7A2A;
+    --coral: #C9614F;
+    --coral-dim: #9E4A3A;
+    --sage: #5B8A6F;
+    --muted: #8899AA;
+    --border: rgba(255,255,255,0.07);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; }
+  body {
+    background: var(--navy);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  /* ── Header ── */
+  .masthead {
+    border-bottom: 1px solid var(--border);
+    padding: 52px 64px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .back-button {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 50;
+    display: inline-block;
+    color: var(--cream-dim);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .14em;
+    padding: 10px 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 0 6px 18px rgba(0,0,0,.16);
+  }
+  .back-button:hover { color: var(--amber); background: var(--navy-light); transform: translateY(-2px); }
+  .masthead::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 160% at 90% -40%, rgba(212,168,67,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .masthead-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--amber);
+    opacity: 0.8;
+  }
+  .masthead h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.12;
+    max-width: 720px;
+    color: var(--cream);
+  }
+  .masthead h1 em { font-style: italic; color: var(--amber); }
+  .masthead-meta { display: flex; gap: 32px; margin-top: 8px; flex-wrap: wrap; }
+  .meta-item { display: flex; flex-direction: column; gap: 3px; }
+  .meta-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .meta-value { font-size: 0.85rem; font-weight: 500; color: var(--cream-dim); }
+
+  /* ── Context bars ── */
+  .context-bar {
+    margin: 40px 64px 0;
+    padding: 20px 24px;
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber);
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .context-bar.starting { border-left-color: var(--coral); margin-top: 16px; }
+  .context-item { display: flex; align-items: baseline; gap: 8px; }
+  .context-key {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber);
+    white-space: nowrap;
+  }
+  .context-bar.starting .context-key { color: var(--coral); }
+  .context-val { font-size: 0.82rem; color: var(--cream-dim); }
+
+  /* ── Changed-since note ── */
+  .changed {
+    margin: 16px 64px 0;
+    padding: 14px 22px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    border: 1px dashed var(--border);
+    border-radius: 3px;
+    background: rgba(255,255,255,0.015);
+  }
+  .changed strong { color: var(--cream-dim); font-weight: 500; }
+
+  /* ── Section heading ── */
+  .section-label {
+    margin: 56px 64px 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .section-label h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--cream);
+    white-space: nowrap;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Phase flow (single column) ── */
+  .flow { margin: 28px 64px 0; display: flex; flex-direction: column; gap: 22px; }
+
+  .phase {
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--amber);
+    background: linear-gradient(135deg, #142031 0%, #17263b 100%);
+    padding: 24px 30px 26px;
+    position: relative;
+  }
+  .phase.parallel { border-top-color: var(--sage); background: linear-gradient(135deg, #13211c 0%, #16261f 100%); }
+  .phase.entity { border-top-color: var(--coral); }
+
+  .phase-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .phase-id {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .phase-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--cream);
+    line-height: 1.15;
+  }
+  .phase-window {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.68rem;
+    padding: 5px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    background: rgba(212,168,67,0.1);
+    color: var(--amber);
+    border: 1px solid rgba(212,168,67,0.2);
+  }
+  .phase.parallel .phase-window { background: rgba(91,138,111,0.12); color: #7db897; border-color: rgba(91,138,111,0.28); }
+  .phase.entity .phase-window { background: rgba(201,97,79,0.1); color: var(--coral); border-color: rgba(201,97,79,0.22); }
+  .parallel-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sage);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .phase-actions { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .phase-actions > li {
+    font-size: 0.85rem;
+    color: var(--cream-dim);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .phase-actions > li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--muted);
+    font-size: 0.75rem;
+    top: 1px;
+  }
+  .phase-actions strong { color: var(--cream); font-weight: 500; }
+
+  .phase-gate {
+    margin-top: 16px;
+    padding: 10px 14px;
+    border-radius: 3px;
+    font-size: 0.78rem;
+    font-style: italic;
+    line-height: 1.45;
+    background: rgba(212,168,67,0.07);
+    color: var(--amber);
+    border-left: 2px solid var(--amber-dim);
+  }
+  .phase.entity .phase-gate { background: rgba(201,97,79,0.07); color: #e0917f; border-left-color: var(--coral-dim); }
+  .phase-note {
+    margin-top: 14px;
+    padding: 10px 14px;
+    border-radius: 3px;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    background: rgba(91,138,111,0.1);
+    color: #7db897;
+    border-left: 2px solid var(--sage);
+  }
+
+  /* ── Curriculum block ── */
+  .curriculum {
+    margin-top: 20px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: rgba(13,27,42,0.5);
+    overflow: hidden;
+  }
+  .curriculum-head {
+    padding: 14px 20px;
+    background: rgba(212,168,67,0.07);
+    border-bottom: 1px solid var(--border);
+  }
+  .curriculum-head .c-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--amber);
+    display: block;
+    margin-bottom: 3px;
+  }
+  .curriculum-head .c-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--cream);
+  }
+  .curriculum-body { padding: 18px 20px 20px; }
+
+  .cur-group { margin-bottom: 20px; }
+  .cur-group:last-child { margin-bottom: 0; }
+  .cur-group-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 8px;
+    display: block;
+  }
+  .cur-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .cur-list li {
+    font-size: 0.8rem;
+    color: var(--cream-dim);
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.45;
+  }
+  .cur-list li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--amber);
+    top: 0;
+  }
+  .cur-list li em { color: var(--muted); font-style: normal; font-size: 0.74rem; }
+
+  /* ── Watch-order table ── */
+  .watch-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+  .watch-table th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 4px 8px 7px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .watch-table td {
+    font-size: 0.78rem;
+    color: var(--cream-dim);
+    padding: 6px 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top;
+  }
+  .watch-table tr:last-child td { border-bottom: none; }
+  .watch-table td:first-child {
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--amber);
+    white-space: nowrap;
+    width: 1%;
+  }
+  .watch-table td:nth-child(2) { color: var(--cream); }
+  .watch-table td:last-child { color: var(--muted); font-size: 0.74rem; }
+
+  .tracker-link {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 3px;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    background: rgba(30,48,80,0.5);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--amber);
+    color: var(--cream-dim);
+  }
+  .tracker-link code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--amber);
+    background: rgba(212,168,67,0.08);
+    padding: 1px 6px;
+    border-radius: 2px;
+  }
+  .tracker-link strong { color: var(--cream); font-weight: 500; }
+
+  /* ── Corrections callout ── */
+  .corrections {
+    margin: 44px 64px 0;
+    padding: 24px 28px;
+    background: rgba(201,97,79,0.06);
+    border: 1px solid rgba(201,97,79,0.22);
+    border-left: 3px solid var(--coral);
+  }
+  .corrections .c-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 14px;
+    display: block;
+  }
+  .corr-item { margin-bottom: 14px; }
+  .corr-item:last-child { margin-bottom: 0; }
+  .corr-item strong { font-size: 0.85rem; color: var(--cream); font-weight: 500; display: block; margin-bottom: 2px; }
+  .corr-item span { font-size: 0.8rem; color: var(--cream-dim); }
+
+  /* ── Shared decisions ── */
+  .shared-decisions {
+    margin: 44px 64px 0;
+    padding: 24px 28px;
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--sage);
+  }
+  .sd-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 14px;
+    display: block;
+  }
+  .sd-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+  .sd-item { display: flex; flex-direction: column; gap: 3px; }
+  .sd-item strong { font-size: 0.8rem; font-weight: 500; color: var(--cream); }
+  .sd-item span { font-size: 0.76rem; color: var(--muted); }
+
+  /* ── Footer ── */
+  .doc-footer {
+    margin: 48px 64px 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .footer-note { font-size: 0.76rem; color: var(--muted); }
+  .footer-authors {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  a { color: var(--amber); text-decoration: none; border-bottom: 1px solid rgba(212,168,67,0.3); }
+  a:hover { border-bottom-color: var(--amber); }
+
+  /* ── Responsive ── */
+  @media (max-width: 860px) {
+    .masthead, .context-bar, .changed, .section-label, .flow, .corrections, .shared-decisions, .doc-footer {
+      margin-left: 24px;
+      margin-right: 24px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .masthead { padding: 36px 24px 28px; }
+    .section-label { padding-left: 0; padding-right: 0; }
+  }
+
+  @media print {
+    body { background: white; color: #111; }
+    .back-button { display: none; }
+    .phase, .context-bar, .corrections, .shared-decisions, .curriculum { border-color: #ddd !important; background: #fff !important; }
+  }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  .masthead { animation: fadeUp 0.5s ease both; }
+  .context-bar { animation: fadeUp 0.5s ease 0.1s both; }
+  .flow { animation: fadeUp 0.5s ease 0.2s both; }
+</style>
+</head>
+<body>
+<a class="back-button" href="../index.html">&larr; Back to Index</a>
+
+<!-- ── MASTHEAD ── -->
+<div class="masthead">
+  <div class="masthead-eyebrow">Riamatic · Committed Roadmap · v1.0</div>
+  <h1>From Signed to <em>Shipping</em></h1>
+  <div class="masthead-meta">
+    <div class="meta-item"><span class="meta-label">Prepared</span><span class="meta-value">2026-07-13</span></div>
+    <div class="meta-item"><span class="meta-label">Owners</span><span class="meta-value">Hector (CEO) + Cynthia (CSO)</span></div>
+    <div class="meta-item"><span class="meta-label">GTM Target</span><span class="meta-value">Q1 2027 cold outreach</span></div>
+    <div class="meta-item"><span class="meta-label">Lead Offering</span><span class="meta-value">Client Onboarding Accelerator ($5k–$7k/mo)</span></div>
+  </div>
+</div>
+
+<!-- ── LOCKED ── -->
+<div class="context-bar">
+  <div class="context-item"><span class="context-key">Locked</span><span class="context-val">RIA vertical · Founders' Term Sheet <strong>signed</strong> · Florida LLC intended · Productized · ~$5k/mo subscription</span></div>
+  <div class="context-item"><span class="context-key">Founders</span><span class="context-val">Both Ecuador-based · 10 yrs software · Hector builds + ops · Cynthia sells</span></div>
+</div>
+
+<!-- ── STARTING STATE ── -->
+<div class="context-bar starting">
+  <div class="context-item"><span class="context-key">Starting state · Jul 2026</span><span class="context-val">Name not chosen · Entity not formed · Baseline assessment just begun · No discovery calls yet · No domain advisor yet</span></div>
+</div>
+
+<!-- ── CHANGED SINCE ── -->
+<div class="changed">
+  <strong>What changed since the 2026-05-20 roadmap:</strong> The two-option layout is retired — RIA is locked, so Option B (vertical selection) is done. The founders' partnership is <strong>signed</strong>. And <strong>heavyweight entity formation now comes after Spec, not first</strong> (see Phase 3) — the Term Sheet already governs the founders, so the LLC + cross-border tax spend waits until validation confirms we're building.
+</div>
+
+<!-- ── PHASE FLOW ── -->
+<div class="section-label"><h2>The Sequence</h2></div>
+<div class="flow">
+
+  <!-- PHASE 1 -->
+  <div class="phase">
+    <div class="phase-head">
+      <div>
+        <div class="phase-id">Phase 1 · The real next step</div>
+        <div class="phase-title">Domain Mastery &amp; Validation</div>
+      </div>
+      <span class="phase-window">Jul – Oct 2026</span>
+    </div>
+    <ul class="phase-actions">
+      <li><strong>Finish the baseline assessment</strong> — both founders complete the 58-question diagnostic; use the per-section gap map to weight the study plan below.</li>
+      <li><strong>Quick win (do now, ~$20):</strong> choose the company name and secure the domain — unblocks content, LinkedIn, and email. Kept separate from the legal entity (Phase 3). Shortlist stands: Riasphere / RIAorbit / RIAatlas / Advisphere.</li>
+      <li>Set a study cadence (~3 podcast episodes/week + reading) with a weekly 30-min founders' sync to compare notes and turn them into product + content ideas.</li>
+      <li><strong>Engage a paid domain advisor</strong> — an active RIA principal or compliance consultant, ~4–6 hrs/month.</li>
+      <li><strong>Run 10 customer-discovery calls</strong> with RIA founders/principals ($100M–$500M AUM). Script: "Walk me through how a new client gets onboarded, step by step." End with: "If a tool cut that in half, what would you pay monthly?"</li>
+    </ul>
+
+    <!-- CURRICULUM -->
+    <div class="curriculum">
+      <div class="curriculum-head">
+        <span class="c-eyebrow">Embedded · Domain Mastery Curriculum</span>
+        <span class="c-title">Becoming credible in the RIA space</span>
+      </div>
+      <div class="curriculum-body">
+
+        <div class="cur-group">
+          <span class="cur-group-label">▶ Primary podcast — Transition To RIA (Brad Wales)</span>
+          <p style="font-size:0.78rem;color:var(--muted);margin-bottom:8px;line-height:1.45;">
+            Teaches the RIA model from the founder-principal's point of view — i.e. our buyer. Start with these 10 (of ~148), sequenced foundations → economics → tech &amp; compliance:
+          </p>
+          <table class="watch-table">
+            <thead><tr><th>#</th><th>Episode</th><th>Why first</th></tr></thead>
+            <tbody>
+              <tr><td>#3</td><td>RIA vs. IAR</td><td>Core vocabulary</td></tr>
+              <tr><td>#127</td><td>RIA vs. broker-dealer</td><td>The independence story</td></tr>
+              <tr><td>#98</td><td>Is the RIA model right for your practice?</td><td>Buyer's decision lens</td></tr>
+              <tr><td>#42</td><td>How to start an RIA?</td><td>The operational arc</td></tr>
+              <tr><td>#84</td><td>How much does it cost to start an RIA?</td><td>Buyer economics / budget signals</td></tr>
+              <tr><td>#59</td><td>What is an RIA technology stack?</td><td>Where our product lives</td></tr>
+              <tr><td>#87</td><td>Most important software for a new RIA?</td><td>Positioning vs. incumbents</td></tr>
+              <tr><td>#58</td><td>What is an Outsourced CCO?</td><td>Our onboarding + governance buyer</td></tr>
+              <tr><td>#34</td><td>Kinds of RIA compliance consultants</td><td>Adjacent players / partners</td></tr>
+              <tr><td>#53</td><td>How to choose a custodian?</td><td>Custodial pre-fill in our flow</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:0.72rem;color:var(--muted);margin-top:8px;">Playlist: <a href="https://www.youtube.com/playlist?list=PLi2_qwUPcnuvjcB4vaxWGi6tgxNnXzFvr">youtube.com/playlist?list=PLi2_qwUPcnuvjcB4vaxWGi6tgxNnXzFvr</a></p>
+        </div>
+
+        <div class="cur-group">
+          <span class="cur-group-label">Books — the business of an RIA</span>
+          <ul class="cur-list">
+            <li>Philip Palaveev — <strong>The Ensemble Practice</strong> <em>· building and scaling an RIA firm</em></li>
+            <li>Mark Tibergien &amp; Rebecca Pomering — <strong>Practice Made (More) Perfect</strong> <em>· RIA operations &amp; economics</em></li>
+            <li>Mark Tibergien — <strong>How to Value, Buy, or Sell a Financial Advisory Practice</strong> <em>· the firm as an asset</em></li>
+            <li>Philip Palaveev — <strong>G2: Building the Next Generation</strong> <em>· talent &amp; succession (skim)</em></li>
+          </ul>
+        </div>
+
+        <div class="cur-group">
+          <span class="cur-group-label">Regulation — read the source, not summaries</span>
+          <ul class="cur-list">
+            <li><strong>Investment Advisers Act of 1940</strong> <em>· the foundation</em></li>
+            <li><strong>Rule 206(4)-7</strong> — the Compliance Rule <em>· written policies + annual review + CCO</em></li>
+            <li><strong>Rule 206(4)-1</strong> — the Marketing Rule <em>· testimonials, performance, ads</em></li>
+            <li><strong>Regulation S-P</strong> (amended) <em>· privacy + incident response — compliance date passed Jun 3 2026, now in effect</em></li>
+            <li><strong>Form ADV</strong> Parts 1, 2A, 2B, and Form CRS <em>· read the instructions</em></li>
+          </ul>
+        </div>
+
+        <div class="cur-group">
+          <span class="cur-group-label">Ongoing — blogs, newsletters, associations</span>
+          <ul class="cur-list">
+            <li>Michael Kitces — <strong>Nerd's Eye View</strong> (kitces.com) <em>· the deepest well; subscribe</em></li>
+            <li>Kitces — <strong>Financial Advisor Success</strong> podcast <em>· secondary to Transition To RIA</em></li>
+            <li><strong>RIABiz</strong>, <strong>WealthManagement.com</strong>, <strong>ThinkAdvisor</strong>, <strong>Citywire RIA</strong> <em>· news + landscape</em></li>
+            <li><strong>IAA</strong> (Investment Adviser Association) &amp; <strong>NSCP</strong> <em>· compliance community + resources</em></li>
+            <li>Certification path to weigh later: <strong>IACCP</strong> (Investment Adviser Certified Compliance Professional)</li>
+          </ul>
+        </div>
+
+        <div class="cur-group">
+          <span class="cur-group-label">Competitive tools — get demos / trials, don't just read</span>
+          <ul class="cur-list">
+            <li>Custody: <strong>Schwab Advisor Center</strong>, Fidelity Institutional, Altruist, Pershing</li>
+            <li>Portfolio &amp; reporting: <strong>Orion</strong>, Black Diamond, Addepar, Tamarac</li>
+            <li>CRM: <strong>Redtail</strong>, <strong>Wealthbox</strong>, Salesforce Financial Services Cloud</li>
+            <li>Account opening / onboarding: custodian tools, Docupace, Advyzon <em>· this is the workflow we're attacking</em></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="tracker-link">
+      <strong>Keeping tabs:</strong> track it in the companion doc <code>out/2026-07-13-ria-domain-mastery-tracker.md</code> — for each item log <em>watched/read</em>, date, per founder, and a 2–3 sentence <strong>"so what for us"</strong> note (a product implication, a discovery-call question, or a content idea). Those notes are the raw material for the ICP scripts and first blog posts.
+    </div>
+
+    <div class="phase-gate">Gate: At least one RIA says, unprompted, "I'd pay $5k/month for that today." If zero after 10 calls, revisit scope before building.</div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="phase">
+    <div class="phase-head">
+      <div>
+        <div class="phase-id">Phase 2</div>
+        <div class="phase-title">Spec &amp; Architecture</div>
+      </div>
+      <span class="phase-window">Sep – Oct 2026</span>
+    </div>
+    <ul class="phase-actions">
+      <li>Spec the <strong>Onboarding Accelerator</strong> web app: screen flows, user roles (advisor, CCO, client), data model, status dashboard.</li>
+      <li>Spec the <strong>AI Governance Kit</strong>: policy templates, vendor diligence checklists, Form ADV update guide, audit-log structure.</li>
+      <li>Define the <strong>Claude integration layer</strong>: which agents (document validation, KYC completeness), what prompts, what guardrails.</li>
+      <li>Shortlist 2–3 <strong>AML vendors</strong> for the paid add-on (ComplyAdvantage, LexisNexis Bridger).</li>
+      <li>Choose the tech stack and stand up the dev environment.</li>
+    </ul>
+    <div class="phase-note">Overlaps Phase 1 — start spec conversations with early discovery-call participants so they shape the product. The gate stays on Phase 1's validation.</div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="phase entity">
+    <div class="phase-head">
+      <div>
+        <div class="phase-id">Phase 3 · Moved here, after Spec</div>
+        <div class="phase-title">Entity &amp; Legal Foundation</div>
+      </div>
+      <span class="phase-window">Oct – Nov 2026</span>
+    </div>
+    <ul class="phase-actions">
+      <li><strong>Engage a Florida business attorney + a US/Ecuador cross-border tax advisor</strong> — validate the vehicle first: is a Florida LLC right for an entity owned entirely by two non-US-resident members, or is a C-corp / alternative better?</li>
+      <li>Resolve the Term Sheet's §19 open items (revenue-phase trigger, fundamental-matters carve-out + debt threshold, buyout fair-value method, non-compete scope).</li>
+      <li>Form the entity; obtain EIN + ITINs for both founders.</li>
+      <li>Open a US business bank account (Mercury is remote/foreign-founder friendly).</li>
+      <li>Convert the signed Term Sheet into a formal <strong>Operating Agreement</strong> (supersedes the Term Sheet).</li>
+    </ul>
+    <div class="phase-note">Why after Spec: the signed Term Sheet already governs the founders' relationship, and forming an all-foreign-owned US entity + cross-border tax setup is a real cash and complexity outlay. Defer it until validation (Phase 1 gate) and spec confirm the build is real — but it <em>must</em> be finished before any client revenue lands.</div>
+    <div class="phase-gate">Gate: Entity, EIN, and banking live <strong>before the Q1 2027 pilot invoices anyone.</strong> Build (Phase 4) does not depend on this and can run in parallel.</div>
+  </div>
+
+  <!-- PHASE 4 -->
+  <div class="phase">
+    <div class="phase-head">
+      <div>
+        <div class="phase-id">Phase 4</div>
+        <div class="phase-title">Build Offering #1</div>
+      </div>
+      <span class="phase-window">Oct – Dec 2026</span>
+    </div>
+    <ul class="phase-actions">
+      <li>Build the agency web app: status dashboard, CCO audit-log view, advisor task queue, client-facing status page.</li>
+      <li>Integrate Claude as the document-validation + KYC-completeness agent.</li>
+      <li>Build the Zapier/n8n workflow engine: intake form → document collection → validation → custodial pre-fill → e-signature routing.</li>
+      <li>Assemble the AI Governance Kit deliverables; wire the AML vendor add-on.</li>
+      <li><strong>Internal pilot:</strong> run 2–3 onboardings manually <em>and</em> with the tool to prove the time savings.</li>
+    </ul>
+    <div class="phase-gate">Gate: End-to-end onboarding works in staging, and at least one discovery-call participant has seen a demo and given feedback.</div>
+  </div>
+
+  <!-- PHASE 5 -->
+  <div class="phase parallel">
+    <span class="parallel-tag">↔ Runs in parallel from Aug 2026 onward</span>
+    <div class="phase-head">
+      <div>
+        <div class="phase-id">Phase 5</div>
+        <div class="phase-title">Content Engine</div>
+      </div>
+      <span class="phase-window">Aug 2026 →</span>
+    </div>
+    <ul class="phase-actions">
+      <li><strong>First piece (reframed):</strong> Reg S-P is now <em>in effect</em> (compliance date passed Jun 3 2026) — publish "Reg S-P is live: is your AI vendor stack actually compliant?" as the authority / SEO anchor.</li>
+      <li>Content pillars: RIA compliance, AI in advisory workflows, productivity for founder-principals.</li>
+      <li>Formats: long-form blog + short-form video (LinkedIn / YouTube). Both founders post — personal brand alongside the agency brand.</li>
+      <li>Build the ICP list: Tier 1 (small SEC-RIAs $100M–$500M) + Tier 2 (FL/TX state-registered $50M–$80M). Sources: SEC IAPD, FL OFR, TX SSB, FINTRX, AdvizorPro.</li>
+      <li>Identify 2–3 RIA podcasts for guest appearances to build credibility before outbound.</li>
+    </ul>
+  </div>
+
+  <!-- PHASE 6 -->
+  <div class="phase">
+    <div class="phase-head">
+      <div>
+        <div class="phase-id">Phase 6</div>
+        <div class="phase-title">Go to Market</div>
+      </div>
+      <span class="phase-window">Q1 2027 →</span>
+    </div>
+    <ul class="phase-actions">
+      <li>Cold outbound begins: LinkedIn + email sequences to the Tier 1 ICP list.</li>
+      <li>Lead with the AI Governance Kit as a free diagnostic (5-question email audit) — lowers the barrier, surfaces compliance anxiety.</li>
+      <li>Offer a paid pilot at a reduced rate (<strong>$2.5k/mo for 90 days</strong>) to land the first 3 reference customers.</li>
+      <li>Podcast guesting on RIA-adjacent shows (Kitces, Financial Advisor Success, Transition To RIA).</li>
+      <li>Reference-customer case studies ready by end of Q1 2027.</li>
+    </ul>
+    <div class="phase-gate">Target: 3 paying reference customers by end of Q2 2027. Then price to the full $5k–$7k/mo.</div>
+  </div>
+
+</div>
+
+<!-- ── CORRECTIONS ── -->
+<div class="corrections">
+  <span class="c-label">Corrections carried over from the 2026-05-20 roadmap</span>
+  <div class="corr-item">
+    <strong>The Reg S-P deadline has passed.</strong>
+    <span>June 3, 2026 is behind us — the "publish before the deadline" hook is dead. The first content piece pivots to a post-deadline angle (see Phase 5): Reg S-P is now in force, so the question becomes whether an RIA's AI vendor stack actually complies.</span>
+  </div>
+  <div class="corr-item">
+    <strong>Entity = Florida LLC, not Delaware/Wyoming.</strong>
+    <span>The signed Term Sheet commits to a Florida LLC (intended). The old Phase 1's DE/WY note is superseded — and because <em>both</em> founders are Ecuador-resident, the tax-advisor / entity-validation step in Phase 3 is load-bearing, not a formality.</span>
+  </div>
+</div>
+
+<!-- ── SHARED DECISIONS ── -->
+<div class="shared-decisions">
+  <span class="sd-label">Already decided — holds across the whole path</span>
+  <div class="sd-grid">
+    <div class="sd-item"><strong>Pricing model</strong><span>Monthly subscription, ~$5k/mo. No hourly. Tokens billed separately.</span></div>
+    <div class="sd-item"><strong>GTM motion</strong><span>Cold outbound + content. Not referrals. Outreach starts Q1 2027.</span></div>
+    <div class="sd-item"><strong>Target size</strong><span>SMB RIAs — founder/principal is the buyer. No procurement committees.</span></div>
+    <div class="sd-item"><strong>Build stack</strong><span>Agency web app + Claude + Zapier/n8n. Partner-integrate vendors (K1x, AML).</span></div>
+    <div class="sd-item"><strong>Offering scope</strong><span>Productized, not bespoke. 3 offerings max; lead with the Onboarding Accelerator.</span></div>
+    <div class="sd-item"><strong>Partnership</strong><span>Founders' Term Sheet signed. 50/50, 4-yr vest / 1-yr cliff. Operating Agreement in Phase 3.</span></div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<div class="doc-footer">
+  <div class="footer-note">Working document · Supersedes 2026-05-20 GTM Roadmap · v1.0 · 2026-07-13</div>
+  <div class="footer-authors">Hector García + Cynthia Ortiz</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Parallel Venture - Options &amp; Launch Plan</title>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<meta name="description" content="Naming, offer, pricing, and launch options for a parallel productized AI and software venture." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #18302b;
+    --ink-muted: #5d6d68;
+    --paper: #f6f3ec;
+    --paper-deep: #ece6d8;
+    --sheet: #fffdf8;
+    --rule: #d7d0c1;
+    --green: #175d4f;
+    --green-dark: #0c3d34;
+    --green-soft: #dcece5;
+    --brass: #a2712b;
+    --brass-soft: #f3e4c9;
+    --coral: #b85243;
+    --coral-soft: #f6ddd8;
+    --shadow: rgba(21, 40, 35, 0.14);
+    --max: 1240px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    color: var(--ink);
+    background:
+      linear-gradient(90deg, rgba(23, 93, 79, 0.025) 1px, transparent 1px) 0 0 / 32px 32px,
+      linear-gradient(rgba(23, 93, 79, 0.02) 1px, transparent 1px) 0 0 / 32px 32px,
+      var(--paper);
+    font-family: "DM Sans", sans-serif;
+    line-height: 1.55;
+  }
+
+  .topbar {
+    position: sticky;
+    z-index: 10;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+    padding: 12px max(22px, calc((100vw - var(--max)) / 2));
+    color: #f8f4e9;
+    background: rgba(12, 61, 52, 0.96);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    backdrop-filter: blur(12px);
+  }
+  .topbar-title { font: 500 11px/1 "DM Mono", monospace; letter-spacing: 0.16em; text-transform: uppercase; }
+  .topbar-left { display: flex; gap: 14px; align-items: center; min-width: 0; }
+  .top-actions { display: flex; gap: 8px; align-items: center; }
+  button, .topbar-link {
+    appearance: none;
+    border: 1px solid rgba(255,255,255,0.26);
+    background: transparent;
+    color: inherit;
+    padding: 8px 11px;
+    border-radius: 3px;
+    font: 500 10px/1 "DM Mono", monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  button:hover, button.active, .topbar-link:hover { background: var(--brass); border-color: var(--brass); color: #1f211d; }
+
+  .page { max-width: var(--max); margin: 0 auto; padding: 44px 22px 88px; }
+  .masthead {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(250px, 0.75fr);
+    gap: 42px;
+    align-items: end;
+    padding: 34px 0 42px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .eyebrow, .section-kicker, .label {
+    margin: 0 0 12px;
+    color: var(--brass);
+    font: 500 11px/1.2 "DM Mono", monospace;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  h1, h2, h3 { font-family: "Newsreader", Georgia, serif; letter-spacing: 0; }
+  h1 { max-width: 760px; margin: 0; font-size: clamp(42px, 7vw, 78px); font-weight: 600; line-height: 0.94; }
+  h1 em { color: var(--green); font-style: italic; }
+  .lede { max-width: 38ch; margin: 16px 0 0; color: var(--ink-muted); font-size: 19px; }
+  .status-note { padding: 20px; background: var(--green-soft); border-left: 4px solid var(--green); }
+  .status-note strong { display: block; margin-bottom: 6px; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .status-note p { margin: 0; color: #31564d; font-size: 14px; }
+
+  .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; margin: 26px 0 12px; background: var(--rule); border: 1px solid var(--rule); }
+  .summary-cell { min-height: 112px; padding: 18px; background: var(--sheet); }
+  .summary-number { display: block; color: var(--green); font: 600 28px/1 "Newsreader", Georgia, serif; }
+  .summary-label { display: block; margin-top: 8px; color: var(--ink-muted); font-size: 12px; }
+
+  section { margin-top: 72px; scroll-margin-top: 72px; }
+  .section-heading { display: flex; justify-content: space-between; gap: 24px; align-items: flex-end; margin-bottom: 22px; }
+  h2 { max-width: 720px; margin: 0; font-size: clamp(30px, 4vw, 48px); font-weight: 600; line-height: 0.98; }
+  .section-intro { max-width: 64ch; margin: 10px 0 0; color: var(--ink-muted); }
+  .rule { flex: 1; min-width: 60px; height: 1px; background: var(--rule); margin-bottom: 9px; }
+
+  .callout { padding: 21px 23px; margin: 20px 0; border: 1px solid var(--rule); background: var(--sheet); }
+  .callout strong { color: var(--green); }
+  .callout p { margin: 0; }
+  .guardrails { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .guardrail { padding: 20px; border-top: 3px solid var(--green); background: var(--sheet); box-shadow: 0 8px 18px -16px var(--shadow); }
+  .guardrail strong { display: block; margin-bottom: 6px; font-size: 14px; }
+  .guardrail span { color: var(--ink-muted); font-size: 13px; }
+
+  .founder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .founder-card { border: 1px solid var(--rule); background: var(--sheet); }
+  .founder-card header { padding: 20px 22px 16px; border-bottom: 1px solid var(--rule); }
+  .founder-card h3 { margin: 0; font-size: 27px; font-weight: 600; }
+  .founder-card .sub { margin: 5px 0 0; color: var(--ink-muted); font-size: 13px; }
+  .founder-content { padding: 20px 22px; }
+  .word-groups { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .word-group { min-width: 0; }
+  .word-group .label { color: var(--ink-muted); font-size: 9px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { display: inline-block; padding: 5px 8px; color: var(--green-dark); background: var(--green-soft); border-radius: 3px; font: 500 10px/1 "DM Mono", monospace; }
+  .favorite-list { list-style: none; margin: 20px 0 0; padding: 0; display: grid; gap: 8px; }
+  .favorite-list li { display: flex; justify-content: space-between; gap: 14px; padding: 10px 0; border-bottom: 1px solid #eee7da; }
+  .favorite-list li:last-child { border-bottom: 0; }
+  .favorite-list span { font-family: "Newsreader", Georgia, serif; font-size: 18px; }
+  .domain { color: var(--ink-muted); font: 10px/1.35 "DM Mono", monospace; text-align: right; overflow-wrap: anywhere; }
+  .domain.taken { color: var(--coral); }
+
+  .controls { display: flex; justify-content: space-between; gap: 14px; align-items: center; margin: 0 0 14px; }
+  .controls p { margin: 0; color: var(--ink-muted); font-size: 13px; }
+  .controls b { color: var(--green); }
+  .filter-button { color: var(--green); border-color: var(--green); background: var(--sheet); }
+  .filter-button:hover, .filter-button.active { color: #fff; background: var(--green); border-color: var(--green); }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--rule); background: var(--sheet); }
+  table { width: 100%; border-collapse: collapse; min-width: 760px; }
+  th { padding: 13px 14px; color: var(--ink-muted); background: var(--paper-deep); border-bottom: 1px solid var(--rule); text-align: left; font: 500 10px/1.2 "DM Mono", monospace; letter-spacing: 0.09em; text-transform: uppercase; }
+  td { padding: 13px 14px; border-bottom: 1px solid #ece7db; vertical-align: top; font-size: 13px; }
+  tr:last-child td { border-bottom: 0; }
+  tr:hover td { background: #fffaf0; }
+  .number { width: 44px; color: var(--ink-muted); font: 10px "DM Mono", monospace; }
+  .name-cell { min-width: 170px; font-family: "Newsreader", Georgia, serif; font-size: 19px; font-weight: 600; }
+  .name-cell label { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+  input[type="checkbox"] { accent-color: var(--green); width: 15px; height: 15px; flex: 0 0 auto; }
+  .name-domain { color: var(--green); font: 10px/1.35 "DM Mono", monospace; overflow-wrap: anywhere; }
+  .hidden-row { display: none; }
+  .shortlist-note { margin: 12px 0 0; color: var(--ink-muted); font-size: 12px; }
+
+  .offer-tools { display: flex; gap: 8px; flex-wrap: wrap; }
+  .offer-tools button { color: var(--green); border-color: var(--green); background: var(--sheet); }
+  .offer-tools button:hover, .offer-tools button.active { color: #fff; background: var(--green); }
+  .offer-title { min-width: 220px; font-weight: 600; }
+  .hector-pick td { background: #fff8e9; }
+  .pick-tag { display: inline-block; margin-left: 7px; padding: 3px 6px; color: #6b4918; background: var(--brass-soft); border-radius: 2px; font: 500 8px/1 "DM Mono", monospace; letter-spacing: 0.08em; text-transform: uppercase; vertical-align: middle; }
+  .referral-tag { background: var(--green-soft); color: var(--green-dark); }
+  .money { white-space: nowrap; font: 11px "DM Mono", monospace; }
+
+  .recommendation { display: grid; grid-template-columns: 0.9fr 1.3fr; gap: 22px; padding: 26px; color: #f9f6ed; background: var(--green-dark); }
+  .recommendation h3 { margin: 0; font-size: 32px; line-height: 0.98; }
+  .recommendation .label { color: #d7b56f; }
+  .recommendation p { margin: 0; color: #d9e6e1; }
+
+  .pricing { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .price-card { position: relative; padding: 24px; border: 1px solid var(--rule); background: var(--sheet); }
+  .price-card.recommended { border: 2px solid var(--green); transform: translateY(-6px); }
+  .price-card h3 { margin: 0; font-size: 30px; }
+  .price-card .best { color: var(--ink-muted); font-size: 13px; min-height: 44px; }
+  .price-line { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .price-line span { display: block; color: var(--ink-muted); font: 9px "DM Mono", monospace; letter-spacing: 0.08em; text-transform: uppercase; }
+  .price-line strong { display: block; margin-top: 5px; color: var(--green); font: 600 26px "Newsreader", Georgia, serif; }
+  .price-card ul { margin: 18px 0 0; padding-left: 18px; color: var(--ink-muted); font-size: 13px; }
+  .price-card li { margin: 7px 0; }
+
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; counter-reset: step; }
+  .step { padding: 22px; background: var(--sheet); border: 1px solid var(--rule); }
+  .step::before { counter-increment: step; content: "0" counter(step); display: block; margin-bottom: 20px; color: var(--brass); font: 500 11px "DM Mono", monospace; letter-spacing: 0.1em; }
+  .step h3 { margin: 0 0 10px; font-size: 25px; line-height: 1; }
+  .step ol { margin: 0; padding-left: 18px; color: var(--ink-muted); font-size: 13px; }
+  .step li { margin: 8px 0; }
+
+  .workstreams { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .workstream { padding: 22px; border-top: 4px solid var(--green); background: var(--sheet); }
+  .workstream:nth-child(2) { border-top-color: var(--brass); }
+  .workstream:nth-child(3) { border-top-color: var(--coral); }
+  .workstream h3 { margin: 0 0 10px; font-size: 24px; line-height: 1; }
+  .workstream p { margin: 0 0 14px; color: var(--ink-muted); font-size: 13px; }
+  .workstream strong { color: var(--green); font-size: 13px; }
+  .capacity { margin-top: 14px; padding: 18px 20px; border-left: 4px solid var(--coral); background: var(--coral-soft); }
+  .capacity strong { display: block; margin-bottom: 4px; }
+  .capacity p { margin: 0; color: #73392f; font-size: 13px; }
+
+  footer { margin-top: 66px; padding-top: 20px; border-top: 1px solid var(--rule); color: var(--ink-muted); font-size: 12px; }
+
+  @media (max-width: 880px) {
+    .masthead, .recommendation { grid-template-columns: 1fr; }
+    .summary-grid, .guardrails, .steps { grid-template-columns: repeat(2, 1fr); }
+    .pricing { grid-template-columns: 1fr; }
+    .price-card.recommended { transform: none; }
+    .workstreams { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 620px) {
+    .page { padding: 28px 14px 60px; }
+    .masthead { gap: 24px; padding: 22px 0 30px; }
+    .summary-grid, .guardrails, .founder-grid, .steps { grid-template-columns: 1fr; }
+    .word-groups { grid-template-columns: 1fr; }
+    .section-heading { display: block; }
+    .section-heading .rule { display: none; }
+    .controls { align-items: flex-start; flex-direction: column; }
+    .topbar-title { max-width: 175px; line-height: 1.35; }
+  }
+  @media print {
+    @page { margin: 15mm; }
+    body { background: #fff; font-size: 11pt; }
+    .topbar { display: none; }
+    .page { max-width: none; padding: 0; }
+    section { margin-top: 36px; }
+    .summary-grid, .founder-grid, .pricing, .steps, .workstreams { break-inside: avoid; }
+    .table-wrap { overflow: visible; }
+    table { min-width: 0; }
+    th, td { padding: 7px; font-size: 8.5pt; }
+    .controls, .shortlist-note { display: none; }
+    .price-card.recommended { transform: none; }
+  }
+</style>
+</head>
+<body>
+  <nav class="topbar" aria-label="Document controls">
+    <div class="topbar-left">
+      <a class="topbar-link" href="../index.html">&larr; Back to Index</a>
+      <span class="topbar-title">Parallel Venture / Working Brief</span>
+    </div>
+    <div class="top-actions">
+      <button id="show-shortlist" type="button">Shortlist: 0</button>
+      <button type="button" onclick="window.print()">Print</button>
+    </div>
+  </nav>
+
+  <main class="page">
+    <header class="masthead">
+      <div>
+        <p class="eyebrow">Sequence Bridge · Parallel Venture</p>
+        <h1>A productized path to <em>earlier cash flow.</em></h1>
+        <p class="lede">A separate AI and software company built around repeatable conversion systems, while Riamatic continues its RIA domain-mastery and validation path.</p>
+      </div>
+      <aside class="status-note">
+        <strong>Working status</strong>
+        <p>Exploratory. The first decision is a beachhead vertical and a tightly bounded offer, not a custom-software pipeline.</p>
+      </aside>
+    </header>
+
+    <div class="summary-grid" aria-label="Brief summary">
+      <div class="summary-cell"><span class="summary-number">01</span><span class="summary-label">Choose one vertical</span></div>
+      <div class="summary-cell"><span class="summary-number">01</span><span class="summary-label">Freeze one repeatable offer</span></div>
+      <div class="summary-cell"><span class="summary-number">02</span><span class="summary-label">Paid design partners</span></div>
+      <div class="summary-cell"><span class="summary-number">Q1 '27</span><span class="summary-label">Riamatic outreach remains protected</span></div>
+    </div>
+
+    <section id="principles">
+      <div class="section-heading"><div><p class="section-kicker">Operating premise</p><h2>Build systems that move customers forward.</h2></div><div class="rule"></div></div>
+      <div class="guardrails">
+        <article class="guardrail"><strong>Separate from Riamatic</strong><span>The venture creates earlier cash flow without changing the RIA roadmap, vertical, or Q1 2027 outreach target.</span></article>
+        <article class="guardrail"><strong>Productized, not bespoke</strong><span>Sell a defined outcome, a fixed implementation window, and a recurring operating service.</span></article>
+        <article class="guardrail"><strong>One vertical first</strong><span>Make the acquisition message, integrations, proof, and delivery model specific before expanding.</span></article>
+        <article class="guardrail"><strong>Sell the result</strong><span>Lead with bookings, response speed, show rate, and recovered leads - never a generic promise of AI development.</span></article>
+      </div>
+    </section>
+
+    <section id="names">
+      <div class="section-heading"><div><p class="section-kicker">Naming workspace</p><h2>Find a name that feels like an operating system.</h2><p class="section-intro">The founders' language points toward timing, sequence, outcomes, lift, clarity, and business rhythm. Domain availability is a useful screen, not legal clearance.</p></div><div class="rule"></div></div>
+      <div class="founder-grid">
+        <article class="founder-card">
+          <header><h3>What Hector likes</h3><p class="sub">Timing, movement, connection, and results.</p></header>
+          <div class="founder-content">
+            <div class="word-groups"><div class="word-group"><p class="label">Primary words</p><div class="chips"><span class="chip">Chronos</span><span class="chip">Helios</span><span class="chip">Atlas</span><span class="chip">Outcome</span><span class="chip">Sequence</span><span class="chip">Pipeline</span><span class="chip">Route</span></div></div><div class="word-group"><p class="label">Secondary words</p><div class="chips"><span class="chip">Signal</span><span class="chip">Works</span><span class="chip">Studio</span><span class="chip">Loop</span><span class="chip">Hub</span><span class="chip">Edge</span><span class="chip">Path</span></div></div></div>
+            <ul class="favorite-list">
+              <li><span>Chronos Loop</span><code class="domain">chronosloop.com</code></li>
+              <li><span>Sequence Signal</span><code class="domain">sequencesignal.com</code></li>
+              <li><span>Sequence Bridge</span><code class="domain">sequencebridge.com</code></li>
+              <li><span>Sequence Trail</span><code class="domain">sequencetrail.com</code></li>
+              <li><span>Outcome Vector</span><code class="domain">outcomevector.com</code></li>
+              <li><span>Outcome Weave</span><code class="domain">outcomeweave.com</code></li>
+              <li><span>Outcome Thread</span><code class="domain">outcomethread.com</code></li>
+              <li><span>Workflow Frame</span><code class="domain">workflowframe.com</code></li>
+            </ul>
+          </div>
+        </article>
+        <article class="founder-card">
+          <header><h3>What Cynthia proposes</h3><p class="sub">Lift, clarity, rhythm, and small-business agility.</p></header>
+          <div class="founder-content">
+            <ul class="favorite-list">
+              <li><span>Liftgrid</span><code class="domain taken">.com / .io taken</code></li>
+              <li><span>Clearwork</span><code class="domain taken">.com / .io taken</code></li>
+              <li><span>Cadence</span><code class="domain taken">.io / getcadence.com taken</code></li>
+              <li><span>Nimbl</span><code class="domain taken">.io / getnimbl.com taken</code></li>
+            </ul>
+            <div class="callout"><p><strong>Shared direction:</strong> use a name that is short enough to feel like software, but concrete enough to explain a better way to run the business.</p></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="brainstorm">
+      <div class="section-heading"><div><p class="section-kicker">Shared brainstorm</p><h2>Fifty available routes to a name.</h2><p class="section-intro">Select candidates to create a local-only shortlist. Each listed `.com` was verified available through Verisign RDAP on 2026-07-28; re-check before purchase.</p></div><div class="rule"></div></div>
+      <div class="controls"><p><b id="shortlist-count">0</b> selected in this browser.</p><button id="clear-shortlist" class="filter-button" type="button">Clear shortlist</button></div>
+      <div class="table-wrap"><table id="name-table"><thead><tr><th>#</th><th>Candidate</th><th>Brand signal</th><th>Available domain</th></tr></thead><tbody>
+        <tr><td class="number">1</td><td class="name-cell"><label><input type="checkbox" data-name="Cadence Frame" />Cadence Frame</label></td><td>A durable structure for a repeatable operating rhythm</td><td><code class="name-domain">cadenceframe.com</code></td></tr>
+        <tr><td class="number">2</td><td class="name-cell"><label><input type="checkbox" data-name="Cadence Weave" />Cadence Weave</label></td><td>Connecting recurring work into one rhythm</td><td><code class="name-domain">cadenceweave.com</code></td></tr>
+        <tr><td class="number">3</td><td class="name-cell"><label><input type="checkbox" data-name="Cadence Thread" />Cadence Thread</label></td><td>A consistent line through daily operations</td><td><code class="name-domain">cadencethread.com</code></td></tr>
+        <tr><td class="number">4</td><td class="name-cell"><label><input type="checkbox" data-name="Cadence Anchor" />Cadence Anchor</label></td><td>A dependable pace for a growing business</td><td><code class="name-domain">cadenceanchor.com</code></td></tr>
+        <tr><td class="number">5</td><td class="name-cell"><label><input type="checkbox" data-name="Cadence Lens" />Cadence Lens</label></td><td>Clear visibility into operational pace and progress</td><td><code class="name-domain">cadencelens.com</code></td></tr>
+        <tr><td class="number">6</td><td class="name-cell"><label><input type="checkbox" data-name="Cadence Prism" />Cadence Prism</label></td><td>Revealing patterns within day-to-day work</td><td><code class="name-domain">cadenceprism.com</code></td></tr>
+        <tr><td class="number">7</td><td class="name-cell"><label><input type="checkbox" data-name="Nimbl Bridge" />Nimbl Bridge</label></td><td>A fast bridge from customer interest to action</td><td><code class="name-domain">nimblbridge.com</code></td></tr>
+        <tr><td class="number">8</td><td class="name-cell"><label><input type="checkbox" data-name="Nimbl Trail" />Nimbl Trail</label></td><td>A visible trail through the customer journey</td><td><code class="name-domain">nimbltrail.com</code></td></tr>
+        <tr><td class="number">9</td><td class="name-cell"><label><input type="checkbox" data-name="Nimbl Vector" />Nimbl Vector</label></td><td>Agile direction and momentum for operations</td><td><code class="name-domain">nimblvector.com</code></td></tr>
+        <tr><td class="number">10</td><td class="name-cell"><label><input type="checkbox" data-name="Nimbl Frame" />Nimbl Frame</label></td><td>A lightweight structure for better work</td><td><code class="name-domain">nimblframe.com</code></td></tr>
+        <tr><td class="number">11</td><td class="name-cell"><label><input type="checkbox" data-name="Nimbl Weave" />Nimbl Weave</label></td><td>Flexible systems working together</td><td><code class="name-domain">nimblweave.com</code></td></tr>
+        <tr><td class="number">12</td><td class="name-cell"><label><input type="checkbox" data-name="Nimbl Thread" />Nimbl Thread</label></td><td>A continuous thread across people and tools</td><td><code class="name-domain">nimblthread.com</code></td></tr>
+        <tr><td class="number">13</td><td class="name-cell"><label><input type="checkbox" data-name="Nimbl Pathway" />Nimbl Pathway</label></td><td>A quick, clear route from lead to result</td><td><code class="name-domain">nimblpathway.com</code></td></tr>
+        <tr><td class="number">14</td><td class="name-cell"><label><input type="checkbox" data-name="Nimbl Anchor" />Nimbl Anchor</label></td><td>A stable operating base with room to move</td><td><code class="name-domain">nimblanchor.com</code></td></tr>
+        <tr><td class="number">15</td><td class="name-cell"><label><input type="checkbox" data-name="Nimbl Lens" />Nimbl Lens</label></td><td>A sharper view of the business in motion</td><td><code class="name-domain">nimbllens.com</code></td></tr>
+        <tr><td class="number">16</td><td class="name-cell"><label><input type="checkbox" data-name="Nimbl Prism" />Nimbl Prism</label></td><td>Making active work and opportunities visible</td><td><code class="name-domain">nimblprism.com</code></td></tr>
+        <tr><td class="number">17</td><td class="name-cell"><label><input type="checkbox" data-name="Lift Weave" />Lift Weave</label></td><td>Connecting work so the business can move higher</td><td><code class="name-domain">liftweave.com</code></td></tr>
+        <tr><td class="number">18</td><td class="name-cell"><label><input type="checkbox" data-name="Lift Pathway" />Lift Pathway</label></td><td>A clear path from inquiry to appointment</td><td><code class="name-domain">liftpathway.com</code></td></tr>
+        <tr><td class="number">19</td><td class="name-cell"><label><input type="checkbox" data-name="Route Thread" />Route Thread</label></td><td>A persistent thread across requests and handoffs</td><td><code class="name-domain">routethread.com</code></td></tr>
+        <tr><td class="number">20</td><td class="name-cell"><label><input type="checkbox" data-name="Route Pathway" />Route Pathway</label></td><td>A visible route from first contact to completion</td><td><code class="name-domain">routepathway.com</code></td></tr>
+        <tr><td class="number">21</td><td class="name-cell"><label><input type="checkbox" data-name="Outcome Trail" />Outcome Trail</label></td><td>A traceable trail from work to business value</td><td><code class="name-domain">outcometrail.com</code></td></tr>
+        <tr><td class="number">22</td><td class="name-cell"><label><input type="checkbox" data-name="Outcome Pathway" />Outcome Pathway</label></td><td>A clear route from action to impact</td><td><code class="name-domain">outcomepathway.com</code></td></tr>
+        <tr><td class="number">23</td><td class="name-cell"><label><input type="checkbox" data-name="Outcome Anchor" />Outcome Anchor</label></td><td>A steady reference point for measurable results</td><td><code class="name-domain">outcomeanchor.com</code></td></tr>
+        <tr><td class="number">24</td><td class="name-cell"><label><input type="checkbox" data-name="Outcome Prism" />Outcome Prism</label></td><td>Revealing the activity behind business results</td><td><code class="name-domain">outcomeprism.com</code></td></tr>
+        <tr><td class="number">25</td><td class="name-cell"><label><input type="checkbox" data-name="Sequence Frame" />Sequence Frame</label></td><td>A practical structure for repeatable customer work</td><td><code class="name-domain">sequenceframe.com</code></td></tr>
+        <tr><td class="number">26</td><td class="name-cell"><label><input type="checkbox" data-name="Sequence Pathway" />Sequence Pathway</label></td><td>A guided route from inquiry to outcome</td><td><code class="name-domain">sequencepathway.com</code></td></tr>
+        <tr><td class="number">27</td><td class="name-cell"><label><input type="checkbox" data-name="Sequence Anchor" />Sequence Anchor</label></td><td>A stable reference point for the operating process</td><td><code class="name-domain">sequenceanchor.com</code></td></tr>
+        <tr><td class="number">28</td><td class="name-cell"><label><input type="checkbox" data-name="Sequence Lens" />Sequence Lens</label></td><td>A clearer view of workflow and results</td><td><code class="name-domain">sequencelens.com</code></td></tr>
+        <tr><td class="number">29</td><td class="name-cell"><label><input type="checkbox" data-name="Sequence Prism" />Sequence Prism</label></td><td>Making the next best step more visible</td><td><code class="name-domain">sequenceprism.com</code></td></tr>
+        <tr><td class="number">30</td><td class="name-cell"><label><input type="checkbox" data-name="Cadence Span" />Cadence Span</label></td><td>The operating rhythm across the business</td><td><code class="name-domain">cadencespan.com</code></td></tr>
+        <tr><td class="number">31</td><td class="name-cell"><label><input type="checkbox" data-name="Cadence Arc" />Cadence Arc</label></td><td>The shape of ongoing business progress</td><td><code class="name-domain">cadencearc.com</code></td></tr>
+        <tr><td class="number">32</td><td class="name-cell"><label><input type="checkbox" data-name="Cadence Compass" />Cadence Compass</label></td><td>Direction for the business operating rhythm</td><td><code class="name-domain">cadencecompass.com</code></td></tr>
+        <tr><td class="number">33</td><td class="name-cell"><label><input type="checkbox" data-name="Cadence Beacon" />Cadence Beacon</label></td><td>A signal that keeps work on course</td><td><code class="name-domain">cadencebeacon.com</code></td></tr>
+        <tr><td class="number">34</td><td class="name-cell"><label><input type="checkbox" data-name="Cadence Pivot" />Cadence Pivot</label></td><td>A rhythm built to adapt as conditions change</td><td><code class="name-domain">cadencepivot.com</code></td></tr>
+        <tr><td class="number">35</td><td class="name-cell"><label><input type="checkbox" data-name="Nimbl Pulse" />Nimbl Pulse</label></td><td>The live pulse of a responsive small business</td><td><code class="name-domain">nimblpulse.com</code></td></tr>
+        <tr><td class="number">36</td><td class="name-cell"><label><input type="checkbox" data-name="Nimbl Span" />Nimbl Span</label></td><td>Agility across the full customer journey</td><td><code class="name-domain">nimblspan.com</code></td></tr>
+        <tr><td class="number">37</td><td class="name-cell"><label><input type="checkbox" data-name="Nimbl Arc" />Nimbl Arc</label></td><td>A flexible path of improvement and growth</td><td><code class="name-domain">nimblarc.com</code></td></tr>
+        <tr><td class="number">38</td><td class="name-cell"><label><input type="checkbox" data-name="Nimbl Compass" />Nimbl Compass</label></td><td>A clear direction for agile operations</td><td><code class="name-domain">nimblcompass.com</code></td></tr>
+        <tr><td class="number">39</td><td class="name-cell"><label><input type="checkbox" data-name="Nimbl Beacon" />Nimbl Beacon</label></td><td>The signal for what needs attention next</td><td><code class="name-domain">nimblbeacon.com</code></td></tr>
+        <tr><td class="number">40</td><td class="name-cell"><label><input type="checkbox" data-name="Nimbl Pivot" />Nimbl Pivot</label></td><td>Faster adaptation without losing momentum</td><td><code class="name-domain">nimblpivot.com</code></td></tr>
+        <tr><td class="number">41</td><td class="name-cell"><label><input type="checkbox" data-name="Nimbl Harbor" />Nimbl Harbor</label></td><td>A reliable home base for active operations</td><td><code class="name-domain">nimblharbor.com</code></td></tr>
+        <tr><td class="number">42</td><td class="name-cell"><label><input type="checkbox" data-name="Nimbl Canvas" />Nimbl Canvas</label></td><td>A flexible surface for building better workflows</td><td><code class="name-domain">nimblcanvas.com</code></td></tr>
+        <tr><td class="number">43</td><td class="name-cell"><label><input type="checkbox" data-name="Nimbl Grove" />Nimbl Grove</label></td><td>A calm, growing system for a healthy business</td><td><code class="name-domain">nimblgrove.com</code></td></tr>
+        <tr><td class="number">44</td><td class="name-cell"><label><input type="checkbox" data-name="Lift Pivot" />Lift Pivot</label></td><td>Improving the operating model at key moments</td><td><code class="name-domain">liftpivot.com</code></td></tr>
+        <tr><td class="number">45</td><td class="name-cell"><label><input type="checkbox" data-name="Chronos Compass" />Chronos Compass</label></td><td>Direction through time-sensitive work</td><td><code class="name-domain">chronoscompass.com</code></td></tr>
+        <tr><td class="number">46</td><td class="name-cell"><label><input type="checkbox" data-name="Chronos Beacon" />Chronos Beacon</label></td><td>A timely signal for the next best action</td><td><code class="name-domain">chronosbeacon.com</code></td></tr>
+        <tr><td class="number">47</td><td class="name-cell"><label><input type="checkbox" data-name="Chronos Pivot" />Chronos Pivot</label></td><td>Better decisions at moments of change</td><td><code class="name-domain">chronospivot.com</code></td></tr>
+        <tr><td class="number">48</td><td class="name-cell"><label><input type="checkbox" data-name="Chronos Harbor" />Chronos Harbor</label></td><td>A stable base for recurring operations</td><td><code class="name-domain">chronosharbor.com</code></td></tr>
+        <tr><td class="number">49</td><td class="name-cell"><label><input type="checkbox" data-name="Chronos Canvas" />Chronos Canvas</label></td><td>A flexible view of time, tasks, and follow-up</td><td><code class="name-domain">chronoscanvas.com</code></td></tr>
+        <tr><td class="number">50</td><td class="name-cell"><label><input type="checkbox" data-name="Chronos Grove" />Chronos Grove</label></td><td>Sustainable growth through better operating rhythms</td><td><code class="name-domain">chronosgrove.com</code></td></tr>
+      </tbody></table></div>
+      <p class="shortlist-note">Shortlist selections are stored only in this browser. Use the top-right button to show only selected candidates.</p>
+    </section>
+
+    <section id="offers">
+      <div class="section-heading"><div><p class="section-kicker">Offer catalog</p><h2>Fifty repeatable systems to test.</h2><p class="section-intro">Each offer is intended as a fixed-scope implementation and a recurring managed service. Hector's selections are highlighted; the referral engine is treated as a component of the first offer.</p></div><div class="rule"></div></div>
+      <div class="controls"><p>Show the full landscape or focus on the founder's selected directions.</p><div class="offer-tools"><button id="show-picks" type="button">Hector picks</button><button id="show-all-offers" class="active" type="button">All 50</button></div></div>
+      <div class="table-wrap"><table id="offer-table"><thead><tr><th>#</th><th>Productized service</th><th>Best initial vertical</th><th>Core outcome</th><th>Setup</th><th>Monthly</th></tr></thead><tbody>
+        <tr><td class="number">1</td><td class="offer-title">Booking + SMS + landing-page conversion system</td><td>Med spas, elective clinics, local services</td><td>More qualified appointments and fewer no-shows</td><td class="money">$3.5k-$6k</td><td class="money">$750-$1.5k</td></tr>
+        <tr class="hector-pick"><td class="number">2</td><td class="offer-title">Missed-call text-back and booking recovery <span class="pick-tag">Hector pick</span></td><td>Dental practices</td><td>Recover callers who would otherwise disappear</td><td class="money">$2.5k-$4.5k</td><td class="money">$600-$1.2k</td></tr>
+        <tr><td class="number">3</td><td class="offer-title">Estimate follow-up engine</td><td>Home remodeling contractors</td><td>Turn more estimates into signed jobs</td><td class="money">$3k-$5.5k</td><td class="money">$750-$1.4k</td></tr>
+        <tr class="hector-pick"><td class="number">4</td><td class="offer-title">Lead-to-tour automation <span class="pick-tag">Hector pick</span></td><td>Independent senior living</td><td>Fill tours and improve speed to lead</td><td class="money">$4k-$7k</td><td class="money">$1k-$2k</td></tr>
+        <tr><td class="number">5</td><td class="offer-title">Consultation nurture system</td><td>Family-law firms</td><td>Convert qualified consultations</td><td class="money">$3.5k-$6.5k</td><td class="money">$900-$1.7k</td></tr>
+        <tr class="hector-pick"><td class="number">6</td><td class="offer-title">Appointment reminder and reactivation system <span class="pick-tag">Hector pick</span></td><td>Chiropractic clinics</td><td>Reduce no-shows and reactivate lapsed patients</td><td class="money">$2.5k-$4.5k</td><td class="money">$650-$1.25k</td></tr>
+        <tr><td class="number">7</td><td class="offer-title">Inquiry-to-showing workflow</td><td>Boutique real-estate teams</td><td>Faster inquiry response and more showings</td><td class="money">$3k-$5.5k</td><td class="money">$750-$1.5k</td></tr>
+        <tr class="hector-pick"><td class="number">8</td><td class="offer-title">Trial-class conversion system <span class="pick-tag">Hector pick</span></td><td>Boutique fitness studios</td><td>Convert trials into memberships</td><td class="money">$2.5k-$4.5k</td><td class="money">$600-$1.2k</td></tr>
+        <tr><td class="number">9</td><td class="offer-title">Service-request intake and dispatch flow</td><td>HVAC companies</td><td>Faster scheduling and fewer dropped requests</td><td class="money">$4k-$7.5k</td><td class="money">$1k-$2k</td></tr>
+        <tr><td class="number">10</td><td class="offer-title">Patient referral intake concierge</td><td>Physical therapy practices</td><td>Convert referrals into booked evaluations</td><td class="money">$3.5k-$6k</td><td class="money">$900-$1.6k</td></tr>
+        <tr><td class="number">11</td><td class="offer-title">Quote request qualification system</td><td>Commercial cleaning</td><td>Prioritize profitable quote requests</td><td class="money">$3k-$5.5k</td><td class="money">$750-$1.4k</td></tr>
+        <tr><td class="number">12</td><td class="offer-title">New-client intake and document chase</td><td>Immigration law firms</td><td>Shorten intake and reduce missing documents</td><td class="money">$4.5k-$8k</td><td class="money">$1.2k-$2.25k</td></tr>
+        <tr class="hector-pick"><td class="number">13</td><td class="offer-title">Membership renewal recovery flow <span class="pick-tag">Hector pick</span></td><td>Private clubs</td><td>Improve renewal completion</td><td class="money">$3.5k-$6.5k</td><td class="money">$900-$1.7k</td></tr>
+        <tr><td class="number">14</td><td class="offer-title">Application follow-up workflow</td><td>Trade schools</td><td>Increase completed student applications</td><td class="money">$4k-$7k</td><td class="money">$1k-$2k</td></tr>
+        <tr><td class="number">15</td><td class="offer-title">Inquiry-to-order system</td><td>Custom cabinetry shops</td><td>Turn web inquiries into design appointments</td><td class="money">$3.5k-$6.5k</td><td class="money">$900-$1.7k</td></tr>
+        <tr class="hector-pick"><td class="number">16</td><td class="offer-title">Warranty and service-booking portal <span class="pick-tag">Hector pick</span></td><td>Solar installers</td><td>Capture service demand and reduce support effort</td><td class="money">$4.5k-$8k</td><td class="money">$1.2k-$2.25k</td></tr>
+        <tr><td class="number">17</td><td class="offer-title">Lead follow-up and financing nurture</td><td>Auto detailing and tint shops</td><td>Improve high-ticket booking conversion</td><td class="money">$2.5k-$4.5k</td><td class="money">$650-$1.25k</td></tr>
+        <tr><td class="number">18</td><td class="offer-title">Candidate screening and interview booking</td><td>Light-industrial staffing</td><td>Reduce time to first interview</td><td class="money">$4k-$7k</td><td class="money">$1k-$2k</td></tr>
+        <tr><td class="number">19</td><td class="offer-title">Discovery-call qualification system</td><td>B2B fractional-CFO firms</td><td>Book better-fit discovery calls</td><td class="money">$3.5k-$6.5k</td><td class="money">$900-$1.7k</td></tr>
+        <tr class="hector-pick"><td class="number">20</td><td class="offer-title">Review-request and referral engine <span class="pick-tag">Hector pick</span><span class="pick-tag referral-tag">Include in offer 1</span></td><td>Veterinary clinics</td><td>Grow trusted local demand</td><td class="money">$2.5k-$4.5k</td><td class="money">$600-$1.2k</td></tr>
+        <tr><td class="number">21</td><td class="offer-title">Pre-visit intake and reminder flow</td><td>Dermatology practices</td><td>Improve appointment readiness and throughput</td><td class="money">$3.5k-$6k</td><td class="money">$900-$1.6k</td></tr>
+        <tr><td class="number">22</td><td class="offer-title">Lease-tour conversion system</td><td>Property management</td><td>Fill available units faster</td><td class="money">$4k-$7k</td><td class="money">$1k-$2k</td></tr>
+        <tr><td class="number">23</td><td class="offer-title">Event inquiry and follow-up system</td><td>Wedding venues</td><td>Convert more tours to bookings</td><td class="money">$3.5k-$6.5k</td><td class="money">$900-$1.7k</td></tr>
+        <tr><td class="number">24</td><td class="offer-title">Consultation booking system</td><td>Cosmetic dentistry</td><td>Increase high-value treatment consultations</td><td class="money">$3.5k-$6.5k</td><td class="money">$900-$1.7k</td></tr>
+        <tr><td class="number">25</td><td class="offer-title">Lead intake and partner handoff system</td><td>Insurance brokerages</td><td>Respond quickly and track referral partners</td><td class="money">$4k-$7.5k</td><td class="money">$1k-$2k</td></tr>
+        <tr><td class="number">26</td><td class="offer-title">Claim-status communication flow</td><td>Public adjusters</td><td>Reduce status-call volume</td><td class="money">$4.5k-$8k</td><td class="money">$1.2k-$2.25k</td></tr>
+        <tr><td class="number">27</td><td class="offer-title">Patient reactivation campaign system</td><td>Optometry practices</td><td>Fill recall and cancellation capacity</td><td class="money">$2.5k-$4.5k</td><td class="money">$650-$1.25k</td></tr>
+        <tr><td class="number">28</td><td class="offer-title">Service-plan renewal engine</td><td>Pest control</td><td>Retain recurring service customers</td><td class="money">$3k-$5.5k</td><td class="money">$750-$1.4k</td></tr>
+        <tr><td class="number">29</td><td class="offer-title">Intake-to-quote automation</td><td>Managed IT services</td><td>Qualify prospects and shorten sales handoff</td><td class="money">$4k-$7k</td><td class="money">$1k-$2k</td></tr>
+        <tr><td class="number">30</td><td class="offer-title">Enrollment reminder and document flow</td><td>Private K-12 schools</td><td>Increase completed applications</td><td class="money">$4k-$7.5k</td><td class="money">$1k-$2k</td></tr>
+        <tr><td class="number">31</td><td class="offer-title">Assessment booking and follow-up system</td><td>Speech therapy</td><td>Increase booked evaluations</td><td class="money">$3.5k-$6k</td><td class="money">$900-$1.6k</td></tr>
+        <tr><td class="number">32</td><td class="offer-title">Repair authorization workflow</td><td>Collision repair</td><td>Accelerate approvals and customer updates</td><td class="money">$4k-$7k</td><td class="money">$1k-$2k</td></tr>
+        <tr><td class="number">33</td><td class="offer-title">Lead conversion and route-booking system</td><td>Pool service</td><td>Turn seasonal demand into recurring routes</td><td class="money">$3k-$5.5k</td><td class="money">$750-$1.4k</td></tr>
+        <tr><td class="number">34</td><td class="offer-title">Buyer inquiry follow-up system</td><td>Independent insurance agencies</td><td>Convert web leads before competitors do</td><td class="money">$3k-$5.5k</td><td class="money">$750-$1.4k</td></tr>
+        <tr><td class="number">35</td><td class="offer-title">Contract renewal and upsell reminder flow</td><td>Commercial security installers</td><td>Protect recurring revenue and surface upgrades</td><td class="money">$3.5k-$6.5k</td><td class="money">$900-$1.7k</td></tr>
+        <tr><td class="number">36</td><td class="offer-title">Consultation-to-retainer flow</td><td>Accounting firms</td><td>Convert advisory prospects and collect documents</td><td class="money">$3.5k-$6.5k</td><td class="money">$900-$1.7k</td></tr>
+        <tr><td class="number">37</td><td class="offer-title">Property-owner lead nurture system</td><td>Roofers</td><td>Improve inspection and quote-show rates</td><td class="money">$3k-$5.5k</td><td class="money">$750-$1.4k</td></tr>
+        <tr><td class="number">38</td><td class="offer-title">Follow-up and recall workflow</td><td>Orthodontics</td><td>Convert treatment prospects and reactivate families</td><td class="money">$3.5k-$6.5k</td><td class="money">$900-$1.7k</td></tr>
+        <tr><td class="number">39</td><td class="offer-title">Prospect qualification and demo booking</td><td>Commercial AV integrators</td><td>Focus sales time on viable opportunities</td><td class="money">$4k-$7k</td><td class="money">$1k-$2k</td></tr>
+        <tr><td class="number">40</td><td class="offer-title">Inspection booking and reminder system</td><td>Home inspectors</td><td>Reduce schedule gaps and improve referral follow-up</td><td class="money">$2.5k-$4.5k</td><td class="money">$650-$1.25k</td></tr>
+        <tr><td class="number">41</td><td class="offer-title">Tenant maintenance triage flow</td><td>Multifamily property operators</td><td>Route requests faster and set tenant expectations</td><td class="money">$4.5k-$8k</td><td class="money">$1.2k-$2.25k</td></tr>
+        <tr><td class="number">42</td><td class="offer-title">Booking and membership reactivation system</td><td>Pilates studios</td><td>Fill classes and improve recurring membership</td><td class="money">$2.5k-$4.5k</td><td class="money">$600-$1.2k</td></tr>
+        <tr><td class="number">43</td><td class="offer-title">Consultation and intake workflow</td><td>Estate-planning law firms</td><td>Convert inquiries and capture client data securely</td><td class="money">$4k-$7k</td><td class="money">$1k-$2k</td></tr>
+        <tr><td class="number">44</td><td class="offer-title">Lead response and quote follow-up system</td><td>Commercial landscapers</td><td>Win more seasonal and recurring contracts</td><td class="money">$3k-$5.5k</td><td class="money">$750-$1.4k</td></tr>
+        <tr><td class="number">45</td><td class="offer-title">Inquiry-to-appointment system</td><td>Hearing-aid clinics</td><td>Increase qualified evaluations</td><td class="money">$3.5k-$6k</td><td class="money">$900-$1.6k</td></tr>
+        <tr><td class="number">46</td><td class="offer-title">Family inquiry and tour nurture flow</td><td>Childcare centers</td><td>Fill openings and reduce inquiry drop-off</td><td class="money">$3k-$5.5k</td><td class="money">$750-$1.4k</td></tr>
+        <tr><td class="number">47</td><td class="offer-title">Repair estimate approval flow</td><td>Appliance repair</td><td>Speed approvals and reduce abandoned estimates</td><td class="money">$2.5k-$4.5k</td><td class="money">$650-$1.25k</td></tr>
+        <tr><td class="number">48</td><td class="offer-title">Intake and first-visit system</td><td>Mental-health group practices</td><td>Improve fit screening and appointment completion</td><td class="money">$4k-$7k</td><td class="money">$1k-$2k</td></tr>
+        <tr><td class="number">49</td><td class="offer-title">Demand inquiry and sampling-booking system</td><td>Specialty food distributors</td><td>Convert wholesale prospects into active accounts</td><td class="money">$3.5k-$6.5k</td><td class="money">$900-$1.7k</td></tr>
+        <tr><td class="number">50</td><td class="offer-title">Consultation funnel and follow-up system</td><td>Kitchen-and-bath showrooms</td><td>Turn interest into design consultations</td><td class="money">$3.5k-$6.5k</td><td class="money">$900-$1.7k</td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section id="recommendation">
+      <div class="section-heading"><div><p class="section-kicker">Recommended start</p><h2>Prove one conversion system before expanding.</h2></div><div class="rule"></div></div>
+      <div class="recommendation"><div><p class="label">First 30-day test</p><h3>Booking, SMS, landing page, plus referrals.</h3></div><p>Choose med spas or elective clinics as the first beachhead. Appointment value is visible, lead conversion is familiar, and no-shows are painful. Keep v1 out of regulated health-data flows: collect only contact and booking preferences, then route clinical detail to the client's existing system. Add a review-and-referral engine as a component of the conversion bundle.</p></div>
+    </section>
+
+    <section id="pricing">
+      <div class="section-heading"><div><p class="section-kicker">Commercial model</p><h2>Implementation funds the launch. Monthly fees fund the system.</h2><p class="section-intro">A mandatory setup fee plus a three-month managed-service commitment prevents the company from becoming a one-off website shop.</p></div><div class="rule"></div></div>
+      <div class="pricing">
+        <article class="price-card"><h3>Launch</h3><p class="best">One location, proven template</p><div class="price-line"><div><span>Setup</span><strong>$3.5k</strong></div><div><span>Monthly</span><strong>$750</strong></div></div><ul><li>Landing page and calendar connection</li><li>One SMS sequence</li><li>Basic dashboard</li><li>Monthly review</li></ul></article>
+        <article class="price-card recommended"><h3>Growth</h3><p class="best">One to three locations or a higher-value service</p><div class="price-line"><div><span>Setup</span><strong>$5.5k</strong></div><div><span>Monthly</span><strong>$1.25k</strong></div></div><ul><li>Multi-step nurture and lead-source tracking</li><li>No-show and reactivation flow</li><li>Monthly optimization</li><li>Everything in Launch</li></ul></article>
+        <article class="price-card"><h3>Scale</h3><p class="best">Multi-location or complex sales handoffs</p><div class="price-line"><div><span>Setup</span><strong>$8.5k</strong></div><div><span>Monthly</span><strong>$2k</strong></div></div><ul><li>CRM integration and routing rules</li><li>Multiple campaigns</li><li>Quarterly strategy session</li><li>Everything in Growth</li></ul></article>
+      </div>
+      <div class="callout"><p><strong>Commercial rules:</strong> three-month minimum after go-live, then month-to-month with 30 days' notice. Collect 50% of setup at kickoff and 50% at go-live. Bill usage costs separately. Use written change orders for new workflows, pages, custom software, or locations. Offer founder-design-partner pricing only for baseline access, a testimonial if successful, and an anonymized case study.</p></div>
+    </section>
+
+    <section id="next-steps">
+      <div class="section-heading"><div><p class="section-kicker">Execution</p><h2>Decide, validate, systematize, sell.</h2></div><div class="rule"></div></div>
+      <div class="steps">
+        <article class="step"><h3>Choose</h3><ol><li>Select one beachhead vertical for 30 days.</li><li>Freeze the v1 bundle: landing page, booking, SMS, reporting.</li><li>Choose five name finalists for conflict checks.</li></ol></article>
+        <article class="step"><h3>Validate</h3><ol><li>Create a one-page offer and fictional demo.</li><li>Interview 10 owners or operators.</li><li>Seek two paid design partners, not free pilots.</li></ol></article>
+        <article class="step"><h3>Systematize</h3><ol><li>Choose a reusable landing, form, calendar, SMS, CRM, and automation stack.</li><li>Create onboarding, access, copy, report, consent, and offboarding templates.</li><li>Track speed to lead, bookings, shows, reactivation, and attributable revenue.</li></ol></article>
+        <article class="step"><h3>Sell</h3><ol><li>Build a 100-prospect list in one geography.</li><li>Lead with missed calls, slow follow-up, or no-shows - not AI.</li><li>Close, measure, and publish the first case study.</li></ol></article>
+      </div>
+    </section>
+
+    <section id="ria">
+      <div class="section-heading"><div><p class="section-kicker">Parallel discipline</p><h2>Protect the Riamatic workstream.</h2><p class="section-intro">The parallel venture should create learning and cash, not become a distraction from the RIA plan.</p></div><div class="rule"></div></div>
+      <div class="workstreams">
+        <article class="workstream"><h3>Riamatic mastery</h3><p>Continue approximately three Transition To RIA episodes per week, source reading, and the 30-minute founders' synthesis.</p><strong>Output: August, September, and October tracker milestones.</strong></article>
+        <article class="workstream"><h3>Venture validation</h3><p>Run two founder sessions and five buyer conversations each week until the first paid design partner.</p><strong>Output: beachhead, v1 offer, name, and two paid partners.</strong></article>
+        <article class="workstream"><h3>Founder review</h3><p>Hold a 30-minute weekly review of tracker progress, pipeline, cash spent, and competing capacity demands.</p><strong>Output: deliberate trade-offs, not accidental drift.</strong></article>
+      </div>
+      <div class="capacity"><strong>Capacity rule</strong><p>Do not begin a second parallel offer until the first reaches two paying clients or is explicitly stopped after validation. The Riamatic study cadence is the input that makes the RIA venture defensible.</p></div>
+    </section>
+
+    <footer>Prepared 2026-07-28. Source: <code>out/2026-07-28-parallel-productized-venture-options.md</code>. Domain availability is time-sensitive and is not trademark clearance.</footer>
+  </main>
+<script>
+  const storageKey = 'parallel-venture-name-shortlist';
+  const boxes = [...document.querySelectorAll('#name-table input[type="checkbox"]')];
+  const shortlistButton = document.getElementById('show-shortlist');
+  const countLabel = document.getElementById('shortlist-count');
+  const clearButton = document.getElementById('clear-shortlist');
+  const saved = new Set(JSON.parse(localStorage.getItem(storageKey) || '[]'));
+  let shortlistOnly = false;
+
+  function updateShortlist() {
+    const selected = boxes.filter(box => box.checked).map(box => box.dataset.name);
+    localStorage.setItem(storageKey, JSON.stringify(selected));
+    countLabel.textContent = selected.length;
+    shortlistButton.textContent = `Shortlist: ${selected.length}`;
+    boxes.forEach(box => box.closest('tr').classList.toggle('hidden-row', shortlistOnly && !box.checked));
+  }
+  boxes.forEach(box => { box.checked = saved.has(box.dataset.name); box.addEventListener('change', updateShortlist); });
+  shortlistButton.addEventListener('click', () => { shortlistOnly = !shortlistOnly; shortlistButton.classList.toggle('active', shortlistOnly); updateShortlist(); });
+  clearButton.addEventListener('click', () => { boxes.forEach(box => { box.checked = false; }); shortlistOnly = false; shortlistButton.classList.remove('active'); updateShortlist(); });
+  document.getElementById('show-picks').addEventListener('click', event => { document.querySelectorAll('#offer-table tbody tr').forEach(row => row.classList.toggle('hidden-row', !row.classList.contains('hector-pick'))); event.currentTarget.classList.add('active'); document.getElementById('show-all-offers').classList.remove('active'); });
+  document.getElementById('show-all-offers').addEventListener('click', event => { document.querySelectorAll('#offer-table tbody tr').forEach(row => row.classList.remove('hidden-row')); event.currentTarget.classList.add('active'); document.getElementById('show-picks').classList.remove('active'); });
+  updateShortlist();
+</script>
+</body>
+</html>

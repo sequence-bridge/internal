@@ -1,0 +1,312 @@
+<!--
+  Fill this file with large, page-level sections such as a full hero, feature section, pricing block, testimonial band, CTA strip, side panel, footer, or other substantial layout slices.
+  Pull all colors and design values from ./tokens.json.
+  Reuse and compose primitives from ./elements.html and ./components.html instead of redefining them here.
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sections ΓÇö Design system</title>
+  <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+
+  <!--
+    @theme mirrors design/tokens.json. When tokens change, update this block
+    in elements.html, components.html, and sections.html.
+  -->
+  <style type="text/tailwindcss">
+    @theme {
+      /* Palette ramps (raw vocabulary) */
+      --color-violet-50:  #f4f1ff;
+      --color-violet-100: #e9e0ff;
+      --color-violet-200: #d6c5ff;
+      --color-violet-300: #b8a0ff;
+      --color-violet-400: #9c7eff;
+      --color-violet-500: #7c5cff;
+      --color-violet-600: #6a4cf0;
+      --color-violet-700: #5639d0;
+      --color-violet-800: #422aa3;
+      --color-violet-900: #2f1e75;
+      --color-violet-950: #1a0f45;
+
+      --color-teal-50:  #f0fdfa;
+      --color-teal-100: #ccfbf1;
+      --color-teal-200: #99f6e4;
+      --color-teal-300: #5eead4;
+      --color-teal-400: #2dd4bf;
+      --color-teal-500: #14b8a6;
+      --color-teal-600: #0d9488;
+      --color-teal-700: #0f766e;
+      --color-teal-800: #115e59;
+      --color-teal-900: #134e4a;
+      --color-teal-950: #042f2e;
+
+      --color-amber-50:  #fffbeb;
+      --color-amber-100: #fef3c7;
+      --color-amber-200: #fde68a;
+      --color-amber-300: #fcd34d;
+      --color-amber-400: #fbbf24;
+      --color-amber-500: #f59e0b;
+      --color-amber-600: #d97706;
+      --color-amber-700: #b45309;
+      --color-amber-800: #92400e;
+      --color-amber-900: #78350f;
+      --color-amber-950: #451a03;
+
+      /* Semantic colors (consume these in components) */
+      --color-bg:               #0b0d10;
+      --color-surface:          #16181d;
+      --color-surface-elevated: #1d2026;
+      --color-fg:               #e8eaed;
+      --color-fg-muted:         #9aa0a6;
+      --color-fg-inverse:       #0b0d10;
+
+      --color-primary:         var(--color-violet-500);
+      --color-primary-hover:   var(--color-violet-600);
+      --color-secondary:       var(--color-teal-500);
+      --color-secondary-hover: var(--color-teal-600);
+      --color-tertiary:        var(--color-amber-500);
+      --color-tertiary-hover:  var(--color-amber-600);
+
+      --color-accent:  #22d3ee;
+      --color-border:  #2a2e36;
+      --color-success: #22c55e;
+      --color-warning: #f59e0b;
+      --color-danger:  #ef4444;
+      --color-info:    #3b82f6;
+
+      --font-display: Inter, ui-sans-serif, system-ui, sans-serif;
+      --font-body:    Inter, ui-sans-serif, system-ui, sans-serif;
+      --font-mono:    JetBrains Mono, ui-monospace, SFMono-Regular, monospace;
+
+      --text-xs:  12px;
+      --text-sm:  14px;
+      --text-md:  16px;
+      --text-lg:  18px;
+      --text-xl:  24px;
+      --text-2xl: 32px;
+      --text-3xl: 48px;
+      --text-4xl: 64px;
+
+      --spacing: 4px;
+
+      --radius-sm:   4px;
+      --radius-md:   8px;
+      --radius-lg:   12px;
+      --radius-full: 9999px;
+
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.5);
+      --shadow-lg: 0 12px 32px rgba(0,0,0,0.6);
+
+      --ease-standard:   cubic-bezier(0.2, 0.8, 0.2, 1);
+      --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+      --ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
+    }
+  </style>
+
+  <style>
+    html, body { background: var(--color-bg); color: var(--color-fg); }
+    body { font-family: var(--font-body); font-size: var(--text-md); }
+    main { max-width: 1200px; margin: 0 auto; padding: 48px 24px 96px; }
+    header.page h1 { font-size: var(--text-3xl); font-weight: 700; letter-spacing: -0.02em; }
+    header.page .lede { color: var(--color-fg-muted); margin-top: 8px; max-width: 56ch; }
+    nav.pages { display: flex; gap: 12px; margin-top: 24px; font-size: var(--text-sm); }
+    nav.pages a { color: var(--color-fg-muted); padding: 6px 10px; border-radius: var(--radius-sm); }
+    nav.pages a[aria-current] { background: var(--color-surface); color: var(--color-fg); }
+    nav.pages a:hover { color: var(--color-fg); }
+    section.spec { border-top: 1px solid var(--color-border); padding: 48px 0; }
+    section.spec > h2 { font-size: var(--text-xl); font-weight: 600; letter-spacing: -0.01em; }
+    section.spec > .desc { color: var(--color-fg-muted); font-size: var(--text-sm); margin-top: 4px; }
+    .specimen { padding: 24px 0; }
+    .frame { border: 1px solid var(--color-border); border-radius: var(--radius-lg); overflow: hidden; background: var(--color-bg); }
+    code { font-family: var(--font-mono); font-size: 0.9em; background: var(--color-surface-elevated); padding: 1px 6px; border-radius: var(--radius-sm); }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="page">
+      <h1>Sections</h1>
+      <p class="lede">Page-level building blocks ΓÇö hero, pricing, footer, etc. Rendered inside a thin frame so the page boundary is visible.</p>
+      <nav class="pages">
+        <a href="./elements.html">elements</a>
+        <a href="./components.html">components</a>
+        <a href="./sections.html" aria-current="page">sections</a>
+      </nav>
+    </header>
+
+    <section class="spec" id="hero">
+      <h2>Hero</h2>
+      <div class="specimen">
+        <div class="frame">
+          <div class="px-8 py-20 md:py-28 text-center">
+            <span class="inline-block px-3 py-1 rounded-full bg-primary/15 text-primary text-xs font-medium">New ┬╖ v2 is live</span>
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight mt-5 max-w-2xl mx-auto">Ship the right thing, faster.</h1>
+            <p class="text-lg text-fg-muted mt-4 max-w-xl mx-auto">A spec-driven workflow that keeps intent and code in lockstep. Built for solo founders and small teams.</p>
+            <div class="flex gap-3 justify-center mt-7">
+              <button class="px-5 py-2.5 rounded-md bg-primary text-fg-inverse font-medium hover:bg-primary-hover transition-colors">Get started</button>
+              <button class="px-5 py-2.5 rounded-md text-fg font-medium hover:bg-surface-elevated transition-colors border border-border">View on GitHub</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="spec" id="feature-grid">
+      <h2>Feature grid (3-column)</h2>
+      <div class="specimen">
+        <div class="frame">
+          <div class="px-8 py-16">
+            <div class="text-center mb-12">
+              <h2 class="text-3xl font-semibold tracking-tight">Built for clarity</h2>
+              <p class="text-fg-muted mt-2 max-w-xl mx-auto">Three guarantees that make spec-driven work feel light, not bureaucratic.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div>
+                <div class="w-10 h-10 rounded-md bg-primary/15 text-primary flex items-center justify-center mb-3">Γæá</div>
+                <h3 class="font-semibold">Intent, then code</h3>
+                <p class="text-sm text-fg-muted mt-1">Specs are the source of truth. Code is derived; drift gets caught.</p>
+              </div>
+              <div>
+                <div class="w-10 h-10 rounded-md bg-primary/15 text-primary flex items-center justify-center mb-3">Γæí</div>
+                <h3 class="font-semibold">Four phases, one pause</h3>
+                <p class="text-sm text-fg-muted mt-1">Context ΓåÆ spec ΓåÆ plan ΓåÆ implement. Stop between each.</p>
+              </div>
+              <div>
+                <div class="w-10 h-10 rounded-md bg-primary/15 text-primary flex items-center justify-center mb-3">Γæó</div>
+                <h3 class="font-semibold">No new tools</h3>
+                <p class="text-sm text-fg-muted mt-1">Plain markdown in your repo. Works with whatever you ship today.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="spec" id="pricing">
+      <h2>Pricing (3-tier)</h2>
+      <div class="specimen">
+        <div class="frame">
+          <div class="px-8 py-16">
+            <div class="text-center mb-10">
+              <h2 class="text-3xl font-semibold tracking-tight">Simple pricing</h2>
+              <p class="text-fg-muted mt-2">Pay for what you use. Cancel anytime.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto">
+              <div class="bg-surface border border-border rounded-lg p-6">
+                <div class="text-sm font-medium text-fg-muted">Free</div>
+                <div class="mt-2"><span class="text-3xl font-bold">$0</span><span class="text-fg-muted text-sm">/mo</span></div>
+                <p class="text-sm text-fg-muted mt-1">For trying things out.</p>
+                <button class="mt-5 w-full px-4 py-2 rounded-md border border-border hover:border-fg-muted transition-colors font-medium">Start free</button>
+                <ul class="mt-5 space-y-2 text-sm">
+                  <li>Γ£ô 1 project</li>
+                  <li>Γ£ô Community support</li>
+                </ul>
+              </div>
+              <div class="bg-surface-elevated border border-primary rounded-lg p-6 shadow-md relative">
+                <span class="absolute -top-2.5 left-6 px-2 py-0.5 rounded-full bg-primary text-fg-inverse text-xs font-medium">Most popular</span>
+                <div class="text-sm font-medium text-primary">Pro</div>
+                <div class="mt-2"><span class="text-3xl font-bold">$19</span><span class="text-fg-muted text-sm">/mo</span></div>
+                <p class="text-sm text-fg-muted mt-1">For solo builders shipping every week.</p>
+                <button class="mt-5 w-full px-4 py-2 rounded-md bg-primary text-fg-inverse font-medium hover:bg-primary-hover transition-colors">Start trial</button>
+                <ul class="mt-5 space-y-2 text-sm">
+                  <li>Γ£ô Unlimited projects</li>
+                  <li>Γ£ô Priority support</li>
+                  <li>Γ£ô All integrations</li>
+                </ul>
+              </div>
+              <div class="bg-surface border border-border rounded-lg p-6">
+                <div class="text-sm font-medium text-fg-muted">Team</div>
+                <div class="mt-2"><span class="text-3xl font-bold">$49</span><span class="text-fg-muted text-sm">/mo</span></div>
+                <p class="text-sm text-fg-muted mt-1">For small teams up to 10.</p>
+                <button class="mt-5 w-full px-4 py-2 rounded-md border border-border hover:border-fg-muted transition-colors font-medium">Contact sales</button>
+                <ul class="mt-5 space-y-2 text-sm">
+                  <li>Γ£ô Everything in Pro</li>
+                  <li>Γ£ô Shared workspaces</li>
+                  <li>Γ£ô SSO</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="spec" id="cta">
+      <h2>CTA banner</h2>
+      <div class="specimen">
+        <div class="frame">
+          <div class="px-8 py-14 text-center">
+            <div class="max-w-2xl mx-auto bg-surface-elevated border border-border rounded-xl p-10">
+              <h2 class="text-2xl font-semibold tracking-tight">Ready when you are.</h2>
+              <p class="text-fg-muted mt-2">Spin up a workspace in under a minute. No credit card required.</p>
+              <button class="mt-5 px-5 py-2.5 rounded-md bg-primary text-fg-inverse font-medium hover:bg-primary-hover transition-colors">Create a workspace</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="spec" id="footer">
+      <h2>Footer (full)</h2>
+      <div class="specimen">
+        <div class="frame">
+          <footer class="px-8 py-12 bg-surface">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-8 text-sm">
+              <div class="col-span-2">
+                <div class="font-semibold tracking-tight text-lg">acme</div>
+                <p class="text-fg-muted mt-2 max-w-xs">A spec-driven workflow that keeps intent and code in lockstep.</p>
+              </div>
+              <div>
+                <div class="text-xs uppercase tracking-wider text-fg-muted mb-3">Product</div>
+                <ul class="space-y-2"><li><a href="#" class="hover:text-fg-muted">Features</a></li><li><a href="#" class="hover:text-fg-muted">Pricing</a></li><li><a href="#" class="hover:text-fg-muted">Changelog</a></li></ul>
+              </div>
+              <div>
+                <div class="text-xs uppercase tracking-wider text-fg-muted mb-3">Company</div>
+                <ul class="space-y-2"><li><a href="#" class="hover:text-fg-muted">About</a></li><li><a href="#" class="hover:text-fg-muted">Blog</a></li><li><a href="#" class="hover:text-fg-muted">Careers</a></li></ul>
+              </div>
+              <div>
+                <div class="text-xs uppercase tracking-wider text-fg-muted mb-3">Legal</div>
+                <ul class="space-y-2"><li><a href="#" class="hover:text-fg-muted">Privacy</a></li><li><a href="#" class="hover:text-fg-muted">Terms</a></li><li><a href="#" class="hover:text-fg-muted">Security</a></li></ul>
+              </div>
+            </div>
+            <div class="mt-10 pt-6 border-t border-border text-xs text-fg-muted flex justify-between">
+              <div>┬⌐ 2026 acme inc.</div>
+              <div>Made with care.</div>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </section>
+
+    <section class="spec" id="sign-in">
+      <h2>Sign-in</h2>
+      <div class="specimen">
+        <div class="frame">
+          <div class="px-8 py-16 flex items-center justify-center">
+            <form class="bg-surface border border-border rounded-lg p-8 w-full max-w-sm space-y-4">
+              <div class="text-center">
+                <h2 class="text-2xl font-semibold tracking-tight">Welcome back</h2>
+                <p class="text-sm text-fg-muted mt-1">Sign in to your workspace</p>
+              </div>
+              <label class="flex flex-col gap-1.5">
+                <span class="text-sm font-medium">Email</span>
+                <input type="email" class="px-3 py-2 rounded-md bg-bg border border-border focus:border-primary focus:outline-none" placeholder="you@example.com" />
+              </label>
+              <label class="flex flex-col gap-1.5">
+                <span class="text-sm font-medium">Password</span>
+                <input type="password" class="px-3 py-2 rounded-md bg-bg border border-border focus:border-primary focus:outline-none" />
+              </label>
+              <button type="submit" class="w-full px-4 py-2 rounded-md bg-primary text-fg-inverse font-medium hover:bg-primary-hover transition-colors">Sign in</button>
+              <p class="text-xs text-fg-muted text-center">No account? <a href="#" class="text-primary hover:underline">Sign up</a></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</body>
+</html>

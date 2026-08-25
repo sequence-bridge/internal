@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sequence Bridge — product flows</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; }
+  h1, h2, h3, h4, p, figure, blockquote, ol, ul { margin: 0; }
+  img { display: block; max-width: 100%; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+</style>
+</head>
+<body><style>
+  /* Colour only — direction 3 (Thread) from out/token-directions.html.
+     Wine = the sequence acting. Apricot = elapsed time and the long pole,
+     nothing else. Brick = a dead end we haven't covered. */
+  :root {
+    color-scheme: light;
+    --ground: #f7f3f1;
+    --surface: #ffffff;
+    --sunk: #f0eae8;
+    --ink: #241726;
+    --muted: #6d5a6b;
+    --rule: #cdbfc4;
+    --wine: #7a2e42;
+    --on-wine: #f7f3f1;
+    --accent: #7a2e42;
+    --apricot: #e8926a;
+    --apricot-ink: #9d5730;
+    --flag: #9c3b2e;
+
+    --step--2: clamp(0.66rem, 0.64rem + 0.08vw, 0.71rem);
+    --step--1: clamp(0.78rem, 0.76rem + 0.1vw, 0.84rem);
+    --step-0: clamp(0.95rem, 0.92rem + 0.15vw, 1.02rem);
+    --step-1: clamp(1.12rem, 1.03rem + 0.36vw, 1.3rem);
+    --step-2: clamp(1.45rem, 1.25rem + 0.85vw, 2rem);
+    --step-3: clamp(1.95rem, 1.55rem + 1.75vw, 3rem);
+
+    --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, Menlo, monospace;
+    --serif: Cambria, Georgia, "Iowan Old Style", "Times New Roman", serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --ground: #1a1216; --surface: #241a1f; --sunk: #1f161a;
+      --ink: #f2e9ec; --muted: #ab949e; --rule: #4a3740;
+      --wine: #8d3850; --on-wine: #fdeff3; --accent: #e2a2b2;
+      --apricot: #e8926a; --apricot-ink: #f0a87f; --flag: #e08a76;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --ground: #1a1216; --surface: #241a1f; --sunk: #1f161a;
+    --ink: #f2e9ec; --muted: #ab949e; --rule: #4a3740;
+    --wine: #8d3850; --on-wine: #fdeff3; --accent: #e2a2b2;
+    --apricot: #e8926a; --apricot-ink: #f0a87f; --flag: #e08a76;
+  }
+  :root[data-theme="light"] {
+    color-scheme: light;
+    --ground: #f7f3f1; --surface: #ffffff; --sunk: #f0eae8;
+    --ink: #241726; --muted: #6d5a6b; --rule: #cdbfc4;
+    --wine: #7a2e42; --on-wine: #f7f3f1; --accent: #7a2e42;
+    --apricot: #e8926a; --apricot-ink: #9d5730; --flag: #9c3b2e;
+  }
+
+  body {
+    background: var(--ground); color: var(--ink);
+    font-family: var(--sans); font-size: var(--step-0);
+    line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  .wrap {
+    max-width: 60rem; margin: 0 auto;
+    padding: clamp(1.5rem, 4vw, 3.5rem) clamp(1rem, 4vw, 2rem) 5rem;
+    display: flex; flex-direction: column; gap: clamp(2.75rem, 5vw, 4.25rem);
+  }
+
+  .mh { display: flex; flex-direction: column; gap: 0.9rem; }
+  .mh__eyebrow {
+    font-family: var(--mono); font-size: var(--step--2);
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+  }
+  .mh__title {
+    font-family: var(--serif); font-size: var(--step-3); font-weight: 600;
+    letter-spacing: -0.02em; line-height: 1.08; text-wrap: balance;
+  }
+  .mh__lede { font-size: var(--step-1); color: var(--muted); max-width: 34em; line-height: 1.5; }
+  .mh__note {
+    border-left: 2px solid var(--rule); padding: 0.15rem 0 0.15rem 1rem;
+    font-size: var(--step--1); color: var(--muted); max-width: 44em;
+  }
+  .mh__note + .mh__note { margin-top: -0.35rem; }
+  .mh__note code, .foot code { font-family: var(--mono); font-size: 0.94em; color: var(--ink); }
+
+  .lyr { display: flex; flex-direction: column; gap: 1.25rem; }
+  .lyr__head { display: flex; flex-direction: column; gap: 0.45rem; }
+  .lyr__label {
+    font-family: var(--mono); font-size: var(--step--2); letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--apricot-ink);
+  }
+  .lyr__name {
+    font-family: var(--serif); font-size: var(--step-2); font-weight: 600;
+    letter-spacing: -0.015em; line-height: 1.15;
+  }
+  .lyr__thesis { color: var(--muted); max-width: 40em; }
+  .lyr__note { max-width: 42em; }
+  .lyr__note + .lyr__note { margin-top: -0.45rem; }
+  .lyr__note strong { font-weight: 650; }
+
+  /* diagram frame — scrolls horizontally on narrow screens rather than squashing */
+  .dg {
+    background: var(--sunk); border: 1px solid var(--rule); border-radius: 10px;
+    padding: clamp(0.85rem, 2.5vw, 1.4rem); overflow-x: auto;
+  }
+  .dg svg { display: block; width: 100%; min-width: 40rem; height: auto; }
+  .dg--wide svg { min-width: 46rem; }
+
+  /* ---- SVG diagram language ---- */
+  .n-box { fill: var(--surface); stroke: var(--rule); stroke-width: 1.25; }
+  .n-t { fill: var(--ink); font-family: var(--sans); font-size: 13px; text-anchor: middle; dominant-baseline: central; }
+  .n-wine .n-box { fill: var(--wine); stroke: var(--wine); }
+  .n-wine .n-t { fill: var(--on-wine); }
+  .n-dead .n-box { fill: none; stroke: var(--flag); stroke-width: 1.4; stroke-dasharray: 5 4; }
+  .n-dead .n-t { fill: var(--flag); }
+  .n-pole .n-box { stroke: var(--apricot); stroke-width: 1.75; }
+
+  .ms-box { fill: none; stroke: var(--wine); stroke-width: 1.75; }
+  .ms-t { fill: var(--accent); font-family: var(--serif); font-size: 15px; font-weight: 600; text-anchor: middle; dominant-baseline: central; }
+
+  .dia-box { fill: var(--surface); stroke: var(--wine); stroke-width: 1.25; }
+  .dia-t { fill: var(--ink); font-family: var(--sans); font-size: 12px; text-anchor: middle; dominant-baseline: central; }
+
+  .edge { fill: none; stroke: var(--muted); stroke-width: 1.4; marker-end: url(#ah); }
+  /* merge stub — feeds a junction, so it carries no arrowhead of its own */
+  .edge-plain { fill: none; stroke: var(--muted); stroke-width: 1.4; }
+  /* junction to node — the single arrow that lands after stubs have merged */
+  .edge-join { fill: none; stroke: var(--muted); stroke-width: 1.4; marker-end: url(#ah); }
+  .edge-flag { fill: none; stroke: var(--flag); stroke-width: 1.4; stroke-dasharray: 5 4; marker-end: url(#ahf); }
+  .edge-soft { fill: none; stroke: var(--rule); stroke-width: 1.3; stroke-dasharray: 4 4; marker-end: url(#ahs); }
+  .elab { font-family: var(--mono); font-size: 10.5px; fill: var(--muted); }
+  .elab-flag { font-family: var(--mono); font-size: 10.5px; fill: var(--flag); }
+  .ann { font-family: var(--mono); font-size: 10.5px; fill: var(--muted); text-anchor: middle; }
+  .ann-flag { font-family: var(--mono); font-size: 10.5px; fill: var(--flag); text-anchor: middle; }
+  .ann-pole { font-family: var(--mono); font-size: 10.5px; fill: var(--apricot-ink); text-anchor: middle; }
+  .zone { fill: none; stroke-width: 1.25; }
+  .zone--in { stroke: var(--wine); }
+  .zone--out { stroke: var(--rule); stroke-dasharray: 6 5; }
+  .zone-t { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; }
+  .zone-t--in { fill: var(--accent); font-weight: 700; }
+  .zone-t--out { fill: var(--muted); }
+  .mk { fill: var(--muted); }
+  .mk-flag { fill: var(--flag); }
+  .mk-soft { fill: var(--rule); }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 0.45rem 1.1rem;
+    font-family: var(--mono); font-size: var(--step--2); color: var(--muted);
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 0.42rem; }
+  .legend i { width: 1.1rem; height: 0.72rem; border-radius: 3px; display: block; flex: 0 0 auto; }
+
+  .qs { display: flex; flex-direction: column; gap: 0.9rem; }
+  .q {
+    background: var(--surface); border: 1px solid var(--rule);
+    border-left: 3px solid var(--rule); border-radius: 0 8px 8px 0;
+    padding: 0.85rem 1.1rem; display: flex; flex-direction: column; gap: 0.3rem;
+  }
+  .q--decided { border-left-color: var(--wine); }
+  .q__h { font-size: var(--step-0); font-weight: 650; line-height: 1.35; }
+  .q__tag {
+    font-family: var(--mono); font-size: var(--step--2); letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--apricot-ink); font-weight: 700;
+  }
+  .q__b { font-size: var(--step--1); color: var(--muted); line-height: 1.55; max-width: 46em; }
+  .q__b strong { color: var(--ink); font-weight: 650; }
+  .q__list {
+    font-size: var(--step--1); color: var(--muted); line-height: 1.55; max-width: 46em;
+    list-style: none; display: flex; flex-direction: column; gap: 0.4rem; padding: 0;
+  }
+  .q__list li { border-left: 2px solid var(--rule); padding-left: 0.75rem; }
+  .q__list strong { color: var(--ink); font-weight: 650; }
+
+  .foot {
+    border-top: 1px solid var(--rule); padding-top: 1.2rem;
+    display: flex; flex-direction: column; gap: 0.5rem;
+    font-size: var(--step--1); color: var(--muted); max-width: 46em;
+  }
+
+  .theme-toggle {
+    position: fixed; top: 1rem; right: 1rem; z-index: 20;
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 999px;
+    padding: 0.4rem 0.85rem 0.4rem 0.7rem; cursor: pointer;
+    font-family: var(--mono); font-size: var(--step--2); letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--muted);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    transition: border-color 120ms ease, color 120ms ease;
+  }
+  .theme-toggle:hover { border-color: var(--accent); color: var(--ink); }
+  .theme-toggle__icon { font-size: 0.95em; line-height: 1; }
+</style>
+
+<button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false">
+  <span class="theme-toggle__icon" aria-hidden="true">☀</span>
+  <span id="themeToggleLabel">Light</span>
+</button>
+
+<div class="wrap">
+
+  <header class="mh">
+    <p class="mh__eyebrow">Sequence Bridge · product flows</p>
+    <h1 class="mh__title">The product at three altitudes</h1>
+    <p class="mh__lede">What the patient experiences, what we install, and what we do every week to keep it running — with the gaps marked rather than papered over.</p>
+    <p class="mh__note">Rendered from <code>internal/steering/flows.md</code>, which stays the source of truth. What's in and out of the offer is owned by <code>internal/steering/scope.md</code> — where this page and that file disagree, that file wins.</p>
+    <p class="mh__note">Colour is direction 3 (Thread) from <code>internal/out/token-directions.html</code>. Type sets in system fallbacks because a local file can't load a font CDN; production faces are Sentient, Switzer, and Space Mono.</p>
+  </header>
+
+  <!-- ===================== HERO STRIP ===================== -->
+  <section class="lyr">
+    <div class="dg">
+      <svg viewBox="0 0 960 130" role="img" aria-label="The sequence in six steps: inquiry, instant reply, booked, reminder, shows up, referral ask.">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" class="mk"></path>
+          </marker>
+          <marker id="ahf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" class="mk-flag"></path>
+          </marker>
+          <marker id="ahs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" class="mk-soft"></path>
+          </marker>
+        </defs>
+
+        <g class="n"><rect class="n-box" x="34" y="34" width="132" height="46" rx="6"></rect><text class="n-t" x="100" y="57">Inquiry</text></g>
+        <g class="n n-wine"><rect class="n-box" x="186" y="34" width="132" height="46" rx="6"></rect><text class="n-t" x="252" y="57">Instant reply</text></g>
+        <g class="n"><rect class="n-box" x="338" y="34" width="132" height="46" rx="6"></rect><text class="n-t" x="404" y="57">Booked</text></g>
+        <g class="n n-wine"><rect class="n-box" x="490" y="34" width="132" height="46" rx="6"></rect><text class="n-t" x="556" y="57">Reminder</text></g>
+        <g class="n"><rect class="n-box" x="642" y="34" width="132" height="46" rx="6"></rect><text class="n-t" x="708" y="57">Shows up</text></g>
+        <g class="n n-wine"><rect class="n-box" x="794" y="34" width="132" height="46" rx="6"></rect><text class="n-t" x="860" y="57">Referral ask</text></g>
+
+        <path class="edge" d="M 166 57 L 184 57"></path>
+        <path class="edge" d="M 318 57 L 336 57"></path>
+        <path class="edge" d="M 470 57 L 488 57"></path>
+        <path class="edge" d="M 622 57 L 640 57"></path>
+        <path class="edge" d="M 774 57 L 792 57"></path>
+
+        <text class="ann" x="100" y="100">form or call</text>
+        <text class="ann" x="252" y="100">under 5 min</text>
+        <text class="ann" x="404" y="100">real availability</text>
+        <text class="ann" x="556" y="100">cuts no-shows</text>
+        <text class="ann" x="708" y="100">the metric</text>
+        <text class="ann" x="860" y="100">feeds the top</text>
+      </svg>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--surface);border:1px solid var(--rule)"></i>step — patient or practice</span>
+      <span><i style="background:var(--wine)"></i>step — the sequence acts</span>
+      <span><i style="border:1.5px dashed var(--flag)"></i>dead end, no v1 coverage</span>
+      <span><i style="border:1.5px solid var(--wine);border-radius:99px"></i>milestone</span>
+    </div>
+  </section>
+
+  <!-- ===================== LAYER 1 ===================== -->
+  <section class="lyr">
+    <div class="lyr__head">
+      <p class="lyr__label">Layer 1 — moves with the offer</p>
+      <h2 class="lyr__name">The patient journey</h2>
+      <p class="lyr__thesis">What a patient actually experiences. This is the layer that maps most directly onto landing page copy and the sales conversation, because it is the thing we sell.</p>
+    </div>
+
+    <div class="dg dg--wide">
+      <svg viewBox="0 0 960 930" role="img" aria-label="Patient journey flowchart. Demand splits three ways: web form, our tracking number, or the practice's main line. The main line is a dead end with no v1 coverage. Form and call paths converge on a booking link, then confirmation, reminder, and a show-or-no-show decision. No-show is a dead end. Visits end with a referral ask.">
+        <!-- source -->
+        <g class="n"><rect class="n-box" x="290" y="20" width="380" height="44" rx="6"></rect><text class="n-t" x="480" y="42">Demand the practice already has</text></g>
+        <text class="elab" x="682" y="47">website · listing · word of mouth</text>
+
+        <!-- fan to three lanes -->
+        <path class="edge" d="M 480 64 L 480 88 L 150 88 L 150 108"></path>
+        <path class="edge" d="M 480 64 L 480 108"></path>
+        <path class="edge" d="M 480 64 L 480 88 L 810 88 L 810 108"></path>
+
+        <g class="n"><rect class="n-box" x="25" y="110" width="250" height="44" rx="6"></rect><text class="n-t" x="150" y="132">Web form submitted</text></g>
+        <g class="n"><rect class="n-box" x="355" y="110" width="250" height="44" rx="6"></rect><text class="n-t" x="480" y="132">Calls our tracking number</text></g>
+        <g class="n n-dead"><rect class="n-box" x="685" y="110" width="250" height="44" rx="6"></rect><text class="n-t" x="810" y="132">Calls the main line direct</text></g>
+        <text class="ann-flag" x="810" y="176">never counted, never caught</text>
+        <text class="ann-flag" x="810" y="194">NOT COVERED IN V1</text>
+
+        <!-- lane A -->
+        <path class="edge" d="M 150 154 L 150 188"></path>
+        <g class="n n-wine"><rect class="n-box" x="25" y="190" width="250" height="44" rx="6"></rect><text class="n-t" x="150" y="212">Instant SMS reply</text></g>
+        <text class="elab" x="160" y="177">under 5 min</text>
+
+        <!-- lane B decision -->
+        <path class="edge" d="M 480 154 L 480 174"></path>
+        <polygon class="dia-box" points="375,210 480,176 585,210 480,244"></polygon>
+        <text class="dia-t" x="480" y="211">Front desk picks up?</text>
+
+        <path class="edge" d="M 375 210 L 350 210 L 350 278"></path>
+        <text class="elab" x="344" y="204" text-anchor="end">yes</text>
+        <path class="edge" d="M 585 210 L 640 210 L 640 278"></path>
+        <text class="elab" x="592" y="204">no</text>
+
+        <g class="n"><rect class="n-box" x="245" y="280" width="210" height="44" rx="6"></rect><text class="n-t" x="350" y="302">Front desk books it</text></g>
+        <g class="n n-wine"><rect class="n-box" x="525" y="280" width="230" height="44" rx="6"></rect><text class="n-t" x="640" y="302">Missed-call text-back</text></g>
+
+        <!-- converge -->
+        <path class="edge-plain" d="M 150 234 L 150 340 L 480 340"></path>
+        <path class="edge-plain" d="M 350 324 L 350 340"></path>
+        <path class="edge-plain" d="M 640 324 L 640 340 L 480 340"></path>
+        <path class="edge-join" d="M 480 340 L 480 368"></path>
+
+        <g class="n n-wine"><rect class="n-box" x="310" y="370" width="340" height="44" rx="6"></rect><text class="n-t" x="480" y="392">Booking link · real availability</text></g>
+
+        <path class="edge" d="M 480 414 L 480 438"></path>
+        <g class="n"><rect class="ms-box" x="340" y="440" width="280" height="44" rx="22"></rect><text class="ms-t" x="480" y="462">Appointment booked</text></g>
+
+        <path class="edge" d="M 480 484 L 480 508"></path>
+        <g class="n n-wine"><rect class="n-box" x="340" y="510" width="280" height="44" rx="6"></rect><text class="n-t" x="480" y="532">Confirmation SMS</text></g>
+
+        <path class="edge" d="M 480 554 L 480 578"></path>
+        <g class="n n-wine"><rect class="n-box" x="340" y="580" width="280" height="44" rx="6"></rect><text class="n-t" x="480" y="602">Reminder SMS</text></g>
+        <text class="elab" x="630" y="597">timed to cut no-shows</text>
+
+        <path class="edge" d="M 480 624 L 480 641"></path>
+        <polygon class="dia-box" points="380,675 480,643 580,675 480,707"></polygon>
+        <text class="dia-t" x="480" y="676">Patient shows up?</text>
+
+        <path class="edge-flag" d="M 380 675 L 280 675 L 280 748"></path>
+        <text class="elab-flag" x="274" y="669" text-anchor="end">no</text>
+        <path class="edge" d="M 580 675 L 690 675 L 690 748"></path>
+        <text class="elab" x="698" y="669">yes</text>
+
+        <g class="n n-dead"><rect class="n-box" x="165" y="750" width="230" height="44" rx="6"></rect><text class="n-t" x="280" y="772">No-show</text></g>
+        <text class="ann-flag" x="280" y="814">NO RECOVERY PATH IN V1</text>
+
+        <g class="n"><rect class="n-box" x="575" y="750" width="230" height="44" rx="6"></rect><text class="n-t" x="690" y="772">Visit happens</text></g>
+        <path class="edge" d="M 690 794 L 690 826"></path>
+        <g class="n n-wine"><rect class="n-box" x="565" y="828" width="250" height="44" rx="6"></rect><text class="n-t" x="690" y="850">Referral ask SMS</text></g>
+        <text class="ann" x="690" y="892">a referral re-enters at the top</text>
+      </svg>
+    </div>
+
+    <p class="lyr__note"><strong>Where the value sits.</strong> Everything between lead captured and shows up is the product. We don't create the demand at the top, and we don't touch the clinical work inside the visit.</p>
+    <p class="lyr__note"><strong>Calls are in v1 because of the denominator, not the feature.</strong> Speed-to-lead, booking rate, and cost per booked appointment all divide by "inquiries." A form-only version computes every headline metric on a partial denominator — and it flatters us, because form leads that got an instant reply convert well. Handing an owner a booking rate that ignores the calls they know they missed is how the first monthly report loses credibility, and the first report is what the month-3 renewal turns on. Call data also has no backfill.</p>
+    <p class="lyr__note"><strong>The residual gap is deliberate.</strong> Rerouting a practice's primary revenue channel two weeks into a relationship is the riskiest thing we could ask for. Our number is additive; if it ever breaks, their old one still rings.</p>
+  </section>
+
+  <!-- ===================== LAYER 2 ===================== -->
+  <section class="lyr">
+    <div class="lyr__head">
+      <p class="lyr__label">Layer 2 — moves with the code</p>
+      <h2 class="lyr__name">What we install</h2>
+      <p class="lyr__thesis">The system a signed practice actually gets, and where our boundary sits. One multi-tenant app we own and operate, so an added practice costs close to nothing at the margin.</p>
+    </div>
+
+    <div class="dg dg--wide">
+      <svg viewBox="0 0 960 480" role="img" aria-label="Architecture diagram. Inside the Sequence Bridge platform: landing page and call tracking number feed a lead DB, which feeds a booking engine and an automation scheduler, which feed SMS sequences and an agency dashboard. Outside the boundary: the practice's phone line, calendar, PMS, and Twilio with A2P 10DLC. The PMS handoff is undefined.">
+        <rect class="zone zone--in" x="20" y="46" width="920" height="230" rx="10"></rect>
+        <text class="zone-t zone-t--in" x="36" y="38">Sequence Bridge platform — multi-tenant, we own and operate it</text>
+
+        <g class="n"><rect class="n-box" x="40" y="95" width="240" height="42" rx="6"></rect><text class="n-t" x="160" y="116">Landing page + form</text></g>
+        <g class="n"><rect class="n-box" x="40" y="155" width="240" height="42" rx="6"></rect><text class="n-t" x="160" y="176">Call tracking number</text></g>
+
+        <g class="n"><rect class="n-box" x="360" y="95" width="240" height="42" rx="6"></rect><text class="n-t" x="480" y="116">Lead DB</text></g>
+        <g class="n"><rect class="n-box" x="360" y="155" width="240" height="42" rx="6"></rect><text class="n-t" x="480" y="176">Booking engine</text></g>
+        <g class="n n-wine"><rect class="n-box" x="360" y="215" width="240" height="42" rx="6"></rect><text class="n-t" x="480" y="236">Automation scheduler</text></g>
+
+        <g class="n n-wine"><rect class="n-box" x="680" y="95" width="240" height="42" rx="6"></rect><text class="n-t" x="800" y="116">SMS sequences</text></g>
+        <g class="n"><rect class="n-box" x="680" y="155" width="240" height="42" rx="6"></rect><text class="n-t" x="800" y="176">Agency dashboard</text></g>
+
+        <path class="edge" d="M 280 116 L 358 116"></path>
+        <path class="edge" d="M 280 176 L 320 176 L 320 116 L 358 116"></path>
+        <path class="edge" d="M 480 137 L 480 153"></path>
+        <path class="edge" d="M 480 197 L 480 213"></path>
+        <path class="edge" d="M 600 236 L 645 236 L 645 116 L 678 116"></path>
+        <path class="edge" d="M 600 176 L 678 176"></path>
+
+        <rect class="zone zone--out" x="20" y="320" width="920" height="140" rx="10"></rect>
+
+        <g class="n"><rect class="n-box" x="40" y="348" width="200" height="42" rx="6"></rect><text class="n-t" x="140" y="369">Practice phone line</text></g>
+        <g class="n"><rect class="n-box" x="280" y="348" width="200" height="42" rx="6"></rect><text class="n-t" x="380" y="369">Practice calendar</text></g>
+        <g class="n n-dead"><rect class="n-box" x="520" y="348" width="200" height="42" rx="6"></rect><text class="n-t" x="620" y="369">Practice PMS</text></g>
+        <g class="n"><rect class="n-box" x="760" y="348" width="180" height="42" rx="6"></rect><text class="n-t" x="850" y="369">Twilio + A2P 10DLC</text></g>
+
+        <!-- title sits below the nodes: nothing routes through this band -->
+        <text class="zone-t zone-t--out" x="36" y="438">Outside our boundary — we depend on it, we don't run it</text>
+
+        <path class="edge-soft" d="M 160 197 L 160 290 L 140 290 L 140 346"></path>
+        <text class="elab" x="170" y="306">forwards every call</text>
+        <path class="edge-soft" d="M 360 176 L 340 176 L 340 290 L 380 290 L 380 346"></path>
+        <text class="elab" x="400" y="306">real availability</text>
+        <path class="edge-flag" d="M 600 186 L 620 186 L 620 346"></path>
+        <text class="elab-flag" x="628" y="306">handoff undefined</text>
+        <path class="edge-soft" d="M 800 197 L 800 240 L 880 240 L 880 346"></path>
+        <text class="elab" x="790" y="306">every message</text>
+      </svg>
+    </div>
+
+    <p class="lyr__note"><strong>No PHI crosses the boundary.</strong> We hold contact details and booking preferences. Everything clinical stays in the practice's PMS, which keeps the first cohort out of HIPAA scope and constrains every spec until deliberately revisited.</p>
+    <p class="lyr__note"><strong>A2P 10DLC gates the SMS rail, not the voice one.</strong> The tracking number is a Twilio voice number and needs no registration, so adding call capture doesn't extend the launch critical path. Missed-call text-back then reuses the account, the templates, and the scheduler — the marginal build is a forwarding rule plus a status callback, with STOP language in the template.</p>
+    <p class="lyr__note"><strong>The dashboard is not a nice-to-have.</strong> It's the artifact the retainer is sold against. If per-client metrics aren't native to the platform, the monthly report becomes manual work that scales linearly with clients and eats the margin the multi-tenant bet is supposed to produce.</p>
+  </section>
+
+  <!-- ===================== LAYER 3 ===================== -->
+  <section class="lyr">
+    <div class="lyr__head">
+      <p class="lyr__label">Layer 3 — moves with operations</p>
+      <h2 class="lyr__name">The client lifecycle</h2>
+      <p class="lyr__thesis">What happens on our side, from first conversation to the renewal decision. This is the layer that justifies the retainer, and the one that's easiest to underestimate.</p>
+    </div>
+
+    <div class="dg dg--wide">
+      <svg viewBox="0 0 960 700" role="img" aria-label="Client lifecycle flowchart. Discovery and sale lead to a signed contract, which fans out into five parallel onboarding tracks with A2P 10DLC as the long pole. All five converge on going live within fourteen days, then into a weekly operating rhythm that repeats, a monthly report, and a month-three renewal decision that ends in either renewal or churn.">
+        <g class="n"><rect class="n-box" x="340" y="20" width="280" height="44" rx="6"></rect><text class="n-t" x="480" y="42">Discovery + sale</text></g>
+        <text class="elab" x="636" y="47">capture baseline: calls vs form volume</text>
+
+        <path class="edge" d="M 480 64 L 480 116"></path>
+        <g class="n"><rect class="ms-box" x="340" y="118" width="280" height="44" rx="22"></rect><text class="ms-t" x="480" y="140">Contract signed</text></g>
+
+        <path class="edge" d="M 480 162 L 480 186 L 104 186 L 104 206"></path>
+        <path class="edge" d="M 480 162 L 480 186 L 292 186 L 292 206"></path>
+        <path class="edge" d="M 480 162 L 480 206"></path>
+        <path class="edge" d="M 480 162 L 480 186 L 668 186 L 668 206"></path>
+        <path class="edge" d="M 480 162 L 480 186 L 856 186 L 856 206"></path>
+
+        <g class="n n-pole"><rect class="n-box" x="16" y="208" width="176" height="44" rx="6"></rect><text class="n-t" x="104" y="230">A2P 10DLC</text></g>
+        <g class="n"><rect class="n-box" x="204" y="208" width="176" height="44" rx="6"></rect><text class="n-t" x="292" y="230">Landing page</text></g>
+        <g class="n"><rect class="n-box" x="392" y="208" width="176" height="44" rx="6"></rect><text class="n-t" x="480" y="230">Calendar</text></g>
+        <g class="n"><rect class="n-box" x="580" y="208" width="176" height="44" rx="6"></rect><text class="n-t" x="668" y="230">SMS copy</text></g>
+        <g class="n"><rect class="n-box" x="768" y="208" width="176" height="44" rx="6"></rect><text class="n-t" x="856" y="230">Tracking number</text></g>
+
+        <path class="edge-plain" d="M 104 252 L 104 292 L 480 292"></path>
+        <path class="edge-plain" d="M 292 252 L 292 292"></path>
+        <path class="edge-plain" d="M 480 252 L 480 292"></path>
+        <path class="edge-plain" d="M 668 252 L 668 292 L 480 292"></path>
+        <path class="edge-plain" d="M 856 252 L 856 292 L 480 292"></path>
+        <path class="edge-join" d="M 480 292 L 480 316"></path>
+        <text class="ann-pole" x="104" y="310">A2P is the long pole</text>
+
+        <g class="n"><rect class="ms-box" x="330" y="318" width="300" height="44" rx="22"></rect><text class="ms-t" x="480" y="340">Live in production</text></g>
+        <text class="elab" x="650" y="345">target: 14 days from signing</text>
+
+        <path class="edge" d="M 480 362 L 480 410"></path>
+
+        <rect class="zone zone--in" x="140" y="412" width="540" height="125" rx="10"></rect>
+        <text class="zone-t zone-t--in" x="152" y="404">Weekly operating rhythm — what the retainer buys</text>
+
+        <g class="n"><rect class="n-box" x="160" y="435" width="150" height="42" rx="6"></rect><text class="n-t" x="235" y="456">Inspect failures</text></g>
+        <g class="n"><rect class="n-box" x="335" y="435" width="150" height="42" rx="6"></rect><text class="n-t" x="410" y="456">Check metrics</text></g>
+        <g class="n"><rect class="n-box" x="510" y="435" width="150" height="42" rx="6"></rect><text class="n-t" x="585" y="456">Fix and tune</text></g>
+
+        <path class="edge" d="M 310 456 L 333 456"></path>
+        <path class="edge" d="M 485 456 L 508 456"></path>
+        <path class="edge" d="M 585 477 L 585 508 L 235 508 L 235 479"></path>
+        <text class="ann" x="410" y="527">repeats weekly</text>
+
+        <path class="edge" d="M 680 456 L 716 456"></path>
+        <g class="n"><rect class="n-box" x="718" y="435" width="220" height="42" rx="6"></rect><text class="n-t" x="828" y="456">Monthly client report</text></g>
+
+        <path class="edge" d="M 828 477 L 828 552"></path>
+        <polygon class="dia-box" points="718,588 828,554 938,588 828,622"></polygon>
+        <text class="dia-t" x="828" y="589">Renews past month 3?</text>
+
+        <path class="edge" d="M 718 588 L 620 588 L 620 636"></path>
+        <text class="elab" x="614" y="582" text-anchor="end">yes</text>
+        <g class="n"><rect class="ms-box" x="480" y="638" width="280" height="44" rx="22"></rect><text class="ms-t" x="620" y="660">Retainer continues</text></g>
+
+        <path class="edge-flag" d="M 828 622 L 828 636"></path>
+        <g class="n n-dead"><rect class="n-box" x="790" y="638" width="150" height="44" rx="6"></rect><text class="n-t" x="865" y="660">Churn</text></g>
+      </svg>
+    </div>
+
+    <p class="lyr__note"><strong>Onboarding runs in five parallel tracks, and A2P is the long pole.</strong> The other four are work we control and can compress; registration is a queue we wait in. The 14-day launch commitment fails on that step or not at all. Provisioning the tracking number takes minutes and needs no 10DLC, so it adds a track without moving the deadline.</p>
+    <p class="lyr__note"><strong>Discovery captures the call-vs-form baseline on every deal.</strong> One question — how many new-patient calls and form submissions did you get last month — and most practices can pull call volume from their phone provider on the spot. It's a step in the process rather than a task someone has to remember, and it's the data that settles open question 2.</p>
+    <p class="lyr__note"><strong>The renewal decision is the whole experiment.</strong> Percentage of clients still paying past month 3 is the key success metric, because practices don't keep paying a four-figure monthly retainer for something that isn't producing. Target for the first cohort is 2 of 3.</p>
+  </section>
+
+  <!-- ===================== OPEN QUESTIONS ===================== -->
+  <section class="lyr">
+    <div class="lyr__head">
+      <p class="lyr__label">Unresolved</p>
+      <h2 class="lyr__name">Five things we haven't decided</h2>
+      <p class="lyr__thesis">Each one changes a diagram above. Listed here so scope changes aren't made blind.</p>
+    </div>
+
+    <div class="qs">
+      <div class="q">
+        <p class="q__h">1 · What do we do about the PMS?</p>
+        <p class="q__b"><strong>What it is.</strong> The practice management system is the operational core of a dental practice — Dentrix and Eaglesoft dominate the independent market, with Open Dental, Curve, Denticon and CareStack behind them. It holds patient records, clinical charting, insurance claims, billing, and the part that matters to us: the appointment book. Dental scheduling isn't a simple calendar — appointments are assigned to a specific operatory and provider, with lengths that vary by procedure.</p>
+        <p class="q__b"><strong>Practically every practice has one.</strong> Insurance claims and clinical record-keeping require it. This is not a system some practices skip.</p>
+        <p class="q__b"><strong>The problem is bigger than we first wrote it.</strong> We framed this as how a booking gets <em>into</em> the PMS. The harder half is reading <em>out</em> of it. Layer 2 draws the practice calendar as a system separate from the PMS — in dental that's usually false. <strong>The calendar is the PMS.</strong> Without a read path we don't know real availability, so "booking against the practice's real availability" is a claim we currently can't support.</p>
+        <p class="q__b"><strong>The risk isn't extra work, it's double-booking.</strong> If we book a patient into a shadow calendar while the front desk fills that slot in the PMS, a patient arrives to no chair. That's materially worse than admin work — it damages the practice in front of its own patient.</p>
+        <ul class="q__list">
+          <li><strong>Request-to-book.</strong> Instant reply with proposed times; the front desk confirms in the PMS. Zero integration and honest, but a human sits in the path — the thing we sell against.</li>
+          <li><strong>Hold slots.</strong> The practice reserves a few new-patient slots a day, blocked in the PMS, that only we book into. Instant booking is real, double-booking is structurally impossible, and transcription is bounded to a daily digest. <strong>Best v1 answer.</strong></li>
+          <li><strong>Middleware.</strong> One API across several PMSs — Sikka, or NexHealth's Synchronizer. Real availability and writeback, at a per-practice cost and a vendor dependency. NexHealth also competes with us for this budget.</li>
+          <li><strong>Direct integration, Open Dental first.</strong> The most integration-friendly common system. Cheapest real path, but it constrains who we can sell to.</li>
+        </ul>
+        <p class="q__b"><strong>Should we target practices without a PMS?</strong> No — that set is effectively empty, and a practice without one isn't a practice we want as a pilot. The useful version of the instinct is to qualify on <em>which</em> PMS. Add PMS brand to discovery alongside the call-volume baseline; if the first cohort clusters on one system, that picks the v1.1 integration target for free.</p>
+        <p class="q__b"><strong>Recommendation.</strong> Hold slots for v1, no integration, the transcription step stated plainly during the sale. Vendor specifics above come from general knowledge rather than a current survey — verify integration terms and middleware pricing before committing.</p>
+      </div>
+      <div class="q q--decided">
+        <p class="q__tag">Decided 2026-08-10 · pending confirmation</p>
+        <p class="q__h">2 · How much of the phone channel does v1 need?</p>
+        <p class="q__b">v1 covers a tracking number plus missed-call text-back; call answering and recording stay out. The decision rests on an unmeasured assumption — that phone is the majority inquiry channel for single-location dental. <strong>Reverses if</strong> calls turn out to be a small minority across the first cohort, since the argument for including them is volume and denominator integrity, and both collapse without the volume.</p>
+      </div>
+      <div class="q">
+        <p class="q__h">3 · What happens after a no-show?</p>
+        <p class="q__b">Reminders reduce no-shows; they don't eliminate them. We report show rate, so we hand clients a number with no lever attached to it.</p>
+      </div>
+      <div class="q">
+        <p class="q__h">4 · Where does a referral land, and is it attributed?</p>
+        <p class="q__b">The referral ask is an in-scope pillar, but the return path isn't tagged. A referred patient entering through the same untagged form makes the pillar unprovable — and unprovable value is the first thing cut at renewal.</p>
+      </div>
+      <div class="q">
+        <p class="q__h">5 · Where does cost-per-booked-appointment get its cost input?</p>
+        <p class="q__b">We don't run ads or own lead volume, so the spend figure has to come from the practice. Confirm they'll share it before promising the metric.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p>Derived from <code>internal/steering/flows.md</code> on 2026-08-11. That file is the source; this page is a rendering of it. When the flows change, change the markdown first and regenerate this.</p>
+    <p>Note that <code>internal/design/tokens.json</code> still holds the round-one scaffold and hasn't been rewritten to direction 3.</p>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('themeToggle');
+    var icon = btn.querySelector('.theme-toggle__icon');
+    var label = document.getElementById('themeToggleLabel');
+    var STORE_KEY = 'sequence-bridge-flows-theme';
+
+    function apply(theme) {
+      root.setAttribute('data-theme', theme);
+      var isDark = theme === 'dark';
+      icon.textContent = isDark ? '☾' : '☀';
+      label.textContent = isDark ? 'Dark' : 'Light';
+      btn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+    }
+
+    var stored = null;
+    try { stored = localStorage.getItem(STORE_KEY); } catch (e) {}
+    apply(stored === 'dark' ? 'dark' : 'light');
+
+    btn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      apply(next);
+      try { localStorage.setItem(STORE_KEY, next); } catch (e) {}
+    });
+  })();
+</script>
+
+</body>
+</html>

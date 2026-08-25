@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GTM Roadmap — Riamatic</title>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=IBM+Plex+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --navy: #0D1B2A;
+    --navy-mid: #162236;
+    --navy-light: #1E3050;
+    --cream: #F5F0E8;
+    --cream-dim: #E8E2D4;
+    --amber: #D4A843;
+    --amber-dim: #9E7A2A;
+    --coral: #C9614F;
+    --coral-dim: #9E4A3A;
+    --sage: #5B8A6F;
+    --muted: #8899AA;
+    --border: rgba(255,255,255,0.07);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 16px; }
+
+  body {
+    background: var(--navy);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.65;
+    min-height: 100vh;
+    padding: 0 0 80px;
+  }
+
+  /* ── Header ── */
+  .masthead {
+    border-bottom: 1px solid var(--border);
+    padding: 52px 64px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+  }
+  .back-button {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 50;
+    display: inline-block;
+    color: var(--cream-dim);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .14em;
+    padding: 10px 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 0 6px 18px rgba(0,0,0,.16);
+  }
+  .back-button:hover { color: var(--amber); background: var(--navy-light); transform: translateY(-2px); }
+  .masthead::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 160% at 90% -40%, rgba(212,168,67,0.08) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .masthead-eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--amber);
+    opacity: 0.8;
+  }
+  .masthead h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.12;
+    max-width: 680px;
+    color: var(--cream);
+  }
+  .masthead h1 em {
+    font-style: italic;
+    color: var(--amber);
+  }
+  .masthead-meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 8px;
+  }
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .meta-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .meta-value {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--cream-dim);
+  }
+
+  /* ── Context bar ── */
+  .context-bar {
+    margin: 0 64px;
+    margin-top: 40px;
+    padding: 20px 24px;
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--amber);
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .context-item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .context-key {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber);
+    white-space: nowrap;
+  }
+  .context-val {
+    font-size: 0.82rem;
+    color: var(--cream-dim);
+  }
+
+  /* ── Two-column layout ── */
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin: 48px 64px 0;
+  }
+
+  /* ── Option column ── */
+  .option-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .option-header {
+    padding: 24px 28px 20px;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    position: relative;
+  }
+  .option-a .option-header { background: linear-gradient(135deg, #162236 0%, #1a2a40 100%); border-top: 3px solid var(--amber); }
+  .option-b .option-header { background: linear-gradient(135deg, #1e1820 0%, #231c28 100%); border-top: 3px solid var(--coral); }
+
+  .option-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .option-a .option-badge { color: var(--amber); }
+  .option-b .option-badge { color: var(--coral); }
+
+  .option-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .option-subtitle {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .option-meta {
+    display: flex;
+    gap: 16px;
+    margin-top: 14px;
+  }
+  .option-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+  .option-a .option-tag { background: rgba(212,168,67,0.12); color: var(--amber); border: 1px solid rgba(212,168,67,0.2); }
+  .option-b .option-tag { background: rgba(201,97,79,0.12); color: var(--coral); border: 1px solid rgba(201,97,79,0.2); }
+
+  /* ── Phase cards ── */
+  .phases {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    border-top: none;
+  }
+
+  .phase {
+    padding: 20px 28px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    transition: background 0.2s;
+  }
+  .phase:last-child { border-bottom: none; }
+  .phase:hover { background: rgba(255,255,255,0.02); }
+
+  .phase-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    gap: 12px;
+  }
+  .phase-number {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-top: 3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .phase-duration {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.62rem;
+    padding: 3px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .option-a .phase-duration { background: rgba(212,168,67,0.1); color: var(--amber); border: 1px solid rgba(212,168,67,0.18); }
+  .option-b .phase-duration { background: rgba(201,97,79,0.1); color: var(--coral); border: 1px solid rgba(201,97,79,0.18); }
+
+  .phase-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: var(--cream);
+    line-height: 1.3;
+    flex: 1;
+  }
+
+  .phase-actions {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .phase-actions li {
+    font-size: 0.8rem;
+    color: var(--cream-dim);
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.45;
+  }
+  .phase-actions li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--muted);
+    font-size: 0.7rem;
+    top: 2px;
+  }
+
+  .phase-gate {
+    margin-top: 12px;
+    padding: 8px 12px;
+    border-radius: 3px;
+    font-size: 0.74rem;
+    font-style: italic;
+    line-height: 1.4;
+  }
+  .option-a .phase-gate { background: rgba(212,168,67,0.07); color: var(--amber); border-left: 2px solid var(--amber-dim); }
+  .option-b .phase-gate { background: rgba(201,97,79,0.07); color: var(--coral); border-left: 2px solid var(--coral-dim); }
+
+  .phase-note {
+    margin-top: 12px;
+    padding: 8px 12px;
+    border-radius: 3px;
+    font-size: 0.74rem;
+    line-height: 1.4;
+    background: rgba(91,138,111,0.1);
+    color: #7db897;
+    border-left: 2px solid var(--sage);
+  }
+
+  /* ── Parallel indicator ── */
+  .phase.parallel {
+    background: rgba(255,255,255,0.015);
+  }
+  .parallel-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  /* ── Decision point (Option B) ── */
+  .decision-point {
+    padding: 20px 28px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(201,97,79,0.05);
+    text-align: center;
+  }
+  .decision-point-icon {
+    font-size: 1.4rem;
+    margin-bottom: 6px;
+  }
+  .decision-point-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--coral);
+    margin-bottom: 4px;
+  }
+  .decision-point-sub {
+    font-size: 0.76rem;
+    color: var(--muted);
+  }
+
+  /* ── Connector arrow (bottom of Option B) ── */
+  .feeds-into {
+    padding: 14px 28px;
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    border-top: none;
+    text-align: center;
+    font-size: 0.76rem;
+    color: var(--muted);
+  }
+  .feeds-into span {
+    color: var(--amber);
+    font-weight: 500;
+  }
+
+  /* ── Scoring table (Option B) ── */
+  .score-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  .score-table th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 4px 6px 6px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .score-table td {
+    font-size: 0.76rem;
+    color: var(--cream-dim);
+    padding: 5px 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top;
+  }
+  .score-table tr:last-child td { border-bottom: none; }
+  .frontrunner td { color: var(--cream); }
+  .frontrunner td:first-child { color: var(--amber); font-weight: 500; }
+  .dot { font-size: 0.65rem; color: var(--muted); }
+  .dots-row { display: flex; gap: 2px; align-items: center; }
+  .dot-fill { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+  .dot-on { background: var(--amber); }
+  .dot-off { background: rgba(255,255,255,0.1); }
+  .option-b .frontrunner td:first-child { color: var(--coral); }
+  .option-b .dot-on { background: var(--coral); }
+
+  /* ── Recommendation banner ── */
+  .recommendation {
+    margin: 40px 64px 0;
+    padding: 24px 28px;
+    background: var(--navy-mid);
+    border: 1px solid rgba(212,168,67,0.25);
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  .rec-icon {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--amber);
+    padding-top: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .rec-body { flex: 1; }
+  .rec-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--cream);
+  }
+  .rec-text {
+    font-size: 0.82rem;
+    color: var(--cream-dim);
+    line-height: 1.6;
+  }
+
+  /* ── Shared decisions callout ── */
+  .shared-decisions {
+    margin: 32px 64px 0;
+    padding: 24px 28px;
+    background: var(--navy-mid);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--sage);
+  }
+  .sd-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 14px;
+    display: block;
+  }
+  .sd-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .sd-item {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .sd-item strong {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--cream);
+  }
+  .sd-item span {
+    font-size: 0.76rem;
+    color: var(--muted);
+  }
+
+  /* ── Footer ── */
+  .doc-footer {
+    margin: 48px 64px 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-note {
+    font-size: 0.76rem;
+    color: var(--muted);
+  }
+  .footer-authors {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 960px) {
+    .masthead, .context-bar, .options-grid, .recommendation, .shared-decisions, .doc-footer {
+      margin-left: 28px;
+      margin-right: 28px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    .options-grid { grid-template-columns: 1fr; }
+    .masthead { padding: 36px 28px 28px; }
+  }
+
+  /* ── Print ── */
+  @media print {
+    body { background: white; color: #111; }
+    .back-button { display: none; }
+    .option-header, .phases, .phase, .recommendation, .shared-decisions { border-color: #ddd !important; }
+  }
+
+  /* ── Stagger reveal animation ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .masthead     { animation: fadeUp 0.5s ease both; }
+  .context-bar  { animation: fadeUp 0.5s ease 0.1s both; }
+  .options-grid { animation: fadeUp 0.5s ease 0.2s both; }
+  .recommendation    { animation: fadeUp 0.5s ease 0.3s both; }
+  .shared-decisions  { animation: fadeUp 0.5s ease 0.35s both; }
+</style>
+</head>
+<body>
+<a class="back-button" href="../index.html">&larr; Back to Index</a>
+
+<!-- ── MASTHEAD ── -->
+<div class="masthead">
+  <div class="masthead-eyebrow">Riamatic · Strategic Planning Document</div>
+  <h1>Two Paths to<br /><em>Market-Ready</em></h1>
+  <div class="masthead-meta">
+    <div class="meta-item">
+      <span class="meta-label">Prepared</span>
+      <span class="meta-value">2026-05-20</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Owners</span>
+      <span class="meta-value">Hector + Cynthia</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Target Launch</span>
+      <span class="meta-value">Q1 2027</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Lead Offering</span>
+      <span class="meta-value">Client Onboarding Accelerator ($5k–$7k/mo)</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── CONTEXT BAR ── -->
+<div class="context-bar">
+  <div class="context-item"><span class="context-key">Decided</span><span class="context-val">SMB back-office workflows · Web app + AI · Productized · ~$5k/mo subscription</span></div>
+  <div class="context-item"><span class="context-key">Open</span><span class="context-val">Which vertical to lead with (RIA is frontrunner)</span></div>
+  <div class="context-item"><span class="context-key">Founders</span><span class="context-val">Ecuador-based · 10 yrs software · Hector builds · Cynthia sells</span></div>
+</div>
+
+<!-- ── OPTIONS GRID ── -->
+<div class="options-grid">
+
+  <!-- ── OPTION A ── -->
+  <div class="option-col option-a">
+    <div class="option-header">
+      <div class="option-badge">Option A — Recommended</div>
+      <div class="option-title">RIA Sequential Roadmap</div>
+      <div class="option-subtitle">Commit to the RIA vertical and execute a phased build toward Q1 2027 cold outreach. Each phase gates the next.</div>
+      <div class="option-meta">
+        <span class="option-tag">~12 months</span>
+        <span class="option-tag">Sequential</span>
+        <span class="option-tag">RIA vertical locked</span>
+      </div>
+    </div>
+    <div class="phases">
+
+      <div class="phase">
+        <div class="phase-top">
+          <div>
+            <div class="phase-number">Phase 1</div>
+            <div class="phase-title">Foundation</div>
+          </div>
+          <span class="phase-duration">Weeks 1–4</span>
+        </div>
+        <ul class="phase-actions">
+          <li>Form US LLC (Delaware or Wyoming — lowest friction for non-residents)</li>
+          <li>Set up Ecuador contractor structure — Hector + Cynthia invoice the LLC as independent contractors</li>
+          <li>Draft operating agreement: equity split, decision rights, vesting/cliff, roles</li>
+          <li>Open US business bank account (Mercury is remote-founder friendly)</li>
+          <li>Register for EIN; confirm US tax obligations as foreign-owned LLC</li>
+          <li>Decide on division of labor: Hector builds + PMs, Cynthia sells + manages client relationships</li>
+        </ul>
+        <div class="phase-gate">Gate: Legal entity in place and partnership terms signed before spending on tools or vendors.</div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-top">
+          <div>
+            <div class="phase-number">Phase 2</div>
+            <div class="phase-title">Domain Learning &amp; Validation</div>
+          </div>
+          <span class="phase-duration">Weeks 5–16</span>
+        </div>
+        <ul class="phase-actions">
+          <li>Deep-dive study: RIA workflows, Rule 206(4)-7, Marketing Rule, Form ADV, Reg S-P (June 3 deadline is a content hook even pre-launch)</li>
+          <li>Competitive scan: what tools small RIAs already use (Orion, Redtail, Wealthbox, Schwab Advisor Center)</li>
+          <li>Engage a paid domain advisor — an active RIA principal or compliance consultant for 4–6 hours/month</li>
+          <li>Run 10 customer discovery calls with RIA founders ($100M–$500M AUM); goal: validate pain points and willingness to pay</li>
+          <li>Document the "moment of pain" in onboarding: where does time actually go?</li>
+        </ul>
+        <div class="phase-gate">Gate: At least 1 RIA says "I would pay $5k/month for that today." If zero, revisit scope before building.</div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-top">
+          <div>
+            <div class="phase-number">Phase 3</div>
+            <div class="phase-title">Spec &amp; Architecture</div>
+          </div>
+          <span class="phase-duration">Weeks 14–20</span>
+        </div>
+        <ul class="phase-actions">
+          <li>Spec the Onboarding Accelerator web app: screen flows, user roles (advisor, CCO, client), data model</li>
+          <li>Spec the AI Governance Kit: policy templates, vendor diligence checklists, Form ADV update guide, audit log structure</li>
+          <li>Define the Claude integration layer: which agents, what prompts, what guardrails</li>
+          <li>Shortlist 2–3 AML vendors for the paid add-on (ComplyAdvantage, LexisNexis Bridger)</li>
+          <li>Choose tech stack and set up dev environment</li>
+        </ul>
+        <div class="phase-note">Overlaps with Phase 2 — start spec conversations with early discovery call participants so they shape the product.</div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-top">
+          <div>
+            <div class="phase-number">Phase 4</div>
+            <div class="phase-title">Build Offering #1</div>
+          </div>
+          <span class="phase-duration">Weeks 18–36</span>
+        </div>
+        <ul class="phase-actions">
+          <li>Build the agency web app: status dashboard, CCO audit log view, advisor task queue, client-facing status page</li>
+          <li>Integrate Claude as the document validation + KYC completeness agent</li>
+          <li>Build Zapier/n8n workflow engine: intake form → document collection → validation → custodial pre-fill → e-signature routing</li>
+          <li>Assemble AI Governance Kit deliverables (policy templates, Form ADV guidance, validation test plan)</li>
+          <li>Wire AML vendor integration for the paid add-on</li>
+          <li>Internal pilot: run 2–3 onboardings manually + with the tool to validate time savings</li>
+        </ul>
+        <div class="phase-gate">Gate: End-to-end onboarding flow works in a staging environment; at least one discovery call participant has seen a demo and given feedback.</div>
+      </div>
+
+      <div class="phase parallel">
+        <span class="parallel-badge">↔ Runs in parallel with Phases 3–4</span>
+        <div class="phase-top">
+          <div>
+            <div class="phase-number">Phase 5</div>
+            <div class="phase-title">Content Engine</div>
+          </div>
+          <span class="phase-duration">Weeks 14–36+</span>
+        </div>
+        <ul class="phase-actions">
+          <li><strong>First piece (publish ASAP):</strong> Reg S-P + AI compliance checklist for RIAs — ties to June 3, 2026 deadline; SEO + authority signal</li>
+          <li>Content pillars: RIA compliance, AI in advisory workflows, productivity for founder-PMs</li>
+          <li>Formats: long-form blog + short-form video (LinkedIn/YouTube)</li>
+          <li>Build SEC-IAPD ICP list: Tier 1 (small SEC-RIAs $100M–$500M) + Tier 2 (FL/TX state-registered $50M–$80M)</li>
+          <li>Identify 2–3 RIA podcasts for guest appearances (builds credibility before outbound)</li>
+          <li>Both founders post on LinkedIn — build personal brand alongside agency brand</li>
+        </ul>
+      </div>
+
+      <div class="phase">
+        <div class="phase-top">
+          <div>
+            <div class="phase-number">Phase 6</div>
+            <div class="phase-title">Go to Market</div>
+          </div>
+          <span class="phase-duration">Q1 2027 →</span>
+        </div>
+        <ul class="phase-actions">
+          <li>Cold outbound begins: LinkedIn + email sequences to Tier 1 ICP list</li>
+          <li>Lead with the AI Governance Kit as a free diagnostic (5-question email audit) — lowers barrier, surfaces anxiety</li>
+          <li>Offer a paid pilot at a reduced rate ($2.5k/mo for 90 days) to get first 3 reference customers</li>
+          <li>Podcast guesting: target RIA-adjacent shows (Kitces, Financial Advisor Success, etc.)</li>
+          <li>Reference customer case studies ready by end of Q1 2027</li>
+        </ul>
+        <div class="phase-gate">Target: 3 paying reference customers by end of Q2 2027. Then price to full $5k–$7k/mo.</div>
+      </div>
+
+    </div><!-- /phases -->
+  </div><!-- /option-a -->
+
+  <!-- ── OPTION B ── -->
+  <div class="option-col option-b">
+    <div class="option-header">
+      <div class="option-badge">Option B — If Vertical Isn't Locked</div>
+      <div class="option-title">Structured Vertical Selection</div>
+      <div class="option-subtitle">Evaluate 3–5 candidate verticals before committing. Run in parallel with Option A's Phase 1 if Cynthia isn't aligned on RIA yet.</div>
+      <div class="option-meta">
+        <span class="option-tag">~10 weeks</span>
+        <span class="option-tag">Data-driven</span>
+        <span class="option-tag">Feeds into Option A</span>
+      </div>
+    </div>
+    <div class="phases">
+
+      <div class="phase">
+        <div class="phase-top">
+          <div>
+            <div class="phase-number">Step 1</div>
+            <div class="phase-title">Define Selection Criteria</div>
+          </div>
+          <span class="phase-duration">Week 1</span>
+        </div>
+        <ul class="phase-actions">
+          <li><strong>Must-haves:</strong> SMB size, back-office workflows, founder is the buyer, regulatory complexity creates moat, proven willingness to pay ~$5k/mo</li>
+          <li><strong>Nice-to-haves:</strong> workflows repeat across clients (not bespoke), underserved by enterprise platforms, at least one founder has domain passion</li>
+          <li>Score each criterion 1–5 for each vertical; weight the must-haves 2×</li>
+        </ul>
+      </div>
+
+      <div class="phase">
+        <div class="phase-top">
+          <div>
+            <div class="phase-number">Step 2</div>
+            <div class="phase-title">Candidate Verticals</div>
+          </div>
+          <span class="phase-duration">Week 1</span>
+        </div>
+        <table class="score-table">
+          <thead>
+            <tr>
+              <th>Vertical</th>
+              <th>SMB fit</th>
+              <th>Regulatory moat</th>
+              <th>Hector passion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="frontrunner">
+              <td>RIA / Wealth Mgmt ★</td>
+              <td><div class="dots-row"><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span></div></td>
+              <td><div class="dots-row"><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-off"></span></div></td>
+              <td><div class="dots-row"><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span></div></td>
+            </tr>
+            <tr>
+              <td>Healthcare practices</td>
+              <td><div class="dots-row"><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-off"></span></div></td>
+              <td><div class="dots-row"><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span></div></td>
+              <td><div class="dots-row"><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-off"></span><span class="dot-fill dot-off"></span><span class="dot-fill dot-off"></span></div></td>
+            </tr>
+            <tr>
+              <td>Insurance brokerages</td>
+              <td><div class="dots-row"><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-off"></span><span class="dot-fill dot-off"></span></div></td>
+              <td><div class="dots-row"><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-off"></span><span class="dot-fill dot-off"></span></div></td>
+              <td><div class="dots-row"><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-off"></span><span class="dot-fill dot-off"></span><span class="dot-fill dot-off"></span></div></td>
+            </tr>
+            <tr>
+              <td>Real estate / prop mgmt</td>
+              <td><div class="dots-row"><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-off"></span></div></td>
+              <td><div class="dots-row"><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-off"></span><span class="dot-fill dot-off"></span><span class="dot-fill dot-off"></span></div></td>
+              <td><div class="dots-row"><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-off"></span><span class="dot-fill dot-off"></span><span class="dot-fill dot-off"></span></div></td>
+            </tr>
+            <tr>
+              <td>Legal / law firms</td>
+              <td><div class="dots-row"><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-off"></span><span class="dot-fill dot-off"></span></div></td>
+              <td><div class="dots-row"><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-off"></span><span class="dot-fill dot-off"></span></div></td>
+              <td><div class="dots-row"><span class="dot-fill dot-on"></span><span class="dot-fill dot-on"></span><span class="dot-fill dot-off"></span><span class="dot-fill dot-off"></span><span class="dot-fill dot-off"></span></div></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="phase-note">★ RIA is the frontrunner — scores highest on founder passion, SMB density, and regulatory moat combination.</div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-top">
+          <div>
+            <div class="phase-number">Step 3</div>
+            <div class="phase-title">Desk Research Score</div>
+          </div>
+          <span class="phase-duration">Weeks 2–4</span>
+        </div>
+        <ul class="phase-actions">
+          <li>For each of top 3 verticals: research market size, price benchmarks, competitive landscape, and regulatory burden</li>
+          <li>Score each 1–5 on: TAM, willingness to pay, workflow repeatability, competitive gap, regulatory moat</li>
+          <li>Identify whether a $5k/mo subscription has precedent in each vertical</li>
+          <li>Document sources; keep it lean — 1–2 pages per vertical is enough</li>
+        </ul>
+      </div>
+
+      <div class="phase">
+        <div class="phase-top">
+          <div>
+            <div class="phase-number">Step 4</div>
+            <div class="phase-title">Customer Discovery</div>
+          </div>
+          <span class="phase-duration">Weeks 4–10</span>
+        </div>
+        <ul class="phase-actions">
+          <li>Run 5 discovery calls per top 2 verticals (10 total)</li>
+          <li>Script: "Tell me how a new client gets onboarded at your firm. Walk me through it step by step." — let them reveal the pain</li>
+          <li>End every call with: "If a tool cut that in half, what would you pay monthly for it?"</li>
+          <li>Track: pain severity, current tools, budget signals, who else to talk to</li>
+          <li>Cynthia leads the calls; Hector takes notes and looks for patterns</li>
+        </ul>
+        <div class="phase-gate">Gate: At least one vertical produces 3+ people who say a number ≥ $3k/mo unprompted.</div>
+      </div>
+
+      <div class="decision-point">
+        <div class="decision-point-icon">⊕</div>
+        <div class="decision-point-title">Joint Decision Meeting</div>
+        <div class="decision-point-sub">Week 10–11 · Hector + Cynthia review scores, call notes, and gut read together. Pick ONE vertical. This meeting ends with a written decision.</div>
+      </div>
+
+      <div class="phase">
+        <div class="phase-top">
+          <div>
+            <div class="phase-number">Step 5</div>
+            <div class="phase-title">Align on the Plan</div>
+          </div>
+          <span class="phase-duration">Week 11</span>
+        </div>
+        <ul class="phase-actions">
+          <li>Document the decision and rationale in writing — revisit only if a hard blocker emerges</li>
+          <li>If RIA wins (expected): pull the RIA Offerings draft back out and treat it as v1 of the product spec</li>
+          <li>If another vertical wins: run a targeted version of the RIA offerings doc for that segment</li>
+        </ul>
+      </div>
+
+    </div><!-- /phases -->
+
+    <div class="feeds-into">
+      After Step 5, this path merges into <span>Option A, Phase 2 (Domain Learning &amp; Validation)</span>
+    </div>
+  </div><!-- /option-b -->
+
+</div><!-- /options-grid -->
+
+<!-- ── RECOMMENDATION ── -->
+<div class="recommendation">
+  <div class="rec-icon">Rec.</div>
+  <div class="rec-body">
+    <div class="rec-title">Run both in parallel — Option B first, then Option A from Phase 2</div>
+    <div class="rec-text">
+      Start Option A's Phase 1 (entity formation) immediately — that work is vertical-agnostic and there's no reason to wait.
+      Run Option B (vertical selection) concurrently over the first 10 weeks.
+      If RIA wins the decision meeting (likely), skip Option A's Phase 2 validation and go straight to Domain Learning — the discovery calls in Option B already cover it.
+      This approach gives Cynthia a structured process to get to conviction, without delaying the legal and partnership work that must happen regardless.
+    </div>
+  </div>
+</div>
+
+<!-- ── SHARED DECISIONS ── -->
+<div class="shared-decisions">
+  <span class="sd-label">Already decided — applies to either path</span>
+  <div class="sd-grid">
+    <div class="sd-item">
+      <strong>Pricing model</strong>
+      <span>Monthly subscription, ~$5k/mo. No hourly billing. Tokens billed separately.</span>
+    </div>
+    <div class="sd-item">
+      <strong>GTM motion</strong>
+      <span>Cold outbound + content marketing. Not network referrals. Outreach starts Q1 2027.</span>
+    </div>
+    <div class="sd-item">
+      <strong>Target size</strong>
+      <span>SMB — founder is the buyer. No procurement committees.</span>
+    </div>
+    <div class="sd-item">
+      <strong>Build stack</strong>
+      <span>Agency web app + Claude integration + Zapier/n8n. Partner-integrate vendors (K1x, AML).</span>
+    </div>
+    <div class="sd-item">
+      <strong>Offering scope</strong>
+      <span>Productized, not bespoke. 3 offerings max; lead with Onboarding Accelerator.</span>
+    </div>
+    <div class="sd-item">
+      <strong>Domain expert</strong>
+      <span>Engage a paid advisor from the target vertical. Don't self-teach compliance from scratch.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<div class="doc-footer">
+  <div class="footer-note">Working document · Update as decisions are made · v0.1 · 2026-05-20</div>
+  <div class="footer-authors">Hector García + Cynthia</div>
+</div>
+
+</body>
+</html>

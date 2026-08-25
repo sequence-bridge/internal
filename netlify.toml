@@ -1,0 +1,5 @@
+# sbridge_internal — deploy only out-html
+[build]
+  publish = "out-html"
+  # no build command — static HTML, no build step
+
