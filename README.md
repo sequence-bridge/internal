@@ -11,9 +11,9 @@ sequence bridge/                 ← container (no .git)
 ├── internal/                    ← this repo (sbridge_internal)
 │   ├── netlify.toml             ← publish = "out-html"
 │   ├── CLAUDE.md                ← workspace rules (load-bearing)
-│   ├── design/                  ← canonical design system
-│   │   ├── design.md            ← consolidated source (checklist + decisions)
-│   │   ├── tokens.json          ← W3C DTCG tokens — single source of truth
+│   ├── design/                  ← archive/mirror (canonical moved to marketing — see below)
+│   │   ├── design.md            ← consolidated source (checklist + decisions) — now archive
+│   │   ├── tokens.json          ← last canonical W3C DTCG tokens (frozen; new source is marketing/public/tokens.json)
 │   │   ├── elements.html        ← atoms (browser-viewable)
 │   │   ├── components.html      ← composites
 │   │   └── sections.html        ← page sections
@@ -23,8 +23,10 @@ sequence bridge/                 ← container (no .git)
 │   ├── specs/, qa/, releases/, content/, ai-reviews/
 │   └── steering/sequence-bridge.md ← origin narrative (was sequence-bridge.md at container root)
 ├── app/                         ← separate repo — multi-tenant platform
-│   └── themes/                  ← per-client token deltas (future home for tokens.json)
-└── marketing/                   ← separate repo — static marketing site
+│   └── themes/                  ← vendored copy of marketing/public/tokens.json + per-client deltas
+└── marketing/                   ← separate repo — static marketing site — **now canonical for tokens + brand manual**
+    ├── public/tokens.json       ← single source of truth (W3C DTCG), published at https://<marketing-domain>/tokens.json
+    └── public/brand/            ← brand manual (design.md + specimens), published at https://<marketing-domain>/brand/
 ```
 
 Previously `sequence bridge/` was a single repo and `internal/out-html/` was a **nested** repo (`h-garcia/go-agency`) with its own `netlify.toml` (`publish = "."`). That nesting is now collapsed: `out-html/.git` was removed and history was folded into this repo. If you still see `internal/out-html/.git` locally, delete it — it is no longer used.
@@ -48,26 +50,27 @@ They are **independent git repos** with no shared history. The only contract bet
 2. `sequence-bridge.md` (origin narrative) was moved from the container root into `internal/steering/sequence-bridge.md` so it is versioned with scope. The old `readme.md` at the container root and `app/README.md` / `marketing/README.md` are **not** tracked here — they live in their respective repos.
 3. Do not add `app/` or `marketing/` as submodules of `internal` — that would re-nest repos and reintroduce the `adding embedded git repository` warning. Keep them as siblings.
 
-## Design tokens — does cross-repo sharing still work?
+## Design tokens — does cross-repo sharing still work? (updated 2026-08-25)
 
-**Short answer:** The *file* can no longer be imported by relative path, so you need an explicit sharing mechanism. The *design intent* is unchanged.
+**Short answer:** Yes — via a published URL, not a relative path. The file can no longer be imported across repos, so the mechanism changed but the intent (share tokens, not components) is unchanged.
 
-Per `design/design.md:38`, the locations table is authoritative:
+**New canonical:** `marketing` now owns base tokens and the brand manual. `internal/design` is kept as an archive/mirror until the move is complete.
 
-| Asset | Canonical path (now) | Target |
-|---|---|---|
-| `tokens.json` | `internal/design/tokens.json` | `app/themes/tokens.json` |
+| Asset | Canonical path (now) | Target in `app` | Published URL |
+|---|---|---|---|
+| `tokens.json` | `marketing/public/tokens.json` (W3C DTCG) | `app/themes/tokens.json` (vendored copy) | `https://<marketing-domain>/tokens.json` (or `https://raw.githubusercontent.com/<org>/marketing/<sha>/public/tokens.json` for pinned pulls) |
+| Brand manual | `marketing/public/brand/` + `src/pages/brand/` | — | `https://<marketing-domain>/brand/` |
 
-This repo remains the canonical source; `app` and `marketing` consume it. When this was a monorepo, `app` could import `../internal/design/tokens.json` directly. As separate repos, that relative import breaks — `internal` is not on `app`'s filesystem in CI/checkout.
+When this was a monorepo, `app` could import `../internal/design/tokens.json` directly. As separate repos, that relative import breaks — `marketing` is not on `app`'s filesystem in CI/checkout.
 
-**Options (pick one, in order of preference):**
+**Options:**
 
-1. **Manual copy (current, simplest while scaffold-only):** When you change `design/tokens.json`, copy the file to `app/themes/tokens.json` and `marketing/` (or update the inline `@theme` blocks in `design/*.html` per `design/design.md:13` sync rule). No automation until a Tailwind pipeline exists. Works today because `app` and `marketing` are not yet built.
-2. **Git submodule (cheap, versioned):** `git -C app submodule add <sbridge_internal-url> vendor/internal` and have the build read `vendor/internal/design/tokens.json`. Keeps a pinned version but adds submodule overhead.
-3. **Published package (correct at scale):** Publish `tokens.json` as an npm package (`@go-agency/tokens`) or a private registry artifact. `app` and `marketing` depend on it. The inline `@theme` blocks in `design/*.html` get replaced by compiled CSS once the Tailwind pipeline exists (`design/design.md:13`).
-4. **Build-time fetch:** `app`'s build step curls `raw.githubusercontent.com/.../design/tokens.json` at a pinned commit. No submodule, but network-dependent.
+1. **Publish without npm — marketing hosts, app pulls manually (Accepted 2026-08-25):** Tokens and brand manual are static assets on the marketing site. When you change `marketing/public/tokens.json`, notify `app` maintainer to run `curl -o app/themes/tokens.json https://<marketing-domain>/tokens.json` (or the pinned raw URL) and commit the result. No registry, no build-time network dependency if the file is vendored. See `marketing/internal/steering/design.md` for the authoritative decision and paths. This saves the npm route entirely, as requested.
+2. **Git submodule (rejected for now):** `git -C app submodule add <marketing-url> vendor/marketing` — versioned but overhead for a manual trigger.
+3. **Published npm package (rejected):** `@go-agency/tokens` — correct at scale but unnecessary for two repos; explicitly avoided per your constraint.
+4. **Build-time fetch at SHA (fallback if marketing site not yet live):** `app` curls `raw.githubusercontent.com/.../marketing/<sha>/public/tokens.json`. Same manual trigger, uses GitHub as host.
 
-**Recommendation:** Stay on (1) until `app` has a real Tailwind build pipeline. At that point, move to (3) and delete the manual `@theme` sync rule. Do not copy `elements.html` / `components.html` across repos — per `design/design.md:58`, components are per-surface; only tokens are shared.
+**Recommendation:** Use (1). Keep `app/themes/tokens.json` committed (vendored) after each pull — do not fetch at runtime. Do not copy `elements.html` / `components.html` across repos — per `design/design.md`, components are per-surface; only tokens are shared. The inline `@theme` sync rule in `internal/design` remains manual until either repo gets a real Tailwind pipeline.
 
 ## Working in this repo
 
@@ -77,4 +80,5 @@ This repo remains the canonical source; `app` and `marketing` consume it. When t
 
 ## Migration notes (for history)
 
-- `2026-08-25`: Collapsed `internal/out-html/.git` (h-garcia/go-agency) into this repo, moved `sequence bridge/.git` → `internal/.git`, added `netlify.toml` at repo root (`publish = "out-html"`), created this README, initialized `app/` and `marketing/` as independent repos.
+- `2026-08-25` (2): Scaffolded `marketing/internal/` (product, roadmap, design, tech-stack), moved canonical tokens + brand manual to `marketing/public/tokens.json` + `public/brand/` per `marketing/internal/steering/design.md` Option 1 (publish without npm, manual pull), updated this README to reflect new canonical.
+- `2026-08-25` (1): Collapsed `internal/out-html/.git` (h-garcia/go-agency) into this repo, moved `sequence bridge/.git` → `internal/.git`, added `netlify.toml` at repo root (`publish = "out-html"`), created this README, initialized `app/` and `marketing/` as independent repos.
