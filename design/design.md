@@ -1,5 +1,7 @@
 # Design system
 
+> **Moved 2026-08-25:** Base tokens and brand manual are now canonical in `marketing/public/tokens.json` + `public/brand/` (see `marketing/internal/steering/design.md` Option 1 — publish without npm, manual pull). This folder is retained as an archive/mirror; do not edit `tokens.json` here as source. See `internal/README.md` for the 3-repo layout.
+
 Single source of truth for visual identity. This file tracks the **ideal** design system as a checklist; the actual specimens live alongside it in `tokens.json` and the three `.html` files.
 
 ## How this folder works
@@ -152,3 +154,6 @@ Page-level building blocks.
 ## Notes & decisions
 
 <freeform: tradeoffs, open questions, references, rejected approaches>
+
+
+
