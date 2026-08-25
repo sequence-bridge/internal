@@ -15,208 +15,48 @@
 </style>
 </head>
 <body><style>
-  /* Colour only — direction 3 (Thread) from out/token-directions.html.
-     Wine = the sequence acting. Apricot = elapsed time and the long pole,
-     nothing else. Brick = a dead end we haven't covered. */
-  :root {
-    color-scheme: light;
-    --ground: #f7f3f1;
-    --surface: #ffffff;
-    --sunk: #f0eae8;
-    --ink: #241726;
-    --muted: #6d5a6b;
-    --rule: #cdbfc4;
-    --wine: #7a2e42;
-    --on-wine: #f7f3f1;
-    --accent: #7a2e42;
-    --apricot: #e8926a;
-    --apricot-ink: #9d5730;
-    --flag: #9c3b2e;
-
-    --step--2: clamp(0.66rem, 0.64rem + 0.08vw, 0.71rem);
-    --step--1: clamp(0.78rem, 0.76rem + 0.1vw, 0.84rem);
-    --step-0: clamp(0.95rem, 0.92rem + 0.15vw, 1.02rem);
-    --step-1: clamp(1.12rem, 1.03rem + 0.36vw, 1.3rem);
-    --step-2: clamp(1.45rem, 1.25rem + 0.85vw, 2rem);
-    --step-3: clamp(1.95rem, 1.55rem + 1.75vw, 3rem);
-
-    --sans: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --mono: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, Menlo, monospace;
-    --serif: Cambria, Georgia, "Iowan Old Style", "Times New Roman", serif;
+  /* product-flows — base chrome from shared.css; only diagram language + toggle remain inline */
+  :root{ --wine:#7a2e42; --on-wine:#f7f3f1; --apricot:#e8926a; --apricot-ink:#9d5730; --flag:#9c3b2e; --sunk:#f0eae8; }
+  .theme-toggle{
+    position:fixed; top:1rem; right:1rem; z-index:20;
+    display:inline-flex; align-items:center; gap:.45rem;
+    background:var(--panel); border:1px solid var(--rule); border-radius:999px;
+    padding:.4rem .85rem .4rem .7rem; cursor:pointer;
+    font-family:var(--mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+    box-shadow:0 1px 2px rgba(0,0,0,.06);
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      color-scheme: dark;
-      --ground: #1a1216; --surface: #241a1f; --sunk: #1f161a;
-      --ink: #f2e9ec; --muted: #ab949e; --rule: #4a3740;
-      --wine: #8d3850; --on-wine: #fdeff3; --accent: #e2a2b2;
-      --apricot: #e8926a; --apricot-ink: #f0a87f; --flag: #e08a76;
-    }
-  }
-  :root[data-theme="dark"] {
-    color-scheme: dark;
-    --ground: #1a1216; --surface: #241a1f; --sunk: #1f161a;
-    --ink: #f2e9ec; --muted: #ab949e; --rule: #4a3740;
-    --wine: #8d3850; --on-wine: #fdeff3; --accent: #e2a2b2;
-    --apricot: #e8926a; --apricot-ink: #f0a87f; --flag: #e08a76;
-  }
-  :root[data-theme="light"] {
-    color-scheme: light;
-    --ground: #f7f3f1; --surface: #ffffff; --sunk: #f0eae8;
-    --ink: #241726; --muted: #6d5a6b; --rule: #cdbfc4;
-    --wine: #7a2e42; --on-wine: #f7f3f1; --accent: #7a2e42;
-    --apricot: #e8926a; --apricot-ink: #9d5730; --flag: #9c3b2e;
-  }
-
-  body {
-    background: var(--ground); color: var(--ink);
-    font-family: var(--sans); font-size: var(--step-0);
-    line-height: 1.6; -webkit-font-smoothing: antialiased;
-  }
-  a { color: var(--accent); }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
-
-  .wrap {
-    max-width: 60rem; margin: 0 auto;
-    padding: clamp(1.5rem, 4vw, 3.5rem) clamp(1rem, 4vw, 2rem) 5rem;
-    display: flex; flex-direction: column; gap: clamp(2.75rem, 5vw, 4.25rem);
-  }
-
-  .mh { display: flex; flex-direction: column; gap: 0.9rem; }
-  .mh__eyebrow {
-    font-family: var(--mono); font-size: var(--step--2);
-    letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
-  }
-  .mh__title {
-    font-family: var(--serif); font-size: var(--step-3); font-weight: 600;
-    letter-spacing: -0.02em; line-height: 1.08; text-wrap: balance;
-  }
-  .mh__lede { font-size: var(--step-1); color: var(--muted); max-width: 34em; line-height: 1.5; }
-  .mh__note {
-    border-left: 2px solid var(--rule); padding: 0.15rem 0 0.15rem 1rem;
-    font-size: var(--step--1); color: var(--muted); max-width: 44em;
-  }
-  .mh__note + .mh__note { margin-top: -0.35rem; }
-  .mh__note code, .foot code { font-family: var(--mono); font-size: 0.94em; color: var(--ink); }
-
-  .lyr { display: flex; flex-direction: column; gap: 1.25rem; }
-  .lyr__head { display: flex; flex-direction: column; gap: 0.45rem; }
-  .lyr__label {
-    font-family: var(--mono); font-size: var(--step--2); letter-spacing: 0.16em;
-    text-transform: uppercase; color: var(--apricot-ink);
-  }
-  .lyr__name {
-    font-family: var(--serif); font-size: var(--step-2); font-weight: 600;
-    letter-spacing: -0.015em; line-height: 1.15;
-  }
-  .lyr__thesis { color: var(--muted); max-width: 40em; }
-  .lyr__note { max-width: 42em; }
-  .lyr__note + .lyr__note { margin-top: -0.45rem; }
-  .lyr__note strong { font-weight: 650; }
-
-  /* diagram frame — scrolls horizontally on narrow screens rather than squashing */
-  .dg {
-    background: var(--sunk); border: 1px solid var(--rule); border-radius: 10px;
-    padding: clamp(0.85rem, 2.5vw, 1.4rem); overflow-x: auto;
-  }
-  .dg svg { display: block; width: 100%; min-width: 40rem; height: auto; }
-  .dg--wide svg { min-width: 46rem; }
-
-  /* ---- SVG diagram language ---- */
-  .n-box { fill: var(--surface); stroke: var(--rule); stroke-width: 1.25; }
-  .n-t { fill: var(--ink); font-family: var(--sans); font-size: 13px; text-anchor: middle; dominant-baseline: central; }
-  .n-wine .n-box { fill: var(--wine); stroke: var(--wine); }
-  .n-wine .n-t { fill: var(--on-wine); }
-  .n-dead .n-box { fill: none; stroke: var(--flag); stroke-width: 1.4; stroke-dasharray: 5 4; }
-  .n-dead .n-t { fill: var(--flag); }
-  .n-pole .n-box { stroke: var(--apricot); stroke-width: 1.75; }
-
-  .ms-box { fill: none; stroke: var(--wine); stroke-width: 1.75; }
-  .ms-t { fill: var(--accent); font-family: var(--serif); font-size: 15px; font-weight: 600; text-anchor: middle; dominant-baseline: central; }
-
-  .dia-box { fill: var(--surface); stroke: var(--wine); stroke-width: 1.25; }
-  .dia-t { fill: var(--ink); font-family: var(--sans); font-size: 12px; text-anchor: middle; dominant-baseline: central; }
-
-  .edge { fill: none; stroke: var(--muted); stroke-width: 1.4; marker-end: url(#ah); }
-  /* merge stub — feeds a junction, so it carries no arrowhead of its own */
-  .edge-plain { fill: none; stroke: var(--muted); stroke-width: 1.4; }
-  /* junction to node — the single arrow that lands after stubs have merged */
-  .edge-join { fill: none; stroke: var(--muted); stroke-width: 1.4; marker-end: url(#ah); }
-  .edge-flag { fill: none; stroke: var(--flag); stroke-width: 1.4; stroke-dasharray: 5 4; marker-end: url(#ahf); }
-  .edge-soft { fill: none; stroke: var(--rule); stroke-width: 1.3; stroke-dasharray: 4 4; marker-end: url(#ahs); }
-  .elab { font-family: var(--mono); font-size: 10.5px; fill: var(--muted); }
-  .elab-flag { font-family: var(--mono); font-size: 10.5px; fill: var(--flag); }
-  .ann { font-family: var(--mono); font-size: 10.5px; fill: var(--muted); text-anchor: middle; }
-  .ann-flag { font-family: var(--mono); font-size: 10.5px; fill: var(--flag); text-anchor: middle; }
-  .ann-pole { font-family: var(--mono); font-size: 10.5px; fill: var(--apricot-ink); text-anchor: middle; }
-  .zone { fill: none; stroke-width: 1.25; }
-  .zone--in { stroke: var(--wine); }
-  .zone--out { stroke: var(--rule); stroke-dasharray: 6 5; }
-  .zone-t { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; }
-  .zone-t--in { fill: var(--accent); font-weight: 700; }
-  .zone-t--out { fill: var(--muted); }
-  .mk { fill: var(--muted); }
-  .mk-flag { fill: var(--flag); }
-  .mk-soft { fill: var(--rule); }
-
-  .legend {
-    display: flex; flex-wrap: wrap; gap: 0.45rem 1.1rem;
-    font-family: var(--mono); font-size: var(--step--2); color: var(--muted);
-  }
-  .legend span { display: inline-flex; align-items: center; gap: 0.42rem; }
-  .legend i { width: 1.1rem; height: 0.72rem; border-radius: 3px; display: block; flex: 0 0 auto; }
-
-  .qs { display: flex; flex-direction: column; gap: 0.9rem; }
-  .q {
-    background: var(--surface); border: 1px solid var(--rule);
-    border-left: 3px solid var(--rule); border-radius: 0 8px 8px 0;
-    padding: 0.85rem 1.1rem; display: flex; flex-direction: column; gap: 0.3rem;
-  }
-  .q--decided { border-left-color: var(--wine); }
-  .q__h { font-size: var(--step-0); font-weight: 650; line-height: 1.35; }
-  .q__tag {
-    font-family: var(--mono); font-size: var(--step--2); letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--apricot-ink); font-weight: 700;
-  }
-  .q__b { font-size: var(--step--1); color: var(--muted); line-height: 1.55; max-width: 46em; }
-  .q__b strong { color: var(--ink); font-weight: 650; }
-  .q__list {
-    font-size: var(--step--1); color: var(--muted); line-height: 1.55; max-width: 46em;
-    list-style: none; display: flex; flex-direction: column; gap: 0.4rem; padding: 0;
-  }
-  .q__list li { border-left: 2px solid var(--rule); padding-left: 0.75rem; }
-  .q__list strong { color: var(--ink); font-weight: 650; }
-
-  .foot {
-    border-top: 1px solid var(--rule); padding-top: 1.2rem;
-    display: flex; flex-direction: column; gap: 0.5rem;
-    font-size: var(--step--1); color: var(--muted); max-width: 46em;
-  }
-
-  .theme-toggle {
-    position: fixed; top: 1rem; right: 1rem; z-index: 20;
-    display: inline-flex; align-items: center; gap: 0.45rem;
-    background: var(--surface); border: 1px solid var(--rule); border-radius: 999px;
-    padding: 0.4rem 0.85rem 0.4rem 0.7rem; cursor: pointer;
-    font-family: var(--mono); font-size: var(--step--2); letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--muted);
-    box-shadow: 0 1px 2px rgba(0,0,0,0.06);
-    transition: border-color 120ms ease, color 120ms ease;
-  }
-  .theme-toggle:hover { border-color: var(--accent); color: var(--ink); }
-  .theme-toggle__icon { font-size: 0.95em; line-height: 1; }
-
-  .back-button{
-    position:fixed; top:18px; left:18px; z-index:10;
-    display:inline-flex; align-items:center; gap:0.4rem;
-    font-family:var(--sans); font-size:0.72rem; font-weight:600;
-    letter-spacing:0.08em; text-transform:uppercase; text-decoration:none;
-    color:var(--ink); background:var(--surface);
-    border:1px solid var(--rule); border-radius:999px;
-    padding:0.5rem 0.9rem; box-shadow:0 6px 18px rgba(0,0,0,.12);
-  }
-  .back-button:hover{ color:var(--accent); }
-  @media print{ .back-button{ display:none !important; } }
+  .theme-toggle:hover{ border-color:var(--accent); color:var(--ink); }
+  /* SVG diagram language — scoped to this page */
+  .n-box{ fill:var(--panel); stroke:var(--rule); stroke-width:1.25; }
+  .n-t{ fill:var(--ink); font-family:var(--sans); font-size:13px; text-anchor:middle; dominant-baseline:central; }
+  .n-wine .n-box{ fill:var(--wine); stroke:var(--wine); }
+  .n-wine .n-t{ fill:var(--on-wine); }
+  .n-dead .n-box{ fill:none; stroke:var(--flag); stroke-width:1.4; stroke-dasharray:5 4; }
+  .n-dead .n-t{ fill:var(--flag); }
+  .n-pole .n-box{ stroke:var(--apricot); stroke-width:1.75; }
+  .ms-box{ fill:none; stroke:var(--wine); stroke-width:1.75; }
+  .ms-t{ fill:var(--accent); font-family:var(--serif); font-size:15px; font-weight:600; text-anchor:middle; dominant-baseline:central; }
+  .dia-box{ fill:var(--panel); stroke:var(--wine); stroke-width:1.25; }
+  .dia-t{ fill:var(--ink); font-family:var(--sans); font-size:12px; text-anchor:middle; dominant-baseline:central; }
+  .edge{ fill:none; stroke:var(--muted); stroke-width:1.4; marker-end:url(#ah); }
+  .edge-plain{ fill:none; stroke:var(--muted); stroke-width:1.4; }
+  .edge-join{ fill:none; stroke:var(--muted); stroke-width:1.4; marker-end:url(#ah); }
+  .edge-flag{ fill:none; stroke:var(--flag); stroke-width:1.4; stroke-dasharray:5 4; marker-end:url(#ahf); }
+  .edge-soft{ fill:none; stroke:var(--rule); stroke-width:1.3; stroke-dasharray:4 4; marker-end:url(#ahs); }
+  .elab{ font-family:var(--mono); font-size:10.5px; fill:var(--muted); }
+  .elab-flag{ font-family:var(--mono); font-size:10.5px; fill:var(--flag); }
+  .ann{ font-family:var(--mono); font-size:10.5px; fill:var(--muted); text-anchor:middle; }
+  .ann-flag{ font-family:var(--mono); font-size:10.5px; fill:var(--flag); text-anchor:middle; }
+  .ann-pole{ font-family:var(--mono); font-size:10.5px; fill:var(--apricot-ink); text-anchor:middle; }
+  .zone{ fill:none; stroke-width:1.25; }
+  .zone--in{ stroke:var(--wine); }
+  .zone--out{ stroke:var(--rule); stroke-dasharray:6 5; }
+  .zone-t{ font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; }
+  .zone-t--in{ fill:var(--accent); font-weight:700; }
+  .zone-t--out{ fill:var(--muted); }
+  .mk{ fill:var(--muted); }
+  .mk-flag{ fill:var(--flag); }
+  .mk-soft{ fill:var(--rule); }
 </style>
 
 <a class="back-button" href="../index.html">&larr; Back to Index</a>
@@ -225,7 +65,7 @@
   <span id="themeToggleLabel">Light</span>
 </button>
 
-<div class="wrap">
+<div class="wrap"><div class="sheet">
 
   <header class="mh">
     <p class="mh__eyebrow">Sequence Bridge · product flows</p>
@@ -544,7 +384,7 @@
     <p>Note that <code>internal/design/tokens.json</code> still holds the round-one scaffold and hasn't been rewritten to direction 3.</p>
   </footer>
 
-</div>
+</div></div>
 
 <script>
   (function () {

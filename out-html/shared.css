@@ -1,8 +1,6 @@
 /* shared.css — single clean style for out-html/
    Loaded by index.html (href="shared.css") and every deliverable (href="../shared.css").
-   Keep this file as the source of truth. Do not add per-page <style> blocks except
-   for content that truly cannot be expressed here (diagrams, interactive quiz).
-   Variables are neutral/minimal; accent is deep green for a clean, non-decorative look.
+   Clean neutral palette, no per-page theme forks. Extend this file instead of adding inline <style>.
 */
 :root{
   --bg:#f2f2f0;
@@ -37,7 +35,7 @@ a{color:var(--accent);text-underline-offset:3px}
 a:hover{color:#12302a}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
 
-/* ── Back button — canonical, fixed top-left, pill — overrides per-page inline */
+/* ── Back button — canonical pill — overrides any per-page inline via !important */
 .back-button{
   position:fixed !important;top:18px !important;left:18px !important;z-index:50 !important;
   display:inline-flex !important;align-items:center;gap:.4rem;
@@ -55,25 +53,33 @@ a:hover{color:#12302a}
 }
 .btn:hover{background:#163a33}
 
-/* ── Index layout (out-html/index.html) ── */
+/* ── Page chrome: .wrap is outer gutter, .sheet is white panel (index + deliverables) ── */
 .wrap{max-width:var(--max);margin:0 auto;padding:56px 20px 90px}
 .sheet{
   background:var(--panel);border:1px solid var(--rule-strong);
   box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 20px 40px -24px var(--shadow);
   padding:56px clamp(28px,6vw,76px) 48px;overflow:hidden;
 }
+/* deliverables that use .page (parallel venture) map to same chrome */
+.page{max-width:var(--max);margin:0 auto;padding:44px 20px 88px}
+
+/* ── Typography / index ── */
 .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin:0 0 16px}
 h1{font-family:var(--serif);font-weight:600;font-size:clamp(32px,5vw,48px);line-height:1.05;letter-spacing:-.015em;margin:0}
 .lede{font-size:17px;color:var(--muted);max-width:60ch;margin:12px 0 0;line-height:1.5}
 .intro{text-align:center;max-width:680px;margin:0 auto}
 .intro .kicker{margin-bottom:12px}
+.eyebrow,.section-kicker,.label{margin:0 0 12px;color:var(--accent);font:600 11px/1.2 var(--mono);letter-spacing:.15em;text-transform:uppercase}
+h2{font-family:var(--serif);font-weight:600;font-size:clamp(26px,4vw,38px);line-height:1.05;letter-spacing:-.01em;margin:0}
+h3{font-family:var(--serif);font-weight:600;margin:0}
+
+/* ── Index cards ── */
 .initiative-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;margin-top:40px}
 .initiative-card{display:flex;flex-direction:column;padding:28px;border:1px solid var(--rule-strong);background:var(--panel);border-top:4px solid var(--accent)}
 .initiative-card.productized{border-top-color:var(--accent)}
 .initiative-card.ria{border-top-color:#9a7833}
 .card-eyebrow{margin:0 0 10px;font:600 10px/1.2 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint)}
 .card-title{margin:0;font-family:var(--serif);font-size:clamp(26px,3vw,34px);font-weight:600;line-height:1.05;color:var(--accent)}
-.productized .card-title{color:var(--accent)}
 .card-summary{margin:10px 0 18px;color:var(--muted);font-size:15px;line-height:1.5;min-height:0}
 .card-stats{display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:20px}
 .card-stat{padding:12px 0}
@@ -89,25 +95,82 @@ h1{font-family:var(--serif);font-weight:600;font-size:clamp(32px,5vw,48px);line-
 .document-list span{display:block;margin-top:3px;color:var(--ink-faint);font:10px/1.3 var(--mono)}
 .foot{margin-top:36px;padding-top:16px;border-top:2px solid var(--rule-strong);font-size:13px;color:var(--ink-faint)}
 
-/* ── Deliverable base (applies when per-page inline is removed; otherwise overridden) ── */
+/* ── Deliverable common ── */
 .hero{margin-bottom:8px}
+.masthead{display:flex;flex-direction:column;gap:.85rem;margin-bottom:12px}
+.masthead__eyebrow,.masthead-eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0}
+.masthead__title{font-size:clamp(32px,5vw,44px);line-height:1.08;letter-spacing:-.02em;font-weight:700;margin:0}
+.masthead__lede{font-size:17px;color:var(--muted);max-width:36em;line-height:1.5;margin:0}
 .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px 24px;margin:16px 0}
 .meta dt{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 4px}
 .meta dd{margin:0;font-size:15px}
 .section{margin:36px 0 0}
 .section h2{display:flex;align-items:baseline;gap:12px;font-family:var(--serif);font-weight:600;font-size:22px;margin:0 0 12px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
 .section h2 .num{font-family:var(--mono);font-size:12px;color:var(--accent)}
+.note{border-left:2px solid var(--rule);padding:.15rem 0 .15rem 1rem;font-size:15px;color:var(--muted);max-width:46em}
 .callout{margin:16px 0;padding:14px 18px;border-left:3px solid var(--accent);background:var(--accent-soft);font-size:15px}
 table{width:100%;border-collapse:collapse;margin:12px 0;font-size:15px}
 th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
 thead th{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--panel);background:var(--accent)}
 
+/* ── Parallel venture / RIA shared components — clean unified ── */
+.topbar{position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;gap:16px;align-items:center;padding:12px 20px;color:var(--ink);background:var(--panel);border-bottom:1px solid var(--rule-strong)}
+.topbar-title{font:600 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase}
+.topbar-left{display:flex;gap:14px;align-items:center}
+.top-actions{display:flex;gap:8px;align-items:center}
+.topbar-link{font:600 10px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--ink);border:1px solid var(--rule-strong);padding:8px 11px;border-radius:999px;background:var(--panel)}
+.masthead{border-bottom:2px solid var(--ink);padding:34px 0 32px;margin-bottom:12px}
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin:16px 0 12px;background:var(--rule);border:1px solid var(--rule)}
+.summary-cell{min-height:100px;padding:16px;background:var(--panel)}
+.summary-number{display:block;color:var(--accent);font:600 26px/1 var(--serif)}
+.summary-label{display:block;margin-top:8px;color:var(--muted);font-size:12px}
+.guardrails{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.guardrail{padding:18px;border-top:3px solid var(--accent);background:var(--panel);border:1px solid var(--rule-strong)}
+.founder-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.founder-card{border:1px solid var(--rule);background:var(--panel)}
+.founder-card header{padding:16px 18px;border-bottom:1px solid var(--rule)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-block;padding:5px 8px;color:var(--accent);background:var(--accent-soft);border-radius:999px;font:600 10px/1 var(--mono);border:1px solid var(--rule)}
+.table-wrap{overflow-x:auto;border:1px solid var(--rule);background:var(--panel)}
+.recommendation{display:grid;grid-template-columns:.9fr 1.3fr;gap:22px;padding:22px;color:var(--panel);background:var(--accent)}
+.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.price-card{padding:20px;border:1px solid var(--rule);background:var(--panel)}
+.price-card.recommended{border:2px solid var(--accent)}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;counter-reset:step}
+.step{padding:18px;background:var(--panel);border:1px solid var(--rule)}
+.workstreams{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.workstream{padding:18px;border-top:4px solid var(--accent);background:var(--panel);border:1px solid var(--rule);border-top-width:4px}
+
+/* ── Product flows / design-system specimens — outer chrome unified, inner diagrams keep minimal scoped styles ── */
+.mh{display:flex;flex-direction:column;gap:.9rem;margin-bottom:8px}
+.mh__eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.mh__title{font-family:var(--serif);font-size:clamp(32px,5vw,44px);font-weight:600;letter-spacing:-.02em;line-height:1.08}
+.mh__lede{font-size:17px;color:var(--muted);max-width:34em;line-height:1.5}
+.mh__note{border-left:2px solid var(--rule);padding:.15rem 0 .15rem 1rem;font-size:15px;color:var(--muted);max-width:44em}
+.lyr{display:flex;flex-direction:column;gap:1.1rem;margin-top:8px}
+.lyr__label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0}
+.lyr__name{font-size:clamp(22px,3vw,30px);font-weight:600;margin:0;line-height:1.15}
+.lyr__thesis{color:var(--muted);max-width:42em;margin:0}
+.dg{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:12px;overflow-x:auto}
+.legend{display:flex;flex-wrap:wrap;gap:.45rem 1.1rem;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.dir{display:flex;flex-direction:column;gap:1.1rem}
+.world{border-radius:8px;overflow:hidden;border:1px solid var(--rule);background:var(--panel)}
+.world__inner{padding:20px;display:flex;flex-direction:column;gap:14px}
+.spec{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1rem;background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:16px}
+.q{padding:12px 16px;border:1px solid var(--rule);border-left:3px solid var(--rule);background:var(--panel);border-radius:0 8px 8px 0}
+
+/* ── RIA phases / context ── */
+.context-bar{padding:14px 18px;background:var(--panel);border:1px solid var(--rule);border-left:3px solid var(--accent);display:flex;gap:20px;flex-wrap:wrap;margin:12px 0}
+.phase{border:1px solid var(--rule);border-top:3px solid var(--accent);background:var(--panel);padding:18px 20px}
+.pill{font-family:var(--mono);font-size:11px;color:var(--ink);background:var(--panel);border:1px solid var(--rule-strong);border-radius:999px;padding:8px 12px}
+
 /* ── Responsive / print ── */
-@media(max-width:760px){.initiative-grid{grid-template-columns:1fr}.wrap{padding:32px 14px 56px}.sheet{padding:32px 22px}}
+@media(max-width:900px){.summary-grid,.guardrails,.steps{grid-template-columns:repeat(2,1fr)}.pricing{grid-template-columns:1fr}.workstreams{grid-template-columns:1fr}}
+@media(max-width:760px){.initiative-grid{grid-template-columns:1fr}.wrap{padding:32px 14px 56px}.sheet{padding:32px 22px}.founder-grid{grid-template-columns:1fr}}
 @media print{
   :root{--bg:#fff}
   body{background:#fff}
-  .back-button{display:none !important}
-  .wrap{padding:0}.sheet{box-shadow:none;border:none}
+  .back-button,.topbar{display:none !important}
+  .wrap,.page{padding:0}.sheet{box-shadow:none;border:none}
   a{color:var(--ink);text-decoration:none}
 }
