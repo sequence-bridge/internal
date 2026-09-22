@@ -1,206 +1,211 @@
 # Product flows
 
-Three views of the same product at descending altitude: what the patient experiences, what we install, and what we do every week to keep it running. Source of truth for the product's shape — pitch decks, landing page copy, and specs should be derivable from here rather than reinventing the story each time.
+Three views of the same v1 product: what the patient experiences, what we install, and what we operate. `scope.md` owns the current offer; these diagrams explain it. If a diagram implies different coverage, the diagram is wrong.
 
-Diagrams are Mermaid, so they render on GitHub and in VS Code preview with no build step. Edit the text, not an image.
-
-**These diagrams are a *view* of scope, not the declaration of it.** `scope.md` owns what's in and out of the current offer version. If a diagram here implies coverage `scope.md` doesn't list, the diagram is wrong.
-
-**This file is never versioned or frozen** — it always describes the current offer, and there is no `flows-v1.md`. Its three layers move on three different clocks: Layer 1 tracks the offer, Layer 2 tracks the code, Layer 3 tracks operations. Historical scope records live in `internal/releases/scope-v<N>.md`, which are self-contained and don't depend on this file.
-
-**Red dashed nodes mark honest gaps** — places where v1 does nothing and we should say so out loud rather than let a diagram imply coverage we haven't built.
+Mermaid source is edited directly. Red dashed nodes mark honest gaps or fallback states.
 
 ---
 
 ## Layer 1 — Patient journey
 
-What a patient actually experiences. This is the layer that maps most directly onto landing page copy and the sales conversation, because it is the thing we sell.
-
 ```mermaid
 flowchart TD
     SITE["Practice website<br/>or Google listing"]
     WOM["Word of mouth"]
+    CHOICE{"How does the patient<br/>reach out?"}
+    DIRECT["Practice main line directly<br/>INVISIBLE TO US"]
 
-    SITE --> CHOICE{"How does the patient<br/>reach out?"}
+    SITE --> CHOICE
     WOM --> CHOICE
+    CHOICE -->|"Web calendar/form"| WEB["Secure new-patient form + SMS choice<br/>+ live tentative slot"]
+    CHOICE -->|"Texts tracking number"| SMS["Conversational SMS"]
+    CHOICE -->|"Calls tracking number"| LANG["Language<br/>English / 9 Español"]
+    CHOICE -->|"Calls main line"| DIRECT
 
-    CHOICE -->|"Web form"| CAPTURE["Lead captured"]
-    CHOICE -->|"Calls our<br/>tracking number"| RING{"Front desk<br/>picks up?"}
-    CHOICE -->|"Calls the practice's<br/>main line directly"| DIRECT["Invisible to us —<br/>NOT COVERED IN V1"]
+    LANG --> CONSENT{"Optional SMS consent<br/>scheduling + reminders + follow-up"}
+    CONSENT -->|"Yes: record evidence"| MENU{"1 book · 2 office<br/>speech equivalents"}
+    CONSENT -->|"No: continue without SMS"| MENU
 
-    RING -->|"Yes"| DESK["Front desk books<br/>in the calendar"]
-    RING -->|"No"| MCTB["Missed-call text-back:<br/>instant SMS with booking link"]
+    MENU -->|"Book"| PREF["Preferred date/time"]
+    MENU -->|"Office / global 0"| TRANSFER["Warm transfer<br/>20s default · 10–30s configured"]
+    PREF --> SLOTS["2–3 live Synchronizer slots"]
+    SLOTS --> TENTATIVE["Tentative selection"]
+    TENTATIVE --> LOOKUP{"Phone candidates +<br/>DTMF date of birth"}
+    LOOKUP -->|"Unique existing + first-name yes"| TRANSFER
+    LOOKUP -->|"New / unresolved + SMS consent"| SECURE["Short-lived secure form:<br/>name · email · phone · DOB · gender"]
+    LOOKUP -->|"No SMS / cannot use form"| TRANSFER
+    SECURE --> MATCH{"Match before create"}
+    MATCH -->|"Ambiguous / conflicting"| REVIEW["Front-desk secure review task"]
+    MATCH -->|"Verified no-match"| CREATE["Idempotent patient create"]
+    MATCH -->|"Unique match"| PATIENT["Verified patient ID"]
+    CREATE --> PATIENT
 
-    CAPTURE --> SPEED["Instant SMS reply<br/>target: under 5 minutes"]
-    LINK["Booking link against<br/>real practice availability"]
-    SPEED --> LINK
-    MCTB --> LINK
-    LINK --> BOOKED(["Appointment booked"])
-    DESK --> BOOKED
+    WEB --> MATCH
+    SMS --> PREF
+    PATIENT --> WRITE["Revalidate slot +<br/>idempotent PMS write"]
+    WRITE -->|"Success"| BOOKED(["Appointment booked"])
+    WRITE -->|"Conflict"| SLOTS
+
+    TRANSFER --> AMD{"Twilio transfer outcome"}
+    AMD -->|"human"| HUMAN["Front desk handles call"]
+    AMD -->|"machine / fax / busy /<br/>no-answer / failed / canceled /<br/>unknown / timeout"| UNAVAILABLE["Unavailable fallback"]
+    UNAVAILABLE --> FOLLOW{"Valid SMS consent?"}
+    FOLLOW -->|"Yes"| SMS
+    FOLLOW -->|"No"| END["No automated text"]
 
     BOOKED --> CONF["Confirmation SMS"]
-    CONF --> REM["Reminder SMS<br/>timed to cut no-shows"]
-    REM --> SHOW{"Patient<br/>shows up?"}
+    CONF --> REM["Reminder SMS"]
+    REM --> STATUS{"PMS appointment status"}
+    STATUS -->|"completed / kept"| REF["Basic referral ask"]
+    STATUS -->|"no-show"| NOSHOW["NO RECOVERY PATH IN V1"]
+    STATUS -->|"canceled / unknown"| NOREF["No referral ask"]
 
-    SHOW -->|"Yes"| VISIT["Visit happens"]
-    SHOW -->|"No"| NOSHOW["No-show<br/>NO RECOVERY PATH IN V1"]
-
-    VISIT --> REF["Referral ask SMS"]
-    REF -.->|"new lead"| CHOICE
+    OUTAGE["Synchronizer circuit open:<br/>request-to-book · 24h response"]
+    REVIEW --> TASK
+    WRITE -.-> OUTAGE
+    OUTAGE --> TASK["Opaque task ID + secure link<br/>to front desk by SMS + email"]
 
     classDef gap stroke:#c0392b,stroke-width:2px,stroke-dasharray:5
-    class DIRECT,NOSHOW gap
+    class DIRECT,NOSHOW,OUTAGE,END gap
 ```
 
-**Where the value sits.** Everything between *lead captured* and *shows up* is the product. We do not create the demand on the left, and we do not touch the clinical work inside the visit.
+**Booking is a PMS fact, not a message.** A selected slot is tentative until the patient identity step completes, the slot is revalidated, and the PMS write succeeds. Patient creation and appointment creation have separate idempotency protection.
 
-**Calls are in v1, but only the ones routed through us.** The tracking number forwards to the practice's line; missed-call text-back fires when nobody picks up. Exact boundaries — including what's excluded and why — are in `scope.md`.
+**Phone is candidate discovery, not identity proof.** Caller ID may locate possible records but never selects one. DTMF date of birth must reduce the set to one candidate before the IVR says only the first name. A verified existing patient goes to the office because v1 exposes one new-patient visit, not existing-patient self-service.
 
-**The reason calls can't wait for v2 is the denominator, not the feature.** Speed-to-lead, booking rate, and cost per booked appointment all divide by "inquiries." A form-only v1 computes every headline metric on a partial denominator, and it flatters us — form leads that got an instant SMS convert well. Handing an owner-operator a booking rate that ignores the calls they know they missed is how the first monthly report loses credibility, and the first report is what the month-3 renewal turns on. Call data also has no backfill: calls we didn't count are gone permanently.
+**Consent precedes automated text.** The IVR asks immediately after language selection. Declining cannot block booking or office transfer, but it means an abandoned call cannot receive a text-back. The consent event stores the practice, number, call ID, time, language, disclosure version, response method/value, message subjects, and current state.
 
-**The residual gap is real and worth saying out loud.** Patients who dial the practice's main number directly are invisible to us. We publish the tracking number on the landing page and Google Business Profile, so we cover the channels we're accountable for — but the practice's own line stays untouched and unmeasured. That's a deliberate trade: rerouting a practice's primary revenue channel two weeks into a relationship is the highest-risk thing we could ask for, and the fallback if our number ever breaks is that their old one still rings.
+**Speech is bounded but real.** Twilio speech recognition can produce a transient raw `SpeechResult`. Sequence Bridge uses it in memory for the approved English/Spanish commands and bounded date/time or numeric selections, then stores only normalized results. Raw call audio and raw speech are absent from our persistence and logs.
+
+**The main-line gap remains.** Calls made directly to the practice's line are invisible and excluded from “calls managed through Sequence Bridge.” The tracking number covers the landing page and Google Business Profile, the channels we manage.
 
 ---
 
 ## Layer 2 — What we install
 
-The system a signed practice actually gets, and where our boundary sits. One multi-tenant app we own and operate, so an added practice costs close to nothing at the margin.
-
 ```mermaid
 flowchart TB
-    subgraph platform["Sequence Bridge platform — multi-tenant, we own and operate it"]
+    subgraph platform["Sequence Bridge platform — multi-tenant, operated by us"]
         direction TB
-        LP["Landing page<br/>templated, per-client theme"]
-        FORM["Lead capture form<br/>also embeddable in an existing site"]
-        TRACK["Call tracking number<br/>counts calls, forwards to the practice"]
-        DB[("Lead DB<br/>lightweight CRM")]
-        BOOK["Booking engine<br/>per-practice availability"]
-        AUTO["Automation scheduler<br/>confirms, reminders, referral ask,<br/>missed-call text-back"]
-        SEQ["SMS sequences"]
-        DASH["Agency dashboard<br/>metrics + monthly report"]
+        LP["Landing page / embed"]
+        FORM["Secure patient + lead forms"]
+        TRACK["Tracking number + bounded IVR"]
+        CONSENT["Consent + suppression ledger"]
+        ID["Patient matching / idempotency"]
+        BOOK["Booking engine<br/>web · SMS · IVR"]
+        TASK["Request-to-book workbench"]
+        AUTO["Confirm · remind · referral ask · follow-up"]
+        EVENTS[("Minimum event + audit store")]
+        DASH["Operator dashboard + monthly report"]
     end
 
-    subgraph outside["Outside our boundary"]
+    subgraph vendors["Approved vendors / practice systems"]
         direction TB
-        TWILIO["Twilio"]
-        A2P["A2P 10DLC registration<br/>per client number"]
-        PHONE["Practice's existing phone line<br/>unchanged, still rings"]
-        CAL["Practice calendar<br/>real availability"]
-        PMS["Practice's PMS<br/>all clinical data lives here"]
+        TWILIO["Twilio Voice + Messaging + Speech + AMD"]
+        A2P["A2P sender/campaign per practice"]
+        EMAIL["Email provider"]
+        SYNC["NexHealth Synchronizer"]
+        PMS["Practice PMS<br/>system of record"]
+        PHONE["Practice main line<br/>unchanged"]
     end
 
     LP --> FORM
-    FORM --> DB
-    TRACK --> DB
-    TRACK -->|"forwards every call"| PHONE
-    TRACK -.->|"no-answer callback"| AUTO
-    DB --> BOOK
-    BOOK <--> CAL
-    DB --> AUTO
+    LP --> BOOK
+    FORM --> CONSENT
+    FORM --> ID
+    TRACK --> TWILIO
+    TRACK --> CONSENT
+    TRACK --> ID
+    TRACK --> BOOK
+    TRACK -->|"human route"| PHONE
+    TRACK -.->|"primary handler fails:<br/>provider-hosted forwarding"| PHONE
+    ID <--> SYNC
+    BOOK <--> SYNC
+    SYNC <--> PMS
     BOOK --> AUTO
-    AUTO --> SEQ
-    SEQ --> TWILIO
-    A2P -.->|"gates SMS only,<br/>not voice"| TWILIO
-    DB --> DASH
-    BOOK --> DASH
-    TRACK --> DASH
-    SEQ --> DASH
-    BOOK -.->|"handoff undefined —<br/>see open question 1"| PMS
+    BOOK -.->|"circuit open"| TASK
+    TASK --> TWILIO
+    TASK --> EMAIL
+    CONSENT --> AUTO
+    AUTO --> TWILIO
+    A2P -.->|"gates SMS"| TWILIO
+    ID --> EVENTS
+    BOOK --> EVENTS
+    TRACK --> EVENTS
+    AUTO --> EVENTS
+    TASK --> EVENTS
+    EVENTS --> DASH
 ```
 
-**No PHI crosses the boundary.** We hold contact details and booking preferences. Everything clinical stays in the practice's PMS, which keeps the first cohort out of HIPAA scope and is a constraint on every spec until deliberately revisited.
+**Minimum-data boundary.** Scheduling and messaging may be PHI even though v1 prohibits clinical intake. Persisted data is limited to identity/contact fields, date of birth, the PMS-required gender value, consent/suppression evidence, the configured generic appointment type, scheduling preferences/logistics/status, normalized IVR results, provider references, delivery/call events, tenant ownership, and audit fields. Clinical details, charts, insurance, billing, recordings, raw speech/transcripts, and unrestricted notes do not belong in the platform.
 
-**A2P 10DLC gates the SMS rail, not the voice one.** No registered number means no SMS, and no SMS means there is no product — which is why Layer 3 starts registration at signing. The tracking number is a Twilio voice number and needs no 10DLC, so adding call capture does not extend the critical path.
+**Production is contract- and configuration-gated.** Twilio requires the qualifying commercial edition, executed BAA, HIPAA-enabled eligible-service configuration, A2P approval, consent/opt-out evidence, and signed webhooks. Synchronizer requires exact PMS/version and operation tests, commercial terms, BAA, support path, and completed/kept status support. Hosting, logging, monitoring, analytics, support, and backup paths are in the same data-flow review.
 
-**Missed-call text-back is nearly free once the SMS rail exists.** It reuses the Twilio account, the same 10DLC registration, the existing templates, and the automation scheduler. The marginal build is a forwarding rule plus a status callback on `no-answer` that sends a template we already wrote. Keep STOP language in it: an inbound caller supplies the consent basis, but the opt-out still has to be there.
+**Synchronizer fails closed for booking.** Three transient failures in two minutes or one auth/permission failure opens the tenant circuit. All channels stop showing live slots and create request-to-book. The patient is acknowledged immediately and promised a response within 24 clock hours; notifications carry only an opaque task ID and secure link. Recovery checks back off at 1, 2, 5, then 10 minutes and close after three successes. Queued requests never replay automatically.
 
-**The dashboard is not a nice-to-have.** It is the artifact the retainer is sold against. If per-client metrics aren't native to the platform, the monthly report becomes manual work that scales linearly with clients and eats the margin the multi-tenant bet is supposed to produce.
+**Twilio callbacks are idempotent.** Delayed or reordered AMD/call/message callbacks cannot bridge after fallback, duplicate a task, send a second follow-up, or create another booking.
 
 ---
 
 ## Layer 3 — Client lifecycle
 
-What happens on our side, from first conversation to the renewal decision. This is the layer that justifies the retainer, and the one that is easiest to underestimate.
-
 ```mermaid
 flowchart TD
-    subgraph rhythm["Weekly operating rhythm — what the retainer actually buys"]
+    SALE["Discovery + sale<br/>baseline calls vs. forms · PMS/version · state"] --> SIGN(["Contract signed<br/>implementation fee + retainer"])
+
+    SIGN --> PAGE["Landing page / embed"]
+    SIGN --> SYNC["Synchronizer agreement + BAA<br/>install · map · test operations"]
+    SIGN --> TWILIO["Twilio edition + BAA<br/>eligible services · webhooks"]
+    SIGN --> A2P["A2P brand/campaign + sender<br/>start at signing"]
+    SIGN --> CONFIG["New-patient mapping · status ·<br/>main line · ring time · urgent wording"]
+    SIGN --> COPY["English/Spanish IVR +<br/>consent · SMS · outage copy"]
+    SIGN --> COMPLY["Counsel/state review · data map ·<br/>retention · security controls"]
+
+    READY{"Every launch gate passes?"}
+    PAGE --> READY
+    SYNC --> READY
+    TWILIO --> READY
+    A2P --> READY
+    CONFIG --> READY
+    COPY --> READY
+    COMPLY --> READY
+    READY -->|"No"| BLOCK["Not live; no partial package"]
+    READY -->|"Yes"| TEST["Synthetic end-to-end tests:<br/>all six pillars + failure paths"]
+    TEST --> LAUNCH(["Live in production<br/>target: ≤14 days"])
+
+    subgraph rhythm["Weekly operating rhythm"]
         direction TB
-        INSPECT["Failed-automation inspection"]
-        METRICS["Check metrics: speed-to-lead ·<br/>booking rate · show rate ·<br/>cost per booked appointment"]
-        FIX["Fix what broke,<br/>tune what underperforms"]
+        INSPECT["Inspect failed automation +<br/>provider health + unresolved tasks"]
+        METRICS["Check speed-to-lead · booking · show ·<br/>calls managed · referral-ask engagement"]
+        FIX["Fix failures and tune approved configuration"]
         INSPECT --> METRICS --> FIX
     end
-
-    SALE["Discovery + sale<br/>capture baseline: last month's<br/>call volume vs form volume"] --> SIGN(["Contract signed<br/>implementation fee + monthly retainer<br/>on a minimum term — figures in scope.md"])
-
-    SIGN --> A2P["Start A2P 10DLC registration<br/>at signing, NOT at launch"]
-    SIGN --> PAGE["Build landing page<br/>or embed form in existing site"]
-    SIGN --> CALCON["Connect calendar,<br/>define real availability"]
-    SIGN --> COPY["Write SMS copy: confirm, remind,<br/>referral, missed-call text-back"]
-    SIGN --> NUM["Provision tracking number,<br/>forward to the practice line,<br/>publish on landing page + GBP"]
-
-    LAUNCH(["Live in production<br/>target: 14 days from signing"])
-    A2P --> LAUNCH
-    PAGE --> LAUNCH
-    CALCON --> LAUNCH
-    COPY --> LAUNCH
-    NUM --> LAUNCH
 
     LAUNCH --> INSPECT
     FIX --> MONTH{"Month end?"}
     MONTH -->|"No"| INSPECT
-    MONTH -->|"Yes"| REPORT["Monthly client report"]
+    MONTH -->|"Yes"| REPORT["Monthly report<br/>explicit denominators + gaps"]
     REPORT --> M3{"Past month 3?"}
     M3 -->|"No"| INSPECT
-    M3 -->|"Yes"| DECIDE{"Renews?"}
-    DECIDE -->|"Yes"| INSPECT
-    DECIDE -->|"No"| CHURN["Churn"]
+    M3 -->|"Yes"| RENEW{"Renews?"}
+    RENEW -->|"Yes"| INSPECT
+    RENEW -->|"No"| CHURN["Churn"]
 ```
 
-**Onboarding runs in five parallel tracks, and A2P is still the long pole.** The other four are work we control and can compress; registration is a queue we wait in. Objective 2 — every client live within 14 days of signing — fails on that step or not at all. Provisioning the tracking number takes minutes and needs no 10DLC, so it adds a track without moving the deadline.
+**Launch is all-or-nothing.** The referral ask is implemented after the core booking/transfer/reminder/reporting paths but must still pass before the first client is live. A reliable completed/kept status is part of qualification; recurring front-desk work is not an acceptable substitute.
 
-**Discovery captures the call-vs-form baseline on every deal.** It's one question — how many new-patient calls and form submissions did you get last month — and most practices can pull call volume from their phone provider on the spot. It's a step in the process rather than a task someone has to remember, and it's the data that settles open question 2.
+**The 14-day target has real long poles.** A2P, Twilio BAA/account readiness, Synchronizer provisioning, exact PMS tests, practice approvals, and state/compliance review begin as early as possible. The target never overrides a failed production gate.
 
-**The renewal decision is the whole experiment.** Percentage of clients still paying past month 3 is the key success metric because practices don't keep paying a four-figure monthly retainer for something that isn't producing. Target for the first cohort is 2 of 3.
+**The report proves only what v1 can attribute.** It reports the managed-channel funnel and referral-ask engagement, not direct main-line calls or referred bookings/shows. Cost per booked appointment appears only when the practice supplies spend.
 
 ---
 
-## Open questions
+## Resolved contracts and remaining product gaps
 
-Genuinely undecided in `sequence-bridge.md` and `product.md`. Each one changes the diagrams above.
-
-1. **What do we do about the PMS?**
-
-   **What it is.** The practice management system is the operational core of a dental practice — Dentrix and Eaglesoft dominate the independent market, with Open Dental, Curve, Denticon, and CareStack behind them. It holds patient records, clinical charting, insurance claims, billing, and — the part that matters to us — **the appointment book**. Dental scheduling is not a simple calendar: appointments are assigned to a specific operatory (chair) and provider, with lengths that vary by procedure type.
-
-   **Practically every practice has one.** Insurance claims and clinical record-keeping require it. This is not a system some practices skip.
-
-   **The problem is bigger than we first wrote it.** We framed this as "how does a booking get *into* the PMS." The harder half is reading *out* of it. Layer 2 draws "practice calendar — the real availability" as a system separate from the PMS. In dental that is usually false: **the calendar is the PMS**. Without a read path we don't actually know real availability, and "booking against the practice's real availability" is a claim we currently can't support.
-
-   **The risk isn't extra work, it's double-booking.** If we book a patient into a shadow calendar while the front desk books someone else into that slot in the PMS, we've created a real conflict — a patient arrives to no chair. That is materially worse than adding admin work: it damages the practice in front of its own patient and ends the relationship.
-
-   **Options, roughly in order of cost:**
-
-   - **Request-to-book.** We capture the lead and reply instantly with proposed times; the front desk confirms in the PMS and we confirm to the patient. Zero integration, completely honest, and speed-to-lead is still solved. But the booking isn't instant and a human sits in the path — which is the thing we sell against.
-   - **Hold slots.** The practice reserves a small number of new-patient slots per day, blocked in the PMS so nobody else takes them, and we own that inventory exclusively. Instant booking becomes real, double-booking is structurally impossible, and transcription is bounded to a few appointments a day that we send as one daily digest. **This is the best v1 answer.**
-   - **Middleware.** Vendors sell a single API across several dental PMSs — Sikka is the long-standing one, and NexHealth's Synchronizer is another. Real availability and real writeback, at a per-practice monthly cost, plus a vendor dependency. Note that NexHealth also competes with us for this budget.
-   - **Direct integration, Open Dental first.** Open Dental is the most integration-friendly of the common systems. Cheapest real integration, but it constrains who we can sell to.
-
-   **Should we target practices without a PMS?** No — that set is effectively empty, and a practice without one is not a practice we want as a pilot. But the useful version of the instinct is to **qualify on *which* PMS**. Add PMS brand to the discovery questionnaire alongside the call-volume baseline. If the first cohort clusters on one system, that picks the v1.1 integration target for free and costs us nothing to learn.
-
-   **Recommendation.** Hold slots for v1, no integration. Say the transcription step out loud during the sale and bound it explicitly. Capture PMS brand on every discovery call.
-
-   *Vendor specifics above come from general knowledge, not a current survey — verify integration terms and middleware pricing before committing to any of it.*
-
-2. **How much of the phone channel does v1 need?** *Decided 2026-08-10, pending confirmation.* v1 includes two phone capabilities — a tracking number that forwards to the practice's line, and missed-call text-back. Call answering and recording stay out. This resolves the contradiction where `product.md` led its key-problems list with unanswered calls while the build deferred any coverage of them.
-
-   The decision rests on an assumption we have not yet measured: that phone is the majority inquiry channel for single-location dental. Baseline capture is now part of discovery (Layer 3), and the confirmation is tracked in `roadmap.md` under 2026-08.
-
-   **What would change our mind:** if calls turn out to be a small minority of inquiries across the first cohort, drop the tracking number and ship form-only — the argument for calls is volume and denominator integrity, and both collapse if the volume isn't there. If instead the dominant loss is unanswered calls to the practice's *main* line, then the residual gap in Layer 1 becomes the priority and we revisit either number porting or call answering.
-
-3. **What happens after a no-show?** Reminders reduce them; they don't eliminate them. Show rate is a metric we report on, so we'll be handing clients a number with no lever attached to it.
-
-4. **Where does a referral land, and is it attributed?** The referral ask is the fourth pillar of the sequence, but the return path isn't defined. If a referred patient enters through the same form with no tag, we can't prove the referral component produced anything — and unprovable value is the first thing cut at renewal.
-
-5. **Where does cost-per-booked-appointment get its cost input?** We don't run ads and don't own lead volume, so the spend figure has to come from the practice. Worth confirming they'll share it before we promise the metric.
+1. **PMS:** Synchronizer is the only normal path. Initial targets are Dentrix, Eaglesoft, Open Dental, Curve Hero, and Dentrix Ascend, subject to exact operation/version qualification. Hold slots are retired.
+2. **Patient:** phone is candidate lookup only; DTMF DOB precedes first-name confirmation; new-patient identity uses the secure form; ambiguous records are never auto-merged.
+3. **Phone:** every v1 client receives the bounded bilingual IVR, early optional SMS consent, deterministic warm transfer, one consented follow-up, and provider-hosted voice fallback.
+4. **Speech:** transient Twilio recognition is in; raw audio/transcript persistence and open-ended conversation are out.
+5. **Referral:** the basic completed-visit ask is in and measured through click/reply; booking/show attribution is v2.
+6. **No-show recovery:** not in v1 even though show rate is reported.
+7. **Cost input:** practice-supplied spend is required before cost per booked appointment can be shown.

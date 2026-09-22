@@ -1,146 +1,155 @@
 # Product Definition v1 — Sequence Bridge
 
-**Source:** Derived from `internal/steering/product.md` (WHY) + `internal/steering/flows.md` (HOW). Authoritative in/out + pricing lives in `internal/steering/scope.md` — where this file and that file disagree, that file wins. This file is a rendering for reading/sharing, next to `internal/out/flows.html`.
+Source: Derived from `steering/product.md` (WHY), `out/flows.md` (HOW), and `out/scope.md` (authoritative IN/OUT + pricing). Where this file and `out/scope.md` disagree, scope wins.
 
-**One-liner:** We install a proven booking sequence in your dental practice so every lead becomes a booked appointment that shows up.
+**One-liner:** We install and operate a proven booking sequence in your dental practice so new leads become booked appointments that show up.
 
-**Status:** Offer v1 · Declared 2026-08-10 · Single package, no tiers · PMS sync via Synchronizer (https://synchronizer.io)
-
----
+**Status:** Offer v1 · Declared 2026-09-22 · One six-pillar package, no tiers · PMS sync via NexHealth Synchronizer
 
 ## Who it's for
 
-* Single-location general dentistry, 1–4 chairs, owner-operator, no marketer on staff
-* Front desk = 1–2 people, busy in-chair — bar is "must not add work"
-* Already has inquiry volume (website, Google Business Profile, word of mouth) — we convert demand, we don't create it
+- Single-location general dentistry, roughly 1–4 chairs, owner-operator, no marketer on staff.
+- Front desk of one or two people, busy with patients — the bar is “must not add recurring work.”
+- Already has inquiry volume from its website, Google Business Profile, or word of mouth. We convert demand; we do not create it.
+- Uses a qualified version of Dentrix, Eaglesoft, Open Dental, Curve Hero, or Dentrix Ascend with the required Synchronizer operations.
 
-**Not for:** multi-location, specialty, needs PHI/clinical data in v1, wants lead gen/ads/SEO, wants self-serve software.
+**Not for:** multi-location groups, specialty workflows, unsupported PMSs, clinical intake, existing-patient self-service in v1, lead generation/ads/SEO, bespoke development, or self-serve software.
 
 ## The promise
 
-Every new lead hears back in under 5 minutes, every booked patient gets reminded, every month you get one report proving what it produced.
+Every new lead hears back in under five minutes, every booked patient gets reminded, and every month the owner gets one report showing what the channels we manage produced.
+
+The report is explicit about its denominator: direct calls to the practice's main line are outside v1 measurement.
 
 ## Problems we solve
 
-1. Calls go unanswered during procedures / after hours → caller books elsewhere
-2. Web forms sit unread for hours/days
-3. Booked patients no-show
-4. Owner has no numbers (inquiries → bookings → shows)
-5. Tools exist but require the practice to operate them
+- Calls go unanswered during procedures or after hours, so callers book elsewhere.
+- Web forms sit unread for hours or days.
+- New patients cannot see and book real availability without staff transcription.
+- Booked patients no-show.
+- The owner lacks a trustworthy inquiries → bookings → shows funnel.
+- Point tools exist, but the practice is expected to configure and operate them.
 
----
-
-## IN — v1 delivers all 6 to every client (no à la carte)
+## IN — v1 delivers all six to every client
 
 ### 1. Landing page
-The practice's existing site with our form embedded, **or** a single conversion-focused page we build and host. One template, themed per client.
 
-### 2. Call capture — IVR front door (2 routes)
-All calls to the tracking number (landing page + GBP) are answered first by our IVR.
+The practice's existing site with our form/calendar embedded, or a single conversion-focused page we build and host. One template, themed per client.
 
-**Route 1 — Default (auto-book):** IVR greets → asks preferred date/time → reads real availability via **NexHealth Synchronizer (https://synchronizer.io)** → offers 2–3 slots → caller confirms → writes booking directly to PMS → fires SMS confirmation. No clinic staff involved.
+### 2. Call capture — bounded IVR front door
 
-**Route 2 — Human on demand:** At any point caller can `Press 0` or say `“talk to a human” / “agent” / “representative”` → **warm transfer** to clinic main line (we stay on for 20–25s, detect answer; if answered → bridge caller + clinic and drop off; if not answered/voicemail → pull caller back and fire abandoned-IVR text-back). Practice main line never ported — additive, fails safe.
+All calls to the tracking number published on the landing page and Google Business Profile enter the IVR. The practice's main line is never ported or replaced.
 
-> **Metrics — “Calls managed through us” (report this, not “total calls”):**
-> `Total IVR answered → Auto-booked + Rerouted-and-booked + Abandoned → text-back → booked`. Provable and auditable. Footnote every report: *“Direct dials to your main line are not routed through us in v1 and are not counted here — tracking number covers landing page + GBP, the channels we are accountable for. No backfill for calls we didn’t count.”* Capture 1-time baseline at discovery (`Last month: __ forms vs __ calls` from phone provider) to anchor scale.
+1. **Language:** English by default; press `9` or say “Español” for Spanish.
+2. **SMS consent:** immediately after language selection, callers without current documented consent may press `1`/say yes to receive scheduling, confirmation, reminder, and disconnected-call follow-up texts, or press `2`/say no and continue without texts. Consent is optional, versioned, auditable, and revocable.
+3. **Main menu:** press `1` or use an approved booking phrase to book; press `2` or use an approved office phrase to reach the practice.
+4. **Global escape:** after the main menu, `0` or an approved office phrase reaches the office so numeric slot choices remain unambiguous.
+5. **Bounded speech:** English/Spanish booking and office phrases, explicit emergency routing keywords, preferred date/time, and numeric selections only. Each prompt waits five seconds and retries twice before office transfer.
 
-### 3. Booking — 3 channels, one PMS via Synchronizer (https://synchronizer.io)
-One PMS of record, three entry points — all write via Synchronizer and all trigger same SMS confirm/reminder/referral sequence.
+Twilio may return a transient raw `SpeechResult`. Sequence Bridge stores only the normalized language, intent, date/time or numeric selection, and provider confidence/status. It does not store call audio, raw speech, or raw transcripts. Open-ended conversational AI remains v2.
 
-1. **Call** — IVR auto-book (Route 1) or warm-transfer to human → front desk books via Synchronizer (Route 2)
-2. **Calendar on website** — embedded calendar on landing page → Synchronizer write, instant confirmation
-3. **SMS (conversational)** — standalone bookable channel: patient texts preferred time → we reply with 2–3 Synchronizer availabilities → patient replies `1/2/3` → we book → confirm. Also used for abandoned-IVR text-back.
+**Route 1 — New-patient auto-book:** The IVR captures a preferred time, offers two or three live Synchronizer slots, and records a tentative selection. A new caller who consented to SMS completes a short-lived secure form for the identity/demographic fields required by NexHealth/PMS. The system matches or creates the patient, revalidates the slot, writes to the PMS, and confirms only after success. If the slot is gone, it offers fresh availability. A caller who cannot use the secure form is transferred to the office.
 
-* **How it connects:** Synchronizer agent installed + PMS authorization at onboarding. Booking engine reads free/busy and writes confirmed appointments as source of truth — no shadow calendar.
-* **Why it matters:** Eliminates manual re-entry and double-booking risk. Front desk does no transcription.
-* **Coverage:** Synchronizer supports Dentrix, Eaglesoft, Open Dental, Curve, Denticon, CareStack — verify exact coverage + per-location fee before committing. Unsupported PMS falls back to hold slots (reserved new-patient slots blocked in PMS) or request-to-book, decided at discovery.
-* **Data boundary:** We sync availability + booking writes only; clinical records/charting/billing stay in PMS. Still contact + booking-preference only — preserves no-PHI posture, subject to Synchronizer's HIPAA handling.
+**Route 2 — Human on demand:** The practice leg rings 20 seconds by default, adjustable from 10–30 seconds per practice. Provider outcome `human` bridges the call. Machine/fax, busy, no-answer, failed, canceled, unknown, timeout, and caller hang-up use the approved unavailable fallback. When valid SMS consent exists, an incomplete call generates at most one follow-up into conversational booking. Duplicate or delayed callbacks cannot bridge or message twice.
 
-### 4. SMS confirmations + reminders
-Automated, timed to cut no-shows. Every outbound template includes opt-out language.
+If the primary IVR application fails, a provider-hosted handler forwards directly to the practice main line. Voice reachability wins even if event capture and follow-up automation are temporarily unavailable.
+
+### 3. Booking — three channels, one PMS contract
+
+One PMS of record, three entry points:
+
+1. **IVR** — the bounded new-patient route above.
+2. **Web calendar** — embedded calendar reads live availability, collects the secure patient fields and SMS choice, revalidates, writes, then confirms.
+3. **Conversational SMS** — patient supplies a preferred time, receives two or three live options, replies `1/2/3`, and is booked only after revalidation and a successful write.
+
+**Patient identity:** phone number finds candidates but never verifies a patient alone. IVR asks for DTMF date of birth, then confirms only the first name if one candidate remains. The secure form collects first/last name, email, phone, date of birth, and the gender value required by the PMS/NexHealth contract. Full supplied information is checked before creation. Ambiguous or conflicting matches go to front-desk review; records are never auto-merged. Patient and appointment writes have separate idempotency keys.
+
+**Appointment type:** one practice-configured `New patient visit` label, duration, provider, operatory, and PMS mapping. A verified existing patient is transferred/request-to-book rather than placed into a new-patient type.
+
+**Synchronizer:** reads availability and the minimum appointment status needed for reminders, show-rate reporting, and referral eligibility; searches/creates the patient; writes the confirmed appointment. The PMS remains the source of truth, with no editable shadow calendar.
+
+**Outage:** three transient failures within two minutes, or one authentication/permission failure, opens the tenant's circuit. Web, SMS, and IVR stop offering live slots and create request-to-book instead. The front desk receives SMS and email containing only an opaque task ID and secure link. The patient is acknowledged immediately and promised a response within 24 clock hours. Requests are never replayed automatically after recovery.
+
+### 4. SMS confirmations and reminders
+
+Automated and timed to cut no-shows. Messages send only under valid consent/suppression state, identify the practice, and include required opt-out behavior. Delivery and reply events enter the same audit/reporting model.
 
 ### 5. Referral ask
-Post-visit SMS asking the serviced patient for a referral.
 
-### 6. Operated + reported
-We run the weekly failed-automation inspection + metrics check and deliver one monthly client report. This is not a bonus — it is what the retainer buys.
+After Synchronizer/PMS reports the appointment completed/kept, v1 sends the serviced patient the basic referral ask with the practice booking link. Canceled, no-show, unresolved, and unknown-status appointments are suppressed.
 
-**Metrics reported:** speed-to-lead, booking rate, show rate, cost per booked appointment (when practice shares ad spend).
+V1 reports referral-ask eligibility, sent, delivery, reply, and link click. It does not claim a referred lead, booking, or show. V2 may add an opaque six-character code/short link and full attribution.
+
+### 6. Operated and reported
+
+We run the weekly failed-automation inspection and metrics check and deliver one monthly client report. This is the retainer, not a bonus feature.
+
+Metrics include speed-to-lead, booking rate, show rate, calls managed through the tracking number, provider/fallback failures, request-to-book state, and cost per booked appointment only when the practice supplies ad-spend input. Referral metrics stop at ask engagement in v1.
 
 ## Constraints that bound v1
 
-* **No PHI.** Contact + booking-preference only. Clinical detail stays in the practice's PMS — keeps first cohort out of HIPAA scope. Synchronizer is the transport for availability/booking, not a clinical data store.
-* **A2P 10DLC** required per client SMS number (US/Canada). Start at signing, not at launch. It is the long pole for the 14-day launch target. Voice needs no 10DLC. Synchronizer needs no 10DLC.
-* **Main line never touched.** Our number is additive; if it breaks, their old number still rings.
-* **Synchronizer + IVR dependency.** Per-location Synchronizer fee, vendor availability, agent health, and IVR minutes are now on the critical path — add Synchronizer health + IVR warm-transfer success rate to weekly inspection; define outage fallback (abandoned-IVR → SMS conversational booking).
-* **Practice responsibilities:** authorize + install Synchronizer agent and keep PMS availability accurate, share ad spend if they want cost-per-booked. No manual re-entry of bookings. No staff needed to answer IVR-booked calls.
+- **One package:** all six pillars pass launch tests before the client is live.
+- **No clinical intake:** scheduling/messaging may still be PHI. Clinical detail, charts, detailed procedures, recordings, retained raw speech/transcripts, unrestricted free text, insurance, claims, and billing are prohibited.
+- **Production compliance gate:** founder is initial security/privacy owner; qualified healthcare counsel reviews BAAs, state law, data map, retention/deletion, incident obligations, and disclosures. Required security controls include risk analysis, least privilege/MFA, encryption, audit/access review, secrets management, incident response, vendor inventory, and tested recovery where applicable.
+- **Twilio gate:** qualifying Security or Enterprise Edition, executed BAA, HIPAA-enabled eligible services/configuration, A2P sender/campaign approval per practice, documented opt-in methods, STOP/HELP handling, signed webhooks, and test evidence.
+- **Synchronizer gate:** exact PMS/version support, patient/availability/booking/status tests, commercial terms, BAA, support path, and per-location pricing verified before commitment.
+- **Main-line gap:** direct dials are invisible and excluded from reporting. Reports say so.
+- **No recurring manual workaround:** hold slots and staff transcription are not alternate v1 models.
 
----
-
-## OUT — explicitly deferred for v1
+## OUT — explicitly deferred
 
 | Deferred | Why |
 |---|---|
-| Call answering / AI receptionist | Own product, not a feature |
-| Call recording + transcription | Breaks no-PHI constraint |
-| Porting / replacing the main number | Highest-risk change; leaves main-line calls unmeasured — gap we accept |
-| No-show recovery | No defined lever after reminder fails (open question 3) |
-| Referral attribution tagging | Return path not tagged — value unprovable (open question 4) |
-| Reactivation campaigns (dormant lists) | Needs patient list — PHI-adjacent |
-| Multi-step nurture + lead-source tracking | One sequence first; prove metrics |
-| CRM integration + routing rules | No client has asked |
-| Settings management via SMS | We operate it; practice configures nothing in v1 |
-| Launch / Growth / Scale tiering | Single package until pricing data |
-| Outcome-based pricing (per booking / per show) | Can't price honestly without cohort data (open question 5) |
-| Lead generation, ads, SEO | We convert demand, we don't create it |
-| Expansion beyond dentistry | One vertical at a time |
-| Self-serve product | Not the bet |
+| Open-ended AI receptionist / call answering | Broader conversation is v2, not the bounded v1 IVR |
+| Call recording or retained/raw transcription | Not required for bounded routing and outside the approved persistence boundary |
+| Existing-patient self-service | V1 exposes only a new-patient visit |
+| Porting/replacing the main number | Highest-risk change for a new relationship |
+| No-show recovery | No approved lever beyond reminders |
+| Referral lead/booking/show attribution | Unique return token/code is v2 |
+| Reactivation, nurture, CRM routing | Broader patient/lead workflows come after core proof |
+| Tiering or outcome pricing | Requires cohort evidence |
+| Lead generation, ads, SEO | We convert demand; we do not create it |
+| Multi-location, other verticals, self-serve | One operated dental package first |
 
-> **Moved IN:** Direct PMS read/write via **NexHealth Synchronizer (https://synchronizer.io)** is now **IN for v1** — real availability read + booking write. Hold slots remain only as fallback for unsupported PMS.
+## Honest gaps
 
-## Honest gaps (say out loud in the sale — red dashed in flows.md)
+- Patients who dial the main line directly are invisible; no backfill exists for calls we did not route.
+- Existing patients are not self-scheduled in v1.
+- A caller who declines SMS or cannot use the secure form needs the office for new-patient identity completion.
+- Synchronizer outage converts all channels to request-to-book; the practice has up to 24 clock hours to respond.
+- No-show recovery is absent even though show rate is reported.
+- The referral ask is measurable, but referral bookings/shows are not attributed until v2.
+- Vendor pricing and exact PMS operations must be verified before quoting or signing.
 
-* **Main-line gap — Summary: we report only what we can prove.** Patients who dial the practice's main line directly are invisible to us — we publish the tracking number on landing page + GBP only; porting the main line is deferred as highest-risk
-* No-show has no recovery path in v1 — we still report show rate
-* Referral return via same untagged form is unattributed
-* Synchronizer dependency — PMS sync outage reverts to SMS conversational booking; unsupported PMS reverts to hold slots (capture PMS brand at discovery to plan coverage)
-* **IVR gap — Summary: abandoned IVR is not lost.** Hang-ups/timeouts/warm-transfer no-answer pull back to abandoned-IVR text-back → SMS channel; we still count them in “calls managed”
-* Synchronizer per-location fee + IVR minutes are passed through at cost — verify current pricing before quoting
+## Pricing
 
-## Pricing (from scope.md) — with pass-through to assess margin
+| Component | v1 | Notes |
+|---|---|---|
+| Implementation fee | $3,500–8,500 | Existing page vs. new build and calendar complexity |
+| Managed service retainer | $750–2,000/mo | One package, 3-month minimum |
+| SMS allowance | ~500 segments/mo included | Overage at cost |
+| Tracking number + IVR | Included | Usage above allowance at contracted cost |
+| A2P 10DLC | Included operationally | Registration and recurring carrier/vendor fees passed through as agreed |
+| Synchronizer | Passed through at contracted usage cost | Verify current terms and qualified-practice usage |
+| Hosting + calendar | Included | Provider choice belongs to the technical baseline |
 
-| Component | v1 | Cheapest | Best | Notes |
-|---|---|---|---|---|
-| Implementation fee | $3,500–$8,500 | — | — | Existing page vs new build + calendar complexity |
-| Managed service retainer | $750–$2,000/mo | — | — | Single package, 3-mo minimum |
-| SMS allowance | ~500 segments/mo included; overages at cost | ~$6/mo | ~$12/mo | Twilio $0.0075/seg + $10/mo A2P amortized; best = ~800 seg with conversational turns |
-| Tracking number | included | $1.15/mo | $1.15/mo | Twilio local number |
-| Voice — IVR + warm transfer | included | ~$8/mo | ~$25/mo | ~150 min @ $0.022 + 1 extra leg for warm transfer; best = neural voice + speech rec. |
-| A2P 10DLC | included | $15 one-time + $10/mo | $15 + $10 | Gates SMS only |
-| Synchronizer fee | passed through at cost | est. $99-149/mo | est. $199-249/mo | Per-location, verify at https://synchronizer.io |
-| Hosting + calendar | included | $0 | $20 | Vercel free vs Pro |
-| **Total pass-through / mo** | — | **~$124-184** | **~$267-317** | Before your weekly ops time |
-| **Gross margin @ $750 / $2,000 retainer** | — | **77-85% / 91-94%** | **58-64% / 84-87%** | Cheapest proves margin, best proves quality |
+The retainer is justified by the operating rhythm and reporting, not vendor minutes.
 
-> SMS overages + Synchronizer fee + IVR minutes are true pass-through — retainer justification is the operating rhythm + reporting, not the minutes themselves.
+## Objectives through 2026-10-31
 
-## Objectives through 2026-10-31 (first 90 days)
+1. Three practices signed and paying implementation fees.
+2. Every client live with all six pillars within 14 days of signing, including Synchronizer validation, Twilio/BAA readiness, A2P approval, consent tests, and referral-status support.
+3. Median speed-to-lead under five minutes for 30 consecutive days.
+4. Two of the first three clients still paying past month three.
+5. Zero missed monthly reports.
 
-1. 3 practices signed + paying implementation fee
-2. Every client live ≤14 days from signing (now includes Synchronizer provisioning + PMS authorization)
-3. Median speed-to-lead <5 min for 30 consecutive days
-4. 2 of 3 still paying past month 3 (key success metric)
-5. Zero missed monthly reports
+## Launch inputs still required per client
 
-## Open questions affecting this scope
+- Exact PMS/version and required Synchronizer operation evidence.
+- New-patient label, duration, provider, operatory, hours, timezone, and completed/kept status mapping.
+- Main line, transfer schedule, 10–30-second ring value, and practice-approved emergency wording/number.
+- Practice recipients for request-to-book SMS/email and acknowledgment of the 24-clock-hour response commitment.
+- Twilio/A2P/BAA and state-specific compliance evidence.
+- Ad-spend input if cost per booked appointment will be reported.
 
-1. **PMS handoff — Decided: Synchronizer for v1.** Verify Synchronizer terms/pricing and exact PMS coverage (Dentrix/Eaglesoft/Open Dental/Curve/Denticon/CareStack) before committing. Capture PMS brand on every discovery call; define fallback (hold slots vs request-to-book) for unsupported systems. Hold-slot model retired as primary, retained only as fallback.
-2. **Phone depth** — tracking number + missed-call in v1, pending confirmation via 3 discovery baselines (reverses to form-only if calls are minority)
-3. **No-show recovery**
-4. **Referral attribution**
-5. **Cost-per-booked input**
-
----
-
-*Derived from `internal/steering/product.md` + `internal/steering/flows.md` + `internal/steering/scope.md` on 2026-08-20, updated 2026-08-20 for Synchronizer (https://synchronizer.io). `internal/out/flows.html` is the visual companion — update its Layer 2 PMS edge from `handoff undefined` to `Synchronizer sync (read availability / write booking)` when regenerating the HTML.*
+*Derived from `steering/product.md`, `out/flows.md`, and authoritative `out/scope.md`; corrected and approved 2026-09-22 under `specs/2026-09-21-v1-booking-phone-contract.md`.*
