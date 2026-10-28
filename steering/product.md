@@ -25,7 +25,7 @@ Bets we are explicitly not making:
 - No lead generation, ad management, or SEO.
 - No custom software or "AI custom development" engagements.
 - No clinical intake or unrestricted clinical data in v1. Identifiable scheduling and messaging data may still be regulated, so the minimum-data and compliance boundary below applies.
-- No self-serve product. We operate it; the practice doesn't configure anything.
+- No self-serve product. We operate it; the practice doesn't configure the system. *Update 2026-10-28:* practice staff may keep a short list of everyday details current themselves: contact phone and email, office hours, request-to-book recipients, urgent-call wording, and logo/brand colours. These changes apply to the live public page, phone and messages straight away, and each one is recorded with who changed what and when. Booking rules, consent and SMS copy, publishing, provider/Twilio setup, launch readiness, and transfer timing stay with Sequence Bridge. Practice staff also work their practice's Requests inbox (ambiguous matches and requests to book). App detail: `app/internal/specs/2026-10-28-practice-staff-editing.md`.
 
 ### Key problems we solve
 - Calls go unanswered during procedures and after hours, and the caller books with whoever answers first.
